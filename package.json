@@ -2,8 +2,6 @@
 	"name": "monoexpo",
 	"private": true,
 	"scripts": {
-		"build": "turbo build",
-		"vercel-build": "yarn --cwd apps/expo build",
 		"dev": "turbo dev",
 		"format": "prettier --write \"**/*.{ts,tsx,md}\""
 	},
