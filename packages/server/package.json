@@ -1,0 +1,20 @@
+{
+	"name": "@repo/server",
+	"version": "0.0.0",
+	"private": true,
+	"exports": {
+		"./server": "./routers/_app.ts"
+	},
+	"dependencies": {
+		"@trpc/server": "next",
+		"@vercel/postgres": "^0.8.0",
+		"drizzle-orm": "^0.30.8",
+		"zod": "^3.22.4"
+	},
+	"devDependencies": {
+		"@types/node": "^20.12.7",
+		"drizzle-kit": "^0.20.14",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.4.5"
+	}
+}
