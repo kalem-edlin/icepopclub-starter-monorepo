@@ -3,7 +3,7 @@
 	"private": true,
 	"scripts": {
 		"build": "turbo build",
-		"vercel-build": "cd apps/expo && npx expo export -p web",
+		"vercel-build": "yarn --cwd apps/expo build",
 		"dev": "turbo dev",
 		"format": "prettier --write \"**/*.{ts,tsx,md}\""
 	},
