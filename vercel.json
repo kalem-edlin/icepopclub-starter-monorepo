@@ -1,13 +1,16 @@
 {
-	"buildCommand": "cd apps/expo && expo export -p web",
-	"outputDirectory": "apps/expo/dist",
-	"devCommand": "expo",
-	"cleanUrls": true,
-	"framework": null,
+	"buildCommand": "cd ./apps/expo && expo export -p web",
+	"outputDirectory": "./apps/expo/dist/client",
+	"functions": {
+		"api/index.js": {
+			"runtime": "@vercel/node@3.0.11",
+			"includeFiles": "./apps/expo/dist/server/**"
+		}
+	},
 	"rewrites": [
 		{
-			"source": "/:path*",
-			"destination": "/"
+			"source": "./apps/expo/(.*)",
+			"destination": "./apps/expo/dist/api/index.js"
 		}
 	]
 }
