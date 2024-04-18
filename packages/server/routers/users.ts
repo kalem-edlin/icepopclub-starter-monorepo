@@ -7,7 +7,7 @@ export default createTRPCRouter({
 			// simulate a slow db call
 			await new Promise((resolve) => setTimeout(resolve, 1000))
 			try {
-				return [{ name: "biiiitch" }] //users ?? []
+				return [{ name: "biiiitch"+new Date().getSeconds() }] //users ?? []
 			} catch (e) {
 				console.log(e)
 				return [{ name: JSON.stringify(e) }]
