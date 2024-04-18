@@ -1,11 +1,11 @@
 {
 	"expo": {
-		"name": "pillow",
-		"slug": "pillow",
+		"name": "monoexpo",
+		"slug": "monoexpo",
 		"version": "1.0.0",
 		"orientation": "portrait",
 		"icon": "./assets/images/icon.png",
-		"scheme": "myapp",
+		"scheme": "monoexpo",
 		"userInterfaceStyle": "automatic",
 		"splash": {
 			"image": "./assets/images/splash.png",
