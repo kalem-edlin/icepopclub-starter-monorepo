@@ -9,8 +9,8 @@
 	},
 	"rewrites": [
 		{
-			"source": "./apps/expo/(.*)",
-			"destination": "./apps/expo/dist/api/index.js"
+			"source": "./(.*)",
+			"destination": "./api/index.js"
 		}
 	]
 }
