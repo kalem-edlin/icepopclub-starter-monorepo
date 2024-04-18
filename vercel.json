@@ -1,5 +1,5 @@
 {
-	"buildCommand": "cd apps/expo/ && npx expo export -p web",
+	"buildCommand": " cd ./apps/expo/ && npx expo export -p web --output-dir ../../dist",
 	"outputDirectory": "dist/client",
 	"functions": {
 		"api/index.js": {
