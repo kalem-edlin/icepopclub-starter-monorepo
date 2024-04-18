@@ -19,7 +19,7 @@ export const QueryProvider = ({ children }: { children: ReactNode }) => {
 			links: [
 				httpBatchLink({
 					url: "http://localhost:8081/api/trpc",
-
+					//https://monoexpo-kvy4yb52p-kalem-edlins-projects.vercel.app/
 					// You can pass any HTTP headers you wish here
 					async headers() {
 						return {

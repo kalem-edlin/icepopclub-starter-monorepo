@@ -13,7 +13,7 @@ export default function TabOneScreen() {
 					<Text>No users yet</Text>
 				) : (
 					userQuery.data.map((user) => {
-						return <Text>{user.name}</Text>
+						return <Text key={user.name}>{user.name}</Text>
 					})
 				))}
 			{userQuery.error && (

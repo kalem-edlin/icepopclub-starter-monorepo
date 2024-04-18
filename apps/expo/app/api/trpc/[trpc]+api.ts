@@ -4,6 +4,7 @@ import { ExpoRequest } from "expo-router/server"
 
 export async function GET(req: ExpoRequest) {
 	console.log(`get request ${req}`)
+	console.log(req.url)
 	return fetchRequestHandler({
 		endpoint: "/api/trpc",
 		req: req as unknown as Request,
