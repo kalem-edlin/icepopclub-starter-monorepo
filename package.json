@@ -2,19 +2,24 @@
 	"name": "monoexpo",
 	"private": true,
 	"scripts": {
-		"dev": "turbo dev",
-		"format": "prettier --write \"**/*.{ts,tsx,md}\""
+		"deploy": "vercel deploy",
+        "start": "cd apps/expo && npx expo start",
+        "db:push": "drizzle-kit push:pg --config=drizzle-config.ts",
+        "db:studio": "drizzle-kit studio --config=drizzle-config.ts",
+        "db:generate": "drizzle-kit generate:pg --config=drizzle-config.ts"  , 
+		"format": "prettier --write \"**/*.{ts,tsx,md}\"",
+        "xcode-prebuild": "rm -rf apps/expo/ios/; cd apps/expo && expo prebuild -p ios"
 	},
 	"devDependencies": {
-		"@repo/typescript": "*",
 		"@repo/server": "*",
+		"@repo/typescript": "*",
+		"drizzle-kit": "^0.20.14",
 		"prettier": "^3.1.0",
 		"turbo": "latest"
 	},
 	"engines": {
 		"node": ">=18"
 	},
-	"packageManager": "yarn@1.22.22",
 	"workspaces": [
 		"apps/*",
 		"packages/*"

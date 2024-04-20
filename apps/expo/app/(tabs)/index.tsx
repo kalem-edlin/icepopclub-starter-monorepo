@@ -1,24 +1,18 @@
-import { ActivityIndicator, Text, View } from "react-native"
-import { trpc } from "../../services/Query"
+import { useUser } from "@clerk/clerk-expo";
+import { Image, Text, View } from "react-native";
 
-export default function TabOneScreen() {
-	const userQuery = trpc.users.getAllUsers.useQuery()
+export default function ProfileScreen() {
+    const { isLoaded, isSignedIn, user } = useUser();
 
-	return (
-		<View className="h-full w-full justify-center items-center">
-			<Text>Tab One</Text>
-			{userQuery.isLoading && <ActivityIndicator />}
-			{userQuery.data &&
-				(userQuery.data.length === 0 ? (
-					<Text>No users yet</Text>
-				) : (
-					userQuery.data.map((user) => {
-						return <Text key={user.name}>{user.name}</Text>
-					})
-				))}
-			{userQuery.error && (
-				<Text>Error Occured {userQuery.error.message}</Text>
-			)}
+	return isLoaded && isSignedIn && user && (
+		<View className="w-full gap-y-3 h-full justify-center items-center">
+             {user.profileImageUrl && <Image className="w-full h-28"  source={{uri: user.profileImageUrl}}/>}
+            <Text>
+                Name: {user.fullName}
+            </Text>
+            <Text>
+                Email: {user.primaryEmailAddress?.emailAddress},
+            </Text>
 		</View>
 	)
 }

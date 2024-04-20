@@ -3,12 +3,16 @@
 	"version": "0.0.0",
 	"private": true,
 	"exports": {
-		"./server": "./routers/_app.ts"
+		"./server": "./routers/_app.ts",
+		"./model": "./db/types.ts"
 	},
 	"dependencies": {
 		"@trpc/server": "next",
 		"@vercel/postgres": "^0.8.0",
 		"drizzle-orm": "^0.30.8",
+		"pg": "^8.11.5",
+		"postgres": "^3.4.4",
+		"uploadthing": "^6.9.0",
 		"zod": "^3.22.4"
 	}
 }
