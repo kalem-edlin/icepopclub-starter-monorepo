@@ -1,5 +1,5 @@
 {
-	"buildCommand": " cd ./apps/expo/ && npx expo export -p web --output-dir ../../dist",
+	"buildCommand": " cd ./apps/expo && npx expo export -p web --output-dir ../../dist",
 	"outputDirectory": "dist/client",
 	"functions": {
 		"api/index.js": {
@@ -10,7 +10,7 @@
 	"rewrites": [
 		{
 			"source": "/(.*)",
-			"destination": "/packages/server/index.js"
+			"destination": "/api/index.js"
 		}
 	]
 }

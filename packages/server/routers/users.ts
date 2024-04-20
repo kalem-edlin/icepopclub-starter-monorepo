@@ -1,32 +1,31 @@
 import { z } from "zod"
+import { User } from "../db/types"
 import { createTRPCRouter, publicProcedure } from "../trpc"
 
 export default createTRPCRouter({
-	getAllUsers: publicProcedure.query(
-		async ({ ctx }): Promise<{ name: string }[]> => {
-			// simulate a slow db call
-			await new Promise((resolve) => setTimeout(resolve, 1000))
-			try {
-				return [{ name: "biiiitch"+new Date().getSeconds() }] //users ?? []
-			} catch (e) {
-				console.log(e)
-				return [{ name: JSON.stringify(e) }]
-			}
+	getOtherUsers: publicProcedure.query(
+		async ({ ctx }): Promise<User[]> => {
+            return []
 		}
 	),
+    addFriend: publicProcedure.input(
+        z.object({
+            friendId: z.string(),
+            selfId: z.string()
+        })
+    )
+    .mutation(async ({ input, ctx }): Promise<User | undefined> => {
+        return
+    }),
 	createUser: publicProcedure
 		.input(
 			z.object({
-				name: z.string(),
+				firstName: z.string(),
+                lastName: z.string().optional(),
+                emailAddress: z.string(),
 			})
 		)
-		.mutation(async ({ input, ctx }): Promise<{ name: string }> => {
-			// simulate a slow db call
-			await new Promise((resolve) => setTimeout(resolve, 1000))
-			try {
-				return { name: "broken" }
-			} catch (e) {
-				return { name: JSON.stringify(e) }
-			}
+		.mutation(async ({ input, ctx }):  Promise<User | undefined> => {
+			return 
 		}),
 })

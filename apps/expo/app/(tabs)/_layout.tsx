@@ -1,6 +1,10 @@
+import { SignedIn, SignedOut, useAuth } from '@clerk/clerk-expo';
+import { MaterialIcons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Tabs } from 'expo-router';
+import { Redirect, Tabs } from 'expo-router';
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
+import { usePersistance } from '../../services/Persistance';
 
 
 function TabBarIcon(props: {
@@ -11,8 +15,12 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-
-  return (
+    const { isLoaded, signOut } = useAuth();
+    const setUserContext = usePersistance(state => state.setUserContext)
+  
+    return (
+    <>
+    <SignedIn>
     <Tabs
       screenOptions={{
         headerShown: true,
@@ -20,17 +28,24 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
+          title: 'Profile',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerRight: () => isLoaded && <TouchableOpacity onPress={() => signOut()} className='mr-4'>
+<MaterialIcons name="logout" size={20} color="black" />
+          </TouchableOpacity>
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="friends"
         options={{
-          title: 'Tab Two',
+          title: 'Friends',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
     </Tabs>
+    </SignedIn>
+    <SignedOut>
+        <Redirect href="/(auth)/signin"></Redirect>
+    </SignedOut></>
   );
 }
