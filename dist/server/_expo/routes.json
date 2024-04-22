@@ -1,0 +1,74 @@
+{
+  "apiRoutes": [
+    {
+      "file": "_expo/functions/api/clerk/user+api.js",
+      "page": "./api/clerk/user+api",
+      "namedRegex": "^/api/clerk/user(?:/)?$",
+      "routeKeys": {}
+    },
+    {
+      "file": "_expo/functions/api/trpc/[trpc]+api.js",
+      "page": "./api/trpc/[trpc]+api",
+      "namedRegex": "^/api/trpc/(?<trpc>[^/]+?)(?:/)?$",
+      "routeKeys": {
+        "trpc": "trpc"
+      }
+    }
+  ],
+  "htmlRoutes": [
+    {
+      "file": "./index.tsx",
+      "page": "./index",
+      "namedRegex": "^/(?:/)?$",
+      "routeKeys": {}
+    },
+    {
+      "file": "./(tabs)/index.tsx",
+      "page": "./(tabs)/index",
+      "namedRegex": "^(?:/\\(tabs\\))?(?:/)?$",
+      "routeKeys": {}
+    },
+    {
+      "file": "./(auth)/signup.tsx",
+      "page": "./(auth)/signup",
+      "namedRegex": "^(?:/\\(auth\\))?/signup(?:/)?$",
+      "routeKeys": {}
+    },
+    {
+      "file": "./(auth)/signin.tsx",
+      "page": "./(auth)/signin",
+      "namedRegex": "^(?:/\\(auth\\))?/signin(?:/)?$",
+      "routeKeys": {}
+    },
+    {
+      "file": "./(auth)/forgot.tsx",
+      "page": "./(auth)/forgot",
+      "namedRegex": "^(?:/\\(auth\\))?/forgot(?:/)?$",
+      "routeKeys": {}
+    },
+    {
+      "file": "./(tabs)/friends.tsx",
+      "page": "./(tabs)/friends",
+      "namedRegex": "^(?:/\\(tabs\\))?/friends(?:/)?$",
+      "routeKeys": {}
+    },
+    {
+      "file": "./_sitemap.tsx",
+      "page": "./_sitemap",
+      "namedRegex": "^/_sitemap(?:/)?$",
+      "routeKeys": {},
+      "generated": true
+    }
+  ],
+  "notFoundRoutes": [
+    {
+      "file": "./+not-found.tsx",
+      "page": "./+not-found",
+      "namedRegex": "^(?:/(?<notfound>.+?))?(?:/)?$",
+      "routeKeys": {
+        "notfound": "not-found"
+      },
+      "generated": true
+    }
+  ]
+}

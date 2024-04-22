@@ -1,27 +1,38 @@
 {
-	"name": "monoexpo",
 	"private": true,
+	"name": "@monoexpo/monorepo",
 	"scripts": {
 		"deploy": "vercel deploy",
-        "start": "cd apps/expo && npx expo start",
-        "db:push": "drizzle-kit push:pg --config=drizzle-config.ts",
-        "db:studio": "drizzle-kit studio --config=drizzle-config.ts",
-        "db:generate": "drizzle-kit generate:pg --config=drizzle-config.ts"  , 
+		"build": "EXPO_USE_METRO_WORKSPACE_ROOT=1  npx turbo build --filter=@monoexpo/app",
+		"dev": "EXPO_USE_METRO_WORKSPACE_ROOT=1  npx turbo dev --filter=@monoexpo/app",
+		"start": "EXPO_USE_METRO_WORKSPACE_ROOT=1 npx expo start",
+		"db:push": "drizzle-kit push:pg --config=drizzle-config.ts",
+		"db:studio": "drizzle-kit studio --config=drizzle-config.ts",
+		"db:generate": "drizzle-kit generate:pg --config=drizzle-config.ts",
 		"format": "prettier --write \"**/*.{ts,tsx,md}\"",
-        "xcode-prebuild": "rm -rf apps/expo/ios/; cd apps/expo && expo prebuild -p ios"
+		"dev-env": "dotenv -- turbo dev",
+		"preinstall": "npx only-allow pnpm"
 	},
 	"devDependencies": {
-		"@repo/server": "*",
-		"@repo/typescript": "*",
+		"dotenv-cli": "latest",
 		"drizzle-kit": "^0.20.14",
 		"prettier": "^3.1.0",
-		"turbo": "latest"
+		"turbo": "latest",
+		"@monoexpo/typescript": "workspace:*"
 	},
-	"engines": {
-		"node": ">=18"
+	"pnpm": {
+		"peerDependencyRules": {
+			"ignoreMissing": [
+				"@babel/*",
+				"expo-modules-*",
+				"typescript"
+			]
+		}
 	},
-	"workspaces": [
-		"apps/*",
-		"packages/*"
-	]
+	"prettier": {
+		"printWidth": 100,
+		"tabWidth": 2,
+		"singleQuote": true,
+		"trailingComma": "es5"
+	}
 }

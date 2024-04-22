@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-expo"
-import { AuthUser } from "@repo/server/db/types"
+import { AuthUser } from "@monoexpo/server/db/types"
 
 export const useUserService = () => {
 	const { user } = useUser()

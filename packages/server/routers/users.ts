@@ -8,6 +8,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc"
 
 export default createTRPCRouter({
 	getOtherUsers: publicProcedure.query(async ({ ctx }): Promise<User[]> => {
+		console.log(process.env.POSTGRES_URL)
 		return []
 	}),
 	addFriend: publicProcedure

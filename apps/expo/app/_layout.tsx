@@ -7,7 +7,6 @@ import { NativeWindStyleSheet } from "nativewind"
 import { useEffect } from "react"
 import { Platform } from "react-native"
 import mixpanel from "../services/Analytics"
-import AuthProvider from "../services/Auth/provider"
 import { usePersistance } from "../services/Persistance"
 import { QueryProvider } from "../services/Query/provider"
 
@@ -45,18 +44,18 @@ export default function RootLayout() {
 		return null
 	}
 
+	console.log(process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY)
+
+	console.log(process.env.POSTGRES_URL)
 	return Platform.OS !== "ios" ? (
 		<Stack></Stack>
 	) : (
-		<AuthProvider>
-			<QueryProvider>
-				<Stack>
-					<Stack.Screen
-						name="(tabs)"
-						options={{ headerShown: false }}
-					/>
-				</Stack>
-			</QueryProvider>
-		</AuthProvider>
+		// <AuthProvider>
+		<QueryProvider>
+			<Stack>
+				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+			</Stack>
+		</QueryProvider>
+		// </AuthProvider>
 	)
 }
