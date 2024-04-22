@@ -1,10 +1,10 @@
-import { useSignUp } from "@clerk/clerk-expo"
 import { Stack, router } from "expo-router"
 import * as React from "react"
 import { Text, TextInput, TouchableOpacity, View } from "react-native"
+import { useSignUpService } from "../../services/Auth/hooks/signUp"
 
 export default function SignUpScreen() {
-	const { isLoaded, signUp, setActive } = useSignUp()
+	const { onSignUp, onVerify } = useSignUpService()
 
 	const [firstName, setFirstName] = React.useState("")
 	const [lastName, setLastName] = React.useState("")
@@ -15,48 +15,16 @@ export default function SignUpScreen() {
 
 	// start the sign up process.
 	const onSignUpPress = async () => {
-		if (!isLoaded) {
-			return
-		}
-
-		try {
-			await signUp.create({
-				firstName,
-				lastName,
-				emailAddress,
-				password,
-			})
-
-			// send the email.
-			await signUp.prepareEmailAddressVerification({
-				strategy: "email_code",
-			})
-
-			// change the UI to our pending section.
-			setPendingVerification(true)
-		} catch (err: any) {
-			console.error(JSON.stringify(err, null, 2))
-		}
+		await onSignUp(
+			emailAddress,
+			password,
+			() => setPendingVerification(true),
+			{ firstName, lastName }
+		)
 	}
 
-	// This verifies the user using email code that is delivered.
 	const onPressVerify = async () => {
-		if (!isLoaded) {
-			return
-		}
-
-		try {
-			const completeSignUp = await signUp.attemptEmailAddressVerification(
-				{
-					code,
-				}
-			)
-
-			await setActive({ session: completeSignUp.createdSessionId })
-			router.replace("/(tabs)/")
-		} catch (err: any) {
-			console.error(JSON.stringify(err, null, 2))
-		}
+		await onVerify(code, () => router.replace("/(tabs)/"))
 	}
 
 	return (

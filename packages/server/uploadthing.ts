@@ -3,7 +3,19 @@ import { createUploadthing, type FileRouter } from "uploadthing/server"
 const f = createUploadthing()
 
 export const uploadRouter = {
-	imageUploader: f({
+	fileUploader: f({
+		pdf: {
+			maxFileSize: "16MB",
+			maxFileCount: 2,
+		},
+		audio: {
+			maxFileSize: "32MB",
+			maxFileCount: 1,
+		},
+		video: {
+			maxFileSize: "32MB",
+			maxFileCount: 1,
+		},
 		image: {
 			maxFileSize: "4MB",
 			maxFileCount: 4,

@@ -1,4 +1,5 @@
 import { appRouter } from "@repo/server/routers/_app"
+import { createContext } from "@repo/server/trpc"
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch"
 import { ExpoRequest } from "expo-router/server"
 
@@ -9,9 +10,7 @@ export async function GET(req: ExpoRequest) {
 		endpoint: "/api/trpc",
 		req: req as unknown as Request,
 		router: appRouter,
-		createContext: async () => {
-			return {}
-		},
+		createContext,
 	})
 }
 
@@ -21,8 +20,6 @@ export async function POST(req: ExpoRequest) {
 		endpoint: "/api/trpc",
 		req: req as unknown as Request,
 		router: appRouter,
-		createContext: async () => {
-			return {}
-		},
+		createContext,
 	})
 }
