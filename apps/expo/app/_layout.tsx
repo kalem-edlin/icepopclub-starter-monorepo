@@ -3,17 +3,16 @@ import { useFonts } from "expo-font"
 import { Stack } from "expo-router"
 
 import * as SplashScreen from "expo-splash-screen"
+import { NativeWindStyleSheet } from "nativewind"
 import { useEffect } from "react"
 import { Platform } from "react-native"
 import mixpanel from "../services/Analytics"
+import AuthProvider from "../services/Auth/provider"
 import { usePersistance } from "../services/Persistance"
 import { QueryProvider } from "../services/Query/provider"
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
-
-import { NativeWindStyleSheet } from "nativewind"
-import AuthProvider from "../services/User/provider"
 
 NativeWindStyleSheet.setOutput({
 	default: "native",

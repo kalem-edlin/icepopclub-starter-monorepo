@@ -1,7 +1,8 @@
-import { useSignUp } from "@clerk/clerk-expo"
+import { useSignUp, useUser } from "@clerk/clerk-expo"
 
 export const useSignUpService = () => {
 	const { isLoaded, signUp, setActive } = useSignUp()
+	const { user } = useUser()
 	// start the sign up process.
 	const onSignUp = async (
 		identifier: string,
