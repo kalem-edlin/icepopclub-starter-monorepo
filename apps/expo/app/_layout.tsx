@@ -1,9 +1,7 @@
-import { ClerkProvider } from "@clerk/clerk-expo"
-import { TokenCache } from "@clerk/clerk-expo/dist/cache"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 import { useFonts } from "expo-font"
 import { Stack } from "expo-router"
-import * as SecureStore from "expo-secure-store"
+
 import * as SplashScreen from "expo-splash-screen"
 import { useEffect } from "react"
 import { Platform } from "react-native"
@@ -15,10 +13,11 @@ import { QueryProvider } from "../services/Query/provider"
 SplashScreen.preventAutoHideAsync()
 
 import { NativeWindStyleSheet } from "nativewind"
+import AuthProvider from "../services/User/provider"
 
 NativeWindStyleSheet.setOutput({
-  default: "native",
-});
+	default: "native",
+})
 
 export default function RootLayout() {
 	const [loaded, error] = useFonts({
@@ -26,11 +25,10 @@ export default function RootLayout() {
 		...FontAwesome.font,
 	})
 
-    console.log(process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY)
+	console.log(process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY)
 
-
-    const userContext = usePersistance(state => state.userContext)
-    const setUserContext = usePersistance(state => state.setUserContext)
+	const userContext = usePersistance((state) => state.userContext)
+	const setUserContext = usePersistance((state) => state.setUserContext)
 
 	// Expo Router uses Error Boundaries to catch errors in the navigation tree.
 	useEffect(() => {
@@ -40,7 +38,7 @@ export default function RootLayout() {
 	useEffect(() => {
 		if (loaded) {
 			SplashScreen.hideAsync()
-            Platform.OS === "ios" &&  mixpanel?.track("App Launched")
+			Platform.OS === "ios" && mixpanel?.track("App Launched")
 		}
 	}, [loaded])
 
@@ -48,34 +46,18 @@ export default function RootLayout() {
 		return null
 	}
 
-    const tokenCache: TokenCache = {
-        async getToken(key: string) {
-            try {
-              const token = await SecureStore.getItemAsync(key);
-              console.log("found token " + token)
-              return token
-            } catch (err) {
-                console.log(err)
-              return null;
-            }
-          },
-          async saveToken(key: string, value: string) {
-            try {
-              console.log("setting token " + value)
-              return await SecureStore.setItemAsync(key, value);
-            } catch (err) {
-                console.log(err)
-              return;
-            }
-          },
-    }  
-
-    return Platform.OS !== "ios" ? <Stack></Stack> : <ClerkProvider tokenCache={tokenCache} publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY as string}>
-    <QueryProvider>
-        <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
-       
-    </QueryProvider>
-    </ClerkProvider>
+	return Platform.OS !== "ios" ? (
+		<Stack></Stack>
+	) : (
+		<AuthProvider>
+			<QueryProvider>
+				<Stack>
+					<Stack.Screen
+						name="(tabs)"
+						options={{ headerShown: false }}
+					/>
+				</Stack>
+			</QueryProvider>
+		</AuthProvider>
+	)
 }
