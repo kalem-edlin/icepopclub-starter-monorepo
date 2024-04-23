@@ -7,8 +7,7 @@ import { zInsertUser } from "../db/zod"
 import { createTRPCRouter, publicProcedure } from "../trpc"
 
 export default createTRPCRouter({
-	getOtherUsers: publicProcedure.query(async ({ ctx }): Promise<User[]> => {
-		console.log(process.env.POSTGRES_URL)
+	getOtherUsers: publicProcedure.query(async ({ ctx }) => {
 		return []
 	}),
 	addFriend: publicProcedure

@@ -6,12 +6,16 @@ import { Webhook } from "@monoexpo/server/webhook"
 import { ExpoRequest } from "expo-router/server"
 
 export async function GET(req: ExpoRequest) {
-	return "ERROR: Will only handle POST requests on this route"
+	return Response.json({
+		error: "ERROR: Will only handle POST requests on this route",
+	})
 }
 
 // This endpoint is only necessary if user data will become more expansive than what the auth provider can store resulting in a need for a custom user table (good to have anyway)
 
 export async function POST(req: ExpoRequest) {
+	console.log("route hit!")
+
 	const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
 
 	if (!WEBHOOK_SECRET) {
@@ -19,6 +23,8 @@ export async function POST(req: ExpoRequest) {
 			"Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
 		)
 	}
+
+	console.log("valid webhook secret!")
 
 	// Get the headers
 	const headerPayload = req.headers
@@ -66,11 +72,14 @@ export async function POST(req: ExpoRequest) {
 	const createCaller = createCallerFactory(appRouter)
 	const caller = createCaller(createContext)
 
+	console.log("we here by now")
+
 	switch (eventType) {
 		case "user.created":
 			caller.users.createUser(
 				zInsertUser.parse({ ...evt.data, authProviderId: evt.data.id })
 			)
+			console.log("created user")
 			break
 		case "user.deleted":
 			if (!evt.data.id) {
@@ -79,6 +88,7 @@ export async function POST(req: ExpoRequest) {
 				})
 			}
 			caller.users.deleteUser(evt.data.id)
+			console.log("deleted user")
 			break
 		case "user.updated":
 			if (!evt.data.id) {
@@ -90,6 +100,7 @@ export async function POST(req: ExpoRequest) {
 				id: evt.data.id,
 				user: zInsertUser.parse(evt.data),
 			})
+			console.log("updated user")
 			break
 		default:
 			return new Response("ERROR: Cannot support this webhook event", {

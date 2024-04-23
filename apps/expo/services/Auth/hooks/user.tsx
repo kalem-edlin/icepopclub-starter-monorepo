@@ -1,12 +1,12 @@
 import { useUser } from "@clerk/clerk-expo"
-import { AuthUser } from "@monoexpo/server/db/types"
+import { AuthUserMetaData } from "@monoexpo/server/db/types"
 
 export const useUserService = () => {
-	const { user } = useUser()
-	const authUser = user as unknown as AuthUser
+	const { isLoaded, isSignedIn, user } = useUser()
+	const authUser = user as unknown as typeof user & AuthUserMetaData
 
 	if (!authUser)
 		throw new Error("Auth User data inconsistent with metadata declaration")
 
-	return { user: authUser }
+	return { isLoaded, isSignedIn, user: authUser }
 }
