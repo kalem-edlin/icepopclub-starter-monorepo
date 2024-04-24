@@ -16,7 +16,7 @@ export const users = createTable(
 	`users`,
 	{
 		id: uuid("id").primaryKey(),
-		first_name: text("first_name").notNull(),
+		first_name: text("first_name"),
 		last_name: text("last_name"),
 		// Have either email address or phone non null
 		primary_email_address_id: text("primary_email_address_id").notNull(),

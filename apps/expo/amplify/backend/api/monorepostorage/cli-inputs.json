@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "paths": {
+    "/storage": {
+      "name": "/storage",
+      "lambdaFunction": "monoexpostorage",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    }
+  }
+}

@@ -56,12 +56,18 @@ importers:
       '@trpc/react-query':
         specifier: next
         version: 11.0.0-rc.351(@tanstack/react-query@5.31.0(react@18.2.0))(@trpc/client@11.0.0-rc.351(@trpc/server@11.0.0-rc.351))(@trpc/server@11.0.0-rc.351)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@uploadthing/react':
+        specifier: ^6.5.0
+        version: 6.5.0(@uploadthing/mime-types@0.2.7)(fast-check@3.17.2)(react@18.2.0)(uploadthing@6.9.0(tailwindcss@3.3.2))
       expo:
         specifier: ^50.0.0-preview.7
         version: 50.0.17(@babel/core@7.24.4)(@react-native/babel-preset@0.73.21(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4)))(bufferutil@4.0.8)(utf-8-validate@6.0.3)
       expo-dev-client:
         specifier: ~3.3.11
         version: 3.3.11(expo@50.0.17(@babel/core@7.24.4)(@react-native/babel-preset@0.73.21(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4)))(bufferutil@4.0.8)(utf-8-validate@6.0.3))
+      expo-document-picker:
+        specifier: ^11.10.1
+        version: 11.10.1(expo@50.0.17(@babel/core@7.24.4)(@react-native/babel-preset@0.73.21(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4)))(bufferutil@4.0.8)(utf-8-validate@6.0.3))
       expo-font:
         specifier: ~11.10.3
         version: 11.10.3(expo@50.0.17(@babel/core@7.24.4)(@react-native/babel-preset@0.73.21(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4)))(bufferutil@4.0.8)(utf-8-validate@6.0.3))
@@ -1014,6 +1020,12 @@ packages:
     resolution: {integrity: sha512-my/uNzHflLYvoLR8RT3LBmYulYGkz+SOVYMdzWt14LpRHajQotnfDSq/GEkfjrBm2HXuZ82GxEDMyYtqHUKv8w==}
     engines: {node: '>=18.17.0'}
 
+  '@effect/schema@0.66.7':
+    resolution: {integrity: sha512-bfxicQHhnZjlEe3W0a1e4B6OHWTTewigxbaSpzqIlwFrJ5pFh6MleBQaRt7X2YkTUbnkTYuNdY976W4tFJbIYg==}
+    peerDependencies:
+      effect: ^3.0.4
+      fast-check: ^3.13.2
+
   '@egjs/hammerjs@2.0.17':
     resolution: {integrity: sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A==}
     engines: {node: '>=0.8.0'}
@@ -1911,13 +1923,48 @@ packages:
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
+  '@uploadthing/dropzone@0.4.0':
+    resolution: {integrity: sha512-IZmmUu3vSSmUoToSf6CTprSlMJuQ2n75u7XcXrNjPG4TgyQpSiYPKqkdHV2/JPzsXfzITM+i3SPW5Ez3fdGQnA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      solid-js: ^1.7.11
+      svelte: ^4.2.12
+      vue: ^3.4.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      solid-js:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+
   '@uploadthing/mime-types@0.2.7':
     resolution: {integrity: sha512-HfQpL1GSyLOOnIT4WqVv8aW3HotEpFKuuCnK+dUZThMzeiFs09s9J0wk5/VBwupXvIXQwMiB//bp9aUE2p/mFg==}
+
+  '@uploadthing/react@6.5.0':
+    resolution: {integrity: sha512-Mapjyl897k93b7SRi5A+Ez4hOpBrgu0vgRFbM2Ni/2GIul1jdJVebcOJ0LDB9TAZmQ4G4sMgL7h1QlfDUBSvlg==}
+    peerDependencies:
+      next: '*'
+      react: ^17.0.2 || ^18.0.0
+      uploadthing: 6.10.0
+    peerDependenciesMeta:
+      next:
+        optional: true
 
   '@uploadthing/shared@6.6.0':
     resolution: {integrity: sha512-3mERSbD9/i83dF4rK6M/K3zcPo70mfo33VvrTE4U2Tf2HS8vjUvu8BmJjNZkZOSIoXenEnKmCxDf9vNPsdO65w==}
     peerDependencies:
       '@uploadthing/mime-types': 0.2.7
+    peerDependenciesMeta:
+      '@uploadthing/mime-types':
+        optional: true
+
+  '@uploadthing/shared@6.7.0':
+    resolution: {integrity: sha512-+5xBa3gdCoCI2R2HkIOAu0DRiZqEt3MtOHefNsuVlYjpEngeg04AHlNaTvAIFuBz6Wz43SFOiqpeQcpqGBUc5w==}
+    peerDependencies:
+      '@uploadthing/mime-types': 0.2.8
     peerDependenciesMeta:
       '@uploadthing/mime-types':
         optional: true
@@ -2859,6 +2906,9 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
+  effect@3.0.4:
+    resolution: {integrity: sha512-KxkTPwNP2A2wUQ5CVLcp0gCpBSajHIL9XQwqpruKNdkMCvCVpLg8b3dx71ADwlzeB+LfUFe+cj4MgvrYQutXVQ==}
+
   ejs@3.1.10:
     resolution: {integrity: sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==}
     engines: {node: '>=0.10.0'}
@@ -3180,6 +3230,11 @@ packages:
     peerDependencies:
       expo: '*'
 
+  expo-document-picker@11.10.1:
+    resolution: {integrity: sha512-A1MiLfyXQ+KxanRO5lYxYQy3ryV+25JHe5Ai/BLV+FJU0QXByUF+Y/dn35WVPx5gpdZXC8UJ4ejg5SKSoeconw==}
+    peerDependencies:
+      expo: '*'
+
   expo-eas-client@0.11.2:
     resolution: {integrity: sha512-SY7rVFxb4ut/OMTgR7A39Jg+8+hXwQNRpZd+RBpB+B5XV2STj/pWXHnGFhBayEF4umI4SxrOvisY90rlPWVO9Q==}
 
@@ -3293,6 +3348,10 @@ packages:
   extend@3.0.2:
     resolution: {integrity: sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==}
 
+  fast-check@3.17.2:
+    resolution: {integrity: sha512-+3DPTxtxABLgmmVpYxrash3DHoq0cMa1jjLYNp3qqokKKhqVEaS4lbnaDKqWU5Dd6C2pEudPPBAEEQ9nUou9OQ==}
+    engines: {node: '>=8.0.0'}
+
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
 
@@ -3341,6 +3400,10 @@ packages:
   file-entry-cache@6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
     engines: {node: ^10.12.0 || >=12.0.0}
+
+  file-selector@0.6.0:
+    resolution: {integrity: sha512-QlZ5yJC0VxHxQQsQhXvBaC7VRJ2uaxTf+Tfpu4Z/OcVQJVpZO+DGU0rkoVW5ce2SccxugvpBJoMvUs59iILYdw==}
+    engines: {node: '>= 12'}
 
   filelist@1.0.4:
     resolution: {integrity: sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==}
@@ -4914,6 +4977,9 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
+  pure-rand@6.1.0:
+    resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
+
   qrcode-terminal@0.11.0:
     resolution: {integrity: sha512-Uu7ii+FQy4Qf82G4xu7ShHhjhGahEpCWc3x8UavY3CTcWV+ufmmCtwkr7ZKsX42jdL0kr1B5FKUeqJvAn51jzQ==}
     hasBin: true
@@ -5560,6 +5626,9 @@ packages:
 
   tabbable@6.2.0:
     resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
+
+  tailwind-merge@2.3.0:
+    resolution: {integrity: sha512-vkYrLpIP+lgR0tQCG6AP7zZXCTLc1Lnv/CCRT3BqJ9CZ3ui2++GPaGb1x/ILsINIMSYqqvrpqjUFsMNLlW99EA==}
 
   tailwindcss@3.3.2:
     resolution: {integrity: sha512-9jPkMiIBXvPc2KywkraqsUfbfj+dHDb+JPWtSJa9MLFdrPyazI7q6WX2sUrm7R9eVR7qqv3Pas7EvQFzxKnI6w==}
@@ -7145,6 +7214,11 @@ snapshots:
     dependencies:
       csstype: 3.1.1
 
+  '@effect/schema@0.66.7(effect@3.0.4)(fast-check@3.17.2)':
+    dependencies:
+      effect: 3.0.4
+      fast-check: 3.17.2
+
   '@egjs/hammerjs@2.0.17':
     dependencies:
       '@types/hammerjs': 2.0.45
@@ -8432,13 +8506,44 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
+  '@uploadthing/dropzone@0.4.0(react@18.2.0)':
+    dependencies:
+      file-selector: 0.6.0
+    optionalDependencies:
+      react: 18.2.0
+
   '@uploadthing/mime-types@0.2.7': {}
+
+  '@uploadthing/react@6.5.0(@uploadthing/mime-types@0.2.7)(fast-check@3.17.2)(react@18.2.0)(uploadthing@6.9.0(tailwindcss@3.3.2))':
+    dependencies:
+      '@uploadthing/dropzone': 0.4.0(react@18.2.0)
+      '@uploadthing/shared': 6.7.0(@uploadthing/mime-types@0.2.7)(fast-check@3.17.2)
+      file-selector: 0.6.0
+      react: 18.2.0
+      tailwind-merge: 2.3.0
+      uploadthing: 6.9.0(tailwindcss@3.3.2)
+    transitivePeerDependencies:
+      - '@uploadthing/mime-types'
+      - fast-check
+      - solid-js
+      - svelte
+      - vue
 
   '@uploadthing/shared@6.6.0(@uploadthing/mime-types@0.2.7)':
     dependencies:
       std-env: 3.7.0
     optionalDependencies:
       '@uploadthing/mime-types': 0.2.7
+
+  '@uploadthing/shared@6.7.0(@uploadthing/mime-types@0.2.7)(fast-check@3.17.2)':
+    dependencies:
+      '@effect/schema': 0.66.7(effect@3.0.4)(fast-check@3.17.2)
+      effect: 3.0.4
+      std-env: 3.7.0
+    optionalDependencies:
+      '@uploadthing/mime-types': 0.2.7
+    transitivePeerDependencies:
+      - fast-check
 
   '@urql/core@2.3.6(graphql@15.8.0)':
     dependencies:
@@ -9346,7 +9451,7 @@ snapshots:
   dot-case@3.0.4:
     dependencies:
       no-case: 3.0.4
-      tslib: 2.4.1
+      tslib: 2.6.2
 
   dotenv-cli@7.4.1:
     dependencies:
@@ -9409,6 +9514,8 @@ snapshots:
   eastasianwidth@0.2.0: {}
 
   ee-first@1.1.1: {}
+
+  effect@3.0.4: {}
 
   ejs@3.1.10:
     dependencies:
@@ -9973,6 +10080,10 @@ snapshots:
       expo-dev-menu-interface: 1.7.2(expo@50.0.17(@babel/core@7.24.4)(@react-native/babel-preset@0.73.21(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4)))(bufferutil@4.0.8)(utf-8-validate@6.0.3))
       semver: 7.6.0
 
+  expo-document-picker@11.10.1(expo@50.0.17(@babel/core@7.24.4)(@react-native/babel-preset@0.73.21(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4)))(bufferutil@4.0.8)(utf-8-validate@6.0.3)):
+    dependencies:
+      expo: 50.0.17(@babel/core@7.24.4)(@react-native/babel-preset@0.73.21(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4)))(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+
   expo-eas-client@0.11.2: {}
 
   expo-file-system@16.0.9(expo@50.0.17(@babel/core@7.24.4)(@react-native/babel-preset@0.73.21(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4)))(bufferutil@4.0.8)(utf-8-validate@6.0.3)):
@@ -10142,6 +10253,10 @@ snapshots:
 
   extend@3.0.2: {}
 
+  fast-check@3.17.2:
+    dependencies:
+      pure-rand: 6.1.0
+
   fast-deep-equal@3.1.3: {}
 
   fast-glob@3.3.2:
@@ -10199,6 +10314,10 @@ snapshots:
   file-entry-cache@6.0.1:
     dependencies:
       flat-cache: 3.2.0
+
+  file-selector@0.6.0:
+    dependencies:
+      tslib: 2.6.2
 
   filelist@1.0.4:
     dependencies:
@@ -11049,7 +11168,7 @@ snapshots:
 
   lower-case@2.0.2:
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.6.2
 
   lru-cache@10.2.0: {}
 
@@ -11425,7 +11544,7 @@ snapshots:
   no-case@3.0.4:
     dependencies:
       lower-case: 2.0.2
-      tslib: 2.4.1
+      tslib: 2.6.2
 
   nocache@3.0.4: {}
 
@@ -11863,6 +11982,8 @@ snapshots:
   punycode@1.4.1: {}
 
   punycode@2.3.1: {}
+
+  pure-rand@6.1.0: {}
 
   qrcode-terminal@0.11.0: {}
 
@@ -12622,6 +12743,10 @@ snapshots:
       use-sync-external-store: 1.2.0(react@18.2.0)
 
   tabbable@6.2.0: {}
+
+  tailwind-merge@2.3.0:
+    dependencies:
+      '@babel/runtime': 7.24.4
 
   tailwindcss@3.3.2:
     dependencies:

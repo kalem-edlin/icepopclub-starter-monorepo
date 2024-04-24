@@ -1,8 +1,12 @@
-import { WebhookEvent } from "@monoexpo/server/db/types"
-import { zInsertUser } from "@monoexpo/server/db/zod"
-import { appRouter } from "@monoexpo/server/routers/_app"
-import { createCallerFactory, createContext } from "@monoexpo/server/trpc"
-import { Webhook } from "@monoexpo/server/webhook"
+import { InsertUser } from "@monoexpo/server/model"
+import { appRouter } from "@monoexpo/server/routers"
+import {
+	UserJSON,
+	Webhook,
+	WebhookEvent,
+	createCallerFactory,
+	createContext,
+} from "@monoexpo/server/utils"
 import { ExpoRequest } from "expo-router/server"
 
 export async function GET(req: ExpoRequest) {
@@ -76,9 +80,7 @@ export async function POST(req: ExpoRequest) {
 
 	switch (eventType) {
 		case "user.created":
-			caller.users.createUser(
-				zInsertUser.parse({ ...evt.data, authProviderId: evt.data.id })
-			)
+			caller.users.createUser(validateUserObject(evt.data))
 			console.log("created user")
 			break
 		case "user.deleted":
@@ -98,7 +100,7 @@ export async function POST(req: ExpoRequest) {
 			}
 			caller.users.updateUser({
 				id: evt.data.id,
-				user: zInsertUser.parse(evt.data),
+				user: validateUserObject(evt.data),
 			})
 			console.log("updated user")
 			break
@@ -109,4 +111,15 @@ export async function POST(req: ExpoRequest) {
 	}
 
 	return new Response("", { status: 200 })
+}
+
+// This function should change on schema definition of required user data types
+const validateUserObject = (user: UserJSON): InsertUser => {
+	const authUser = user as unknown as InsertUser
+	if (!user.primary_email_address_id || !user.first_name) {
+		throw new Error(
+			"User object sent via webhook does not contain required user metadata"
+		)
+	}
+	return authUser
 }

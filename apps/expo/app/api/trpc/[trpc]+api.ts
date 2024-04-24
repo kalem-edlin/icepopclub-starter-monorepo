@@ -1,5 +1,5 @@
-import { appRouter } from "@monoexpo/server/routers/_app"
-import { createContext } from "@monoexpo/server/trpc"
+import { appRouter } from "@monoexpo/server/routers"
+import { createContext } from "@monoexpo/server/utils"
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch"
 import { ExpoRequest } from "expo-router/server"
 
