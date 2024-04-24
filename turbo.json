@@ -10,7 +10,8 @@
 				".env.production",
 				".env"
 			],
-			"outputs": [".next/**", "build/**", "node_modules/.cache/metro/**"]
+			"cache": true,
+			"outputs": [".dist/**", "node_modules/.cache/metro/**"]
 		},
 		"dev": {
 			"dotEnv": [
