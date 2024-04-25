@@ -60,6 +60,6 @@ xcuserdata
 # VSCode
 .history/
 .vercel
-
+.env
 
 dist/
