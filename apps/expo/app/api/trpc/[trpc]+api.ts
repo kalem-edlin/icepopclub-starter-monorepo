@@ -1,6 +1,6 @@
 import { appRouter } from "@monoexpo/server/routers"
-import { createContext } from "@monoexpo/server/utils"
-import { fetchRequestHandler } from "@trpc/server/adapters/fetch"
+import { createContext, fetchRequestHandler } from "@monoexpo/server/utils"
+
 import { ExpoRequest } from "expo-router/server"
 
 export async function GET(req: ExpoRequest) {
