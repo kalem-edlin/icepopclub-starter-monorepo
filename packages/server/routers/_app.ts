@@ -1,8 +1,12 @@
 import { createTRPCRouter } from "../trpc"
-import users from "./users"
+import filesRouter from "./files"
+import pokesRouter from "./pokes"
+import usersRouter from "./users"
 
 export const appRouter = createTRPCRouter({
-	users: users,
+	users: usersRouter,
+	files: filesRouter,
+	pokes: pokesRouter,
 })
 
 // export type definition of API

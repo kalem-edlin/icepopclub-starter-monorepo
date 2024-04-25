@@ -1,4 +1,5 @@
 import { createInsertSchema } from "drizzle-zod"
-import { users } from "./schema"
+import { files, users } from "./schema"
 
 export const zInsertUser = createInsertSchema(users)
+export const zInsertFile = createInsertSchema(files)

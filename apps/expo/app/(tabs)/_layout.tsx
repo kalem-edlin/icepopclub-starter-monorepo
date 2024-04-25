@@ -46,9 +46,9 @@ export default function TabLayout() {
 						}}
 					/>
 					<Tabs.Screen
-						name="friends"
+						name="poke"
 						options={{
-							title: "Friends",
+							title: "Poke",
 							tabBarIcon: ({ color }) => (
 								<TabBarIcon name="code" color={color} />
 							),

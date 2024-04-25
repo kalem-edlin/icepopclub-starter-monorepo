@@ -5,7 +5,6 @@ import {
 	Webhook,
 	WebhookEvent,
 	createCallerFactory,
-	createContext,
 } from "@monoexpo/server/utils"
 import { ExpoRequest } from "expo-router/server"
 
@@ -14,6 +13,8 @@ export async function GET(req: ExpoRequest) {
 		error: "ERROR: Will only handle POST requests on this route",
 	})
 }
+
+import {} from "@clerk/clerk-expo"
 
 // This endpoint is only necessary if user data will become more expansive than what the auth provider can store resulting in a need for a custom user table (good to have anyway)
 
@@ -74,7 +75,7 @@ export async function POST(req: ExpoRequest) {
 	console.log("Webhook body:", body)
 
 	const createCaller = createCallerFactory(appRouter)
-	const caller = createCaller(createContext)
+	const caller = createCaller(() => ({}))
 
 	console.log("we here by now")
 

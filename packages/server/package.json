@@ -9,13 +9,17 @@
 	},
 	"dependencies": {
 		"@clerk/backend": "^1.0.0",
+		"@clerk/nextjs": "^5.0.2",
 		"@trpc/server": "next",
 		"@vercel/postgres": "^0.8.0",
+		"add": "^2.0.6",
 		"drizzle-orm": "^0.30.8",
 		"drizzle-zod": "^0.5.1",
 		"pg": "^8.11.5",
+		"pnpm": "^9.0.6",
 		"postgres": "^3.4.4",
 		"svix": "^1.21.0",
+		"uploadthing": "6.9.0",
 		"zod": "^3.22.4"
 	}
 }

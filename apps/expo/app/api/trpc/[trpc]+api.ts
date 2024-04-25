@@ -3,7 +3,7 @@ import { createContext, fetchRequestHandler } from "@monoexpo/server/utils"
 
 import { ExpoRequest } from "expo-router/server"
 
-export async function GET(req: ExpoRequest) {
+export async function GET(req: Request) {
 	console.log(`get request ${req}`)
 	console.log(req.url)
 	return fetchRequestHandler({

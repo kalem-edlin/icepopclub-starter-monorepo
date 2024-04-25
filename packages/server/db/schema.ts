@@ -1,6 +1,8 @@
 import {
 	boolean,
+	integer,
 	pgTableCreator,
+	serial,
 	text,
 	timestamp,
 	uniqueIndex,
@@ -36,3 +38,18 @@ export const users = createTable(
 		}
 	}
 )
+
+export const pokes = createTable(`pokes`, {
+	poke_id: serial("serial"),
+	sender_id: uuid("id").references(() => users.id),
+	reciever_id: uuid("id").references(() => users.id),
+})
+
+export const files = createTable(`files`, {
+	file_id: serial("serial"),
+	user_id: uuid("id").references(() => users.id),
+	name: text("name").notNull(),
+	url: text("url").notNull(),
+	mimeType: text("mimeType").notNull(),
+	mbSize: integer("mbSize"),
+})

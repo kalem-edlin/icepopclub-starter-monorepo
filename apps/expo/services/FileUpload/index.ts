@@ -1,21 +1,14 @@
-const debuggerHost = Constants.expoConfig?.hostUri
-let url: URL
-try {
-	url = new URL(
-		initOpts?.url ?? "/api/uploadthing",
-		process.env.EXPO_PUBLIC_SERVER_ORIGIN ?? `http://${debuggerHost}`
-	)
-	console.log("resolved url", url)
-} catch (e) {
-	throw new Error(
-		`Failed to resolve URL from ${initOpts?.url?.toString()} and ${process.env.EXPO_PUBLIC_SERVER_ORIGIN} or ${debuggerHost}`
-	)
-}
+import type { UploadRouter } from "../../app/api/uploadthing+api"
 
-export const vanillaHelpers = generateReactHelpers<TRouter>({
-	...initOpts,
+import { generateReactHelpers } from "@uploadthing/react"
+
+import url from "./url"
+import useDocumentUpload from "./useDocumentUpload"
+import useImageUpload from "./useImageUpload"
+
+export { useDocumentUpload, useImageUpload }
+
+// @ts-ignore
+export const vanillaHelpers = generateReactHelpers<UploadRouter>({
 	url,
 })
-export const useImageUploader = useImageUploader<TRouter>({ url })
-
-export const useDocumentUploader = useDocumentUploader<TRouter>({ url })

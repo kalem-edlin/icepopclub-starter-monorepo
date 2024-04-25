@@ -1,8 +1,9 @@
-import { isObject } from "@trpc/server/unstable-core-do-not-import"
+import {
+	createRouteHandler,
+	createUploadthing,
+	type FileRouter,
+} from "@monoexpo/server/utils"
 import { z } from "zod"
-
-import type { FileRouter } from "uploadthing/server"
-import { createRouteHandler, createUploadthing } from "uploadthing/server"
 
 const f = createUploadthing({
 	errorFormatter: (err) => {
@@ -12,17 +13,14 @@ const f = createUploadthing({
 		return {
 			message: err.message,
 			reason:
-				isObject(err.cause) && typeof err.cause.error === "string"
-					? err.cause.error
-					: null,
+				// isObject(err.cause) && typeof err.cause.error === "string"
+				// 	? err.cause.error
+				// 	: null,
+				null,
 		}
 	},
 })
 
-/**
- * This is your Uploadthing file router. For more information:
- * @see https://docs.uploadthing.com/api-reference/server#file-routes
- */
 export const uploadRouter = {
 	videoAndImage: f({
 		image: {
@@ -59,6 +57,8 @@ export const uploadRouter = {
 			console.log("upload completed", data)
 		}),
 } satisfies FileRouter
+
+export type UploadRouter = typeof uploadRouter
 
 export const { GET, POST } = createRouteHandler({
 	router: uploadRouter,
