@@ -6,9 +6,9 @@
 		"build": "EXPO_USE_METRO_WORKSPACE_ROOT=1  npx turbo build --filter=@monoexpo/app",
 		"dev": "EXPO_USE_METRO_WORKSPACE_ROOT=1  npx turbo dev --filter=@monoexpo/app",
 		"start": "EXPO_USE_METRO_WORKSPACE_ROOT=1 cd apps/expo && npx expo start",
-		"db:push": "drizzle-kit push:pg --config=drizzle-config.ts",
-		"db:studio": "drizzle-kit studio --config=drizzle-config.ts",
-		"db:generate": "drizzle-kit generate:pg --config=drizzle-config.ts",
+		"db:push": "drizzle-kit push:pg --config=drizzle.config.ts",
+		"db:studio": "drizzle-kit studio --config=drizzle.config.ts",
+		"db:generate": "drizzle-kit generate:pg --config=drizzle.config.ts",
 		"format": "prettier --write \"**/*.{ts,tsx,md}\"",
 		"dev-env": "dotenv -- turbo dev",
 		"preinstall": "npx only-allow pnpm"

@@ -1,6 +1,5 @@
 import {
 	ActivityIndicator,
-	FlatList,
 	Image,
 	Text,
 	TouchableOpacity,
@@ -20,45 +19,36 @@ export default function ProfileScreen() {
 	const userFiles = trpc.files.getUserFiles.useQuery(user.id)
 	const postFiles = trpc.files.postFiles.useMutation()
 
+	const documentUploader = useDocumentUpload(
+		(e) => {
+			e
+				? console.error(`processing failed with error: ${e.message}`)
+				: console.log("processing complete")
+		},
+		(assets) => {
+			postFiles.mutate(assets)
+		}
+	)
+
+	const imageUploader = useImageUpload(
+		(e) => {
+			e
+				? console.error(`processing failed with error: ${e.message}`)
+				: console.log("processing complete")
+		},
+		(assets) => {
+			console.log(`assets uploaded to s3 - adding file rows`)
+			postFiles.mutate(assets)
+		}
+	)
+
 	const [isFileUploading, setIsFileUploading] = useState(false)
 	const [isImageUploading, setIsImageUploading] = useState(false)
 
-	const documentUploader = useDocumentUpload({
-		onUploadBegin: () => setIsFileUploading(true),
-		onClientUploadComplete: (res) => {
-			setIsFileUploading(false)
-			postFiles.mutate(
-				res.map((file) => ({
-					mimeType: file.type,
-					name: file.name,
-					mbSize: file.size,
-					url: file.url,
-				}))
-			)
-		},
-		endpoint: "document",
-	})
-
-	const imageUploader = useImageUpload({
-		onUploadBegin: () => setIsFileUploading(true),
-		onClientUploadComplete: (res) => {
-			setIsFileUploading(false)
-			postFiles.mutate(
-				res.map((file) => ({
-					mimeType: file.type,
-					name: file.name,
-					mbSize: file.size,
-					url: file.url,
-				}))
-			)
-		},
-		endpoint: "videoAndImage",
-	})
-
 	const handleUploadFile = async () => {
 		const result = await getDocumentAsync({
-			multiple: documentUploader.multiple,
-			type: documentUploader.mimeTypes,
+			// multiple: documentUploader.multiple,
+			// type: documentUploader.mimeTypes,
 		})
 
 		if (!result.canceled) {
@@ -68,9 +58,9 @@ export default function ProfileScreen() {
 
 	const handleUploadImage = async () => {
 		const result = await launchImageLibraryAsync({
-			allowsMultipleSelection: imageUploader.multiple,
-			mediaTypes: imageUploader.allowedTypes,
-			quality: 0.2,
+			// allowsMultipleSelection: imageUploader.multiple,
+			// mediaTypes: imageUploader.allowedTypes,
+			// quality: 0.2,
 		})
 
 		if (!result.canceled) {
@@ -93,7 +83,7 @@ export default function ProfileScreen() {
 					Name: {user.first_name} {user.last_name}
 				</Text>
 				<Text>Email: {user.primary_email_address_id}</Text>
-				{userFiles.data && (
+				{/* {userFiles.data && (
 					<FlatList
 						data={userFiles.data}
 						renderItem={({ item }) => {
@@ -109,20 +99,26 @@ export default function ProfileScreen() {
 				{userFiles.isLoading && <ActivityIndicator />}
 				{userFiles.error && (
 					<Text>Error with {userFiles.error.message}</Text>
-				)}
-				<View className="absolute bottom-6 w-full flex-row">
-					<TouchableOpacity className="border-2">
-						{isImageUploading ? (
+				)} */}
+				<View
+					style={{ bottom: 32 }}
+					className="absolute w-full justify-evenly flex-row">
+					<TouchableOpacity
+						onPress={handleUploadImage}
+						className="py-2 border-2 flex-grow items-center justify-center">
+						{imageUploader.isPending || postFiles.isPending ? (
 							<ActivityIndicator />
 						) : (
 							<Text>Upload Image</Text>
 						)}
 					</TouchableOpacity>
-					<TouchableOpacity className="border-2">
-						{isFileUploading ? (
+					<TouchableOpacity
+						onPress={handleUploadFile}
+						className="py-2 border-2 flex-grow items-center justify-center">
+						{documentUploader.isPending || postFiles.isPending ? (
 							<ActivityIndicator />
 						) : (
-							<Text>Upload File</Text>
+							<Text>Upload Document</Text>
 						)}
 					</TouchableOpacity>
 				</View>

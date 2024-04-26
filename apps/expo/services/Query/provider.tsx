@@ -7,14 +7,14 @@ import getUrl from "../../utils/url"
 
 // TODO: Pass in authentication token here from userstorage
 export const QueryProvider = ({ children }: { children: ReactNode }) => {
-	const { userId } = useAuth()
+	const { getToken } = useAuth()
 
 	const [queryClient] = useState(
 		() =>
 			new QueryClient({
 				defaultOptions: {
-					queries: { retry: 0 },
-					mutations: { retry: 0 },
+					queries: { retry: 3 },
+					mutations: { retry: 3 },
 				},
 			})
 	)
@@ -23,15 +23,8 @@ export const QueryProvider = ({ children }: { children: ReactNode }) => {
 			links: [
 				httpBatchLink({
 					url: getUrl("/api/trpc"),
-					//https://monoexpo-kvy4yb52p-kalem-edlins-projects.vercel.app/
-					// You can pass any HTTP headers you wish here
 					async headers() {
-						// const token = await getToken()
-						return userId
-							? {
-									authorization: userId,
-								}
-							: {}
+						return { Authorization: `Bearer ${await getToken()}` }
 					},
 				}),
 			],

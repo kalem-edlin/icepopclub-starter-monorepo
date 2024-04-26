@@ -1,76 +1,89 @@
+import type { InsertFile } from "@monoexpo/server/model"
 import type { DocumentPickerAsset } from "expo-document-picker"
+import { useEffect, useState } from "react"
+import { trpc } from "../Query"
 
-import { FileRouter } from "@monoexpo/server/utils"
-import type { UploadthingComponentProps } from "@uploadthing/react"
-import { generateReactHelpers } from "@uploadthing/react"
-import type { ExpandedRouteConfig } from "@uploadthing/shared"
-import { generatePermittedFileTypes } from "@uploadthing/shared"
-import url from "./url"
-
-export default function useDocumentUpload<
-	TRouter extends FileRouter,
-	TEndpoint extends keyof TRouter,
-	TSkipPolling extends boolean = false,
->(
-	// @ts-ignore
-	opts: UploadthingComponentProps<TRouter, TEndpoint, TSkipPolling>
+export default function useDocumentUpload(
+	onProcessingComplete: (error?: Error) => void,
+	onUploadComplete: (assets: InsertFile[]) => void
 ) {
-	const $opts = { ...opts, url }
+	const documentsPresigningMutation =
+		trpc.files.getDocumentUploadPresignedUrls.useMutation()
+	const [processedDocumentAssets, setProcessedDocumentAssets] = useState<
+		undefined | { file: File & { uri: string }; index: number }[]
+	>()
 
-	const { useUploadThing } = generateReactHelpers($opts)
-	const uploadthing = useUploadThing($opts.endpoint as string, $opts)
+	const processAndUpload = (assets: DocumentPickerAsset[]) => {
+		try {
+			Promise.all(
+				assets.map(async (a, index) => {
+					const blob = await fetch(a.uri).then((r) => r.blob())
+					const n =
+						a.name ?? a.uri.split("/").pop() ?? "unknown-filename"
+					const file = new File([blob], n, {
+						type: a.mimeType ?? "application/octet-stream",
+					})
+					const RNFormDataCompatibleFile = Object.assign(file, {
+						uri: a.uri,
+					})
+					// TODO: Frontend check on whether the file type/size is acceptable (error state returned in hook)
 
-	const generateFileTypes = (config: ExpandedRouteConfig | undefined) => {
-		const { fileTypes, multiple } = generatePermittedFileTypes(config)
-
-		// Forward mime-types from route config
-		const allowedMimeTypes: string[] = fileTypes
-
-		// Handle special UploadThing types
-		if (fileTypes.includes("image")) allowedMimeTypes.push("image/*")
-		if (fileTypes.includes("video")) allowedMimeTypes.push("video/*")
-		if (fileTypes.includes("audio")) allowedMimeTypes.push("audio/*")
-		if (fileTypes.includes("pdf")) allowedMimeTypes.push("application/pdf")
-		if (fileTypes.includes("text")) allowedMimeTypes.push("text/*")
-
-		if (fileTypes.includes("blob")) {
-			allowedMimeTypes.push("&ast;/*")
-			allowedMimeTypes.push("*/*")
-		}
-
-		return { mimeTypes: allowedMimeTypes, multiple }
-	}
-
-	const processAndUpload = async (assets: DocumentPickerAsset[]) => {
-		const files = await Promise.all(
-			assets.map(async (a) => {
-				const blob = await fetch(a.uri).then((r) => r.blob())
-				const n = a.name ?? a.uri.split("/").pop() ?? "unknown-filename"
-				const file = new File([blob], n, {
-					type: a.mimeType ?? "application/octet-stream",
+					return { file: RNFormDataCompatibleFile, index }
 				})
-				const RNFormDataCompatibleFile = Object.assign(file, {
-					uri: a.uri,
-				})
-				return RNFormDataCompatibleFile
+			).then((pds) => {
+				onProcessingComplete()
+				setProcessedDocumentAssets(pds)
+				documentsPresigningMutation.mutate(
+					pds.map((d) => ({
+						name: d.file.name,
+						type: d.file.type,
+						index: d.index,
+					}))
+				)
 			})
-		)
-
-		// use upload thing hook to start the upload
-
-		uploadthing.startUpload(
-			files as unknown as File[],
-			"input" in $opts ? $opts.input : undefined
-		)
+		} catch (e) {
+			onProcessingComplete(e as Error)
+			return
+		}
 	}
 
-	const { mimeTypes, multiple } = generateFileTypes(
-		uploadthing.permittedFileInfo?.config
-	)
+	useEffect(() => {
+		if (documentsPresigningMutation.error) {
+			console.error(
+				`Presigning urls failed with: ${documentsPresigningMutation.error}`
+			)
+		}
+	}, [documentsPresigningMutation.error])
+
+	useEffect(() => {
+		if (documentsPresigningMutation.data && processedDocumentAssets) {
+			const uploadDocuments = async () => {
+				const uploadedDocumentsPromises =
+					documentsPresigningMutation.data.map(
+						async (pd): Promise<InsertFile> => {
+							const asset = processedDocumentAssets[pd.index]
+							await fetch(pd.uploadUrl, {
+								method: "PUT",
+								body: asset.file,
+								headers: {
+									"Content-Type": asset.file.type,
+								},
+							})
+							return {
+								s3Key: pd.Key,
+								mimeType: asset.file.type,
+								mbSize: asset.file.size,
+								name: asset.file.name,
+							}
+						}
+					)
+				onUploadComplete(await Promise.all(uploadedDocumentsPromises))
+			}
+		}
+	}, [documentsPresigningMutation.data, processedDocumentAssets])
 
 	return {
-		mimeTypes,
-		multiple,
 		processAndUpload,
+		isPending: documentsPresigningMutation.isPending,
 	}
 }

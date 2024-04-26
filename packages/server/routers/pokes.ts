@@ -2,7 +2,7 @@ import { and, count, eq, sql } from "drizzle-orm"
 import { z } from "zod"
 import { db } from "../db"
 import { pokes, users } from "../db/schema"
-import { createTRPCRouter, publicProcedure } from "../trpc"
+import { createTRPCRouter, publicProcedure } from "../utils/trpc"
 
 const pokesRouter = createTRPCRouter({
 	sendPoke: publicProcedure
@@ -18,29 +18,29 @@ const pokesRouter = createTRPCRouter({
 				.from(pokes)
 				.where(
 					and(
-						eq(pokes.reciever_id, input.pokedUserId),
-						eq(pokes.sender_id, ctx.userId)
+						eq(pokes.recieverId, input.pokedUserId),
+						eq(pokes.senderId, ctx.userId)
 					)
 				)
 			if (existing.length > 1) {
 				return await db.insert(pokes).values({
-					reciever_id: input.pokedUserId,
-					sender_id: ctx.userId,
+					recieverId: input.pokedUserId,
+					senderId: ctx.userId,
 				})
 			} else {
 				return []
 			}
 		}),
-	getAllUsers: publicProcedure.query(async ({ input, ctx }) => {
+	getAllUsers: publicProcedure.query(async ({ ctx }) => {
 		if (!ctx.userId) return []
 		return await db
 			.select({
 				data: users,
 				pokes: count(),
-				alreadyPoked: sql<number>`SUM(CASE WHEN ${pokes.sender_id} = ${ctx.userId} THEN 1 ELSE 0 END)`,
+				alreadyPoked: sql<number>`SUM(CASE WHEN ${pokes.senderId} = ${ctx.userId} THEN 1 ELSE 0 END)`,
 			})
 			.from(users)
-			.leftJoin(pokes, eq(users.id, pokes.reciever_id))
+			.leftJoin(pokes, eq(users.id, pokes.recieverId))
 			.groupBy(users.id)
 	}),
 })

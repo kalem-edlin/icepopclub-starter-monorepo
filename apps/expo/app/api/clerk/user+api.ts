@@ -1,24 +1,26 @@
-import { InsertUser } from "@monoexpo/server/model"
 import { appRouter } from "@monoexpo/server/routers"
 import {
-	UserJSON,
 	Webhook,
 	WebhookEvent,
 	createCallerFactory,
+	parseUser,
 } from "@monoexpo/server/utils"
 import { ExpoRequest } from "expo-router/server"
 
 export async function GET(req: ExpoRequest) {
-	return Response.json({
-		error: "ERROR: Will only handle POST requests on this route",
-	})
+	return Response.json(
+		{
+			error: "POST route only",
+		},
+		{
+			status: 501,
+		}
+	)
 }
-
-import {} from "@clerk/clerk-expo"
 
 // This endpoint is only necessary if user data will become more expansive than what the auth provider can store resulting in a need for a custom user table (good to have anyway)
 
-export async function POST(req: ExpoRequest) {
+export async function POST(req: Request) {
 	console.log("route hit!")
 
 	const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
@@ -71,37 +73,36 @@ export async function POST(req: ExpoRequest) {
 	const { id } = evt.data
 	const eventType = evt.type
 
+	if (!evt.data.id) {
+		return new Response(
+			`ERROR: No id supplied for user mutation: ${eventType}`,
+			{
+				status: 500,
+			}
+		)
+	}
+
 	console.log(`Webhook with and ID of ${id} and type of ${eventType}`)
 	console.log("Webhook body:", body)
 
 	const createCaller = createCallerFactory(appRouter)
-	const caller = createCaller(() => ({}))
+	const caller = createCaller(() => ({ req: undefined }))
 
 	console.log("we here by now")
 
 	switch (eventType) {
 		case "user.created":
-			caller.users.createUser(validateUserObject(evt.data))
+			caller.users.createUser(parseUser(evt.data))
 			console.log("created user")
 			break
 		case "user.deleted":
-			if (!evt.data.id) {
-				return new Response("ERROR: No userId Supplied for deletion", {
-					status: 500,
-				})
-			}
 			caller.users.deleteUser(evt.data.id)
 			console.log("deleted user")
 			break
 		case "user.updated":
-			if (!evt.data.id) {
-				return new Response("ERROR: No userId Supplied for deletion", {
-					status: 500,
-				})
-			}
 			caller.users.updateUser({
 				id: evt.data.id,
-				user: validateUserObject(evt.data),
+				user: parseUser(evt.data),
 			})
 			console.log("updated user")
 			break
@@ -112,15 +113,4 @@ export async function POST(req: ExpoRequest) {
 	}
 
 	return new Response("", { status: 200 })
-}
-
-// This function should change on schema definition of required user data types
-const validateUserObject = (user: UserJSON): InsertUser => {
-	const authUser = user as unknown as InsertUser
-	if (!user.primary_email_address_id || !user.first_name) {
-		throw new Error(
-			"User object sent via webhook does not contain required user metadata"
-		)
-	}
-	return authUser
 }

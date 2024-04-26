@@ -3,7 +3,7 @@ import { z } from "zod"
 import { db } from "../db"
 import { users } from "../db/schema"
 import { zInsertUser } from "../db/zod"
-import { createTRPCRouter, publicProcedure } from "../trpc"
+import { createTRPCRouter, publicProcedure } from "../utils/trpc"
 
 const usersRouter = createTRPCRouter({
 	createUser: publicProcedure
