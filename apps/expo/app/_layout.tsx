@@ -35,7 +35,7 @@ export default function RootLayout() {
 	useEffect(() => {
 		if (loaded) {
 			SplashScreen.hideAsync()
-			Platform.OS === "ios" && mixpanel?.track("App Launched")
+			mixpanel?.track("App Launched")
 		}
 	}, [loaded])
 

@@ -41,7 +41,7 @@ export const getPresignedUrl = async (file: z.infer<typeof zFileDetails>) => {
 		throw new Error(`File Type not parsable ${file.type}`)
 	}
 
-	const Key = `${file.name}-${uuidv4()}.${file.type.split}`
+	const Key = `${file.name}-${uuidv4()}.${fileExtension}`
 	const s3Params = {
 		Bucket: bucketName,
 		Key,

@@ -1,8 +1,8 @@
 import { ClerkProvider } from "@clerk/clerk-expo"
 import { TokenCache } from "@clerk/clerk-expo/dist/cache"
-import { env } from "@monoexpo/env/client"
 import * as SecureStore from "expo-secure-store"
 import { ReactNode } from "react"
+import { env } from "../../utils/env"
 
 const tokenCache: TokenCache = {
 	async getToken(key: string) {

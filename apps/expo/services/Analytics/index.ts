@@ -1,7 +1,6 @@
-import { env } from "@monoexpo/env/client"
 import type { Mixpanel } from "mixpanel-react-native"
-import { Platform } from "react-native"
 import c from "../../utils/conditionals"
+import { env } from "../../utils/env"
 
 const trackAutomaticEvents = true
 let mixpanel: Mixpanel | undefined
@@ -17,8 +16,6 @@ const initMixpanel = async () => {
 	}
 }
 
-if (Platform.OS === "ios") {
-	initMixpanel()
-}
+initMixpanel()
 
 export default mixpanel

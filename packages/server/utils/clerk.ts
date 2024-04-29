@@ -14,7 +14,6 @@ export const parseUser = (j: UserJSON): InsertUser => {
 		emailAddress: j.primary_email_address_id,
 		firstName: j.first_name,
 		lastName: j.last_name,
-		hasImage: j.has_image,
 		imageUrl: j.image_url,
 		phoneNumber: j.primary_phone_number_id,
 		username: j.username,

@@ -1,6 +1,5 @@
-import { env } from "@monoexpo/env/client"
 import Constants from "expo-constants"
-expo
+import { env } from "./env"
 
 export default function getUrl(route?: string) {
 	let url: URL
