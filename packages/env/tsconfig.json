@@ -1,0 +1,4 @@
+{
+	"extends": "@monoexpo/typescript/env.json",
+	"include": ["**/*.ts", "**/*.tsx"]
+}

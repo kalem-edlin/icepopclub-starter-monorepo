@@ -1,3 +1,4 @@
+import { env } from "@monoexpo/server/env"
 import { appRouter } from "@monoexpo/server/routers"
 import {
 	Webhook,
@@ -23,7 +24,7 @@ export async function GET(req: ExpoRequest) {
 export async function POST(req: Request) {
 	console.log("route hit!")
 
-	const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
+	const WEBHOOK_SECRET = env.CLERK_USER_WEBHOOK_SECRET
 
 	if (!WEBHOOK_SECRET) {
 		throw new Error(
