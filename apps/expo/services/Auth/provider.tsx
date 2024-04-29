@@ -1,5 +1,6 @@
 import { ClerkProvider } from "@clerk/clerk-expo"
 import { TokenCache } from "@clerk/clerk-expo/dist/cache"
+import { env } from "@monoexpo/env/client"
 import * as SecureStore from "expo-secure-store"
 import { ReactNode } from "react"
 
@@ -29,9 +30,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 	return (
 		<ClerkProvider
 			tokenCache={tokenCache}
-			publishableKey={
-				process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY as string
-			}>
+			publishableKey={env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY as string}>
 			{children}
 		</ClerkProvider>
 	)

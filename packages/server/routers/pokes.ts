@@ -2,10 +2,10 @@ import { and, count, eq, sql } from "drizzle-orm"
 import { z } from "zod"
 import { db } from "../db"
 import { pokes, users } from "../db/schema"
-import { createTRPCRouter, publicProcedure } from "../utils/trpc"
+import { authenticatedProcedure, createTRPCRouter } from "../utils/trpc"
 
 const pokesRouter = createTRPCRouter({
-	sendPoke: publicProcedure
+	sendPoke: authenticatedProcedure
 		.input(
 			z.object({
 				pokedUserId: z.string(),
@@ -31,7 +31,7 @@ const pokesRouter = createTRPCRouter({
 				return []
 			}
 		}),
-	getAllUsers: publicProcedure.query(async ({ ctx }) => {
+	getAllUsers: authenticatedProcedure.query(async ({ ctx }) => {
 		if (!ctx.userId) return []
 		return await db
 			.select({

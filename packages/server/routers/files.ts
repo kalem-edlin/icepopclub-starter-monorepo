@@ -3,7 +3,7 @@ import z from "zod"
 import { db } from "../db"
 import { files } from "../db/schema"
 import { zInsertFile } from "../db/zod"
-import { createTRPCRouter, publicProcedure } from "../utils/trpc"
+import { authenticatedProcedure, createTRPCRouter } from "../utils/trpc"
 import {
 	acceptedDocumentTypesRegex,
 	acceptedImageTypesRegex,
@@ -12,20 +12,20 @@ import {
 } from "../utils/upload"
 
 const filesRouter = createTRPCRouter({
-	postFiles: publicProcedure
+	postFiles: authenticatedProcedure
 		.input(z.array(zInsertFile))
 		.mutation(async ({ input, ctx }) => {
 			if (!ctx.userId) return []
 			return await db.insert(files).values(input)
 		}),
-	getUserFiles: publicProcedure
+	getUserFiles: authenticatedProcedure
 		.input(z.string())
 		.query(async ({ input, ctx }) => {
 			return await db.query.files.findMany({
 				where: eq(files.userId, input),
 			})
 		}),
-	getDocumentUploadPresignedUrls: publicProcedure
+	getDocumentUploadPresignedUrls: authenticatedProcedure
 		.input(z.array(zFileDetails))
 		.mutation(async ({ input, ctx }) => {
 			const promises = input.map(async (file) => {
@@ -36,7 +36,7 @@ const filesRouter = createTRPCRouter({
 			})
 			return await Promise.all(promises)
 		}),
-	getImageUploadPresignedUrls: publicProcedure
+	getImageUploadPresignedUrls: authenticatedProcedure
 		.input(z.array(zFileDetails))
 		.mutation(async ({ input, ctx }) => {
 			const promises = input.map(async (file) => {

@@ -1,3 +1,4 @@
+import { env } from "@monoexpo/env/server"
 import {
 	boolean,
 	integer,
@@ -10,7 +11,7 @@ import {
 
 // Create a pgTable that maps to a table in your DB
 export const createTable = pgTableCreator(
-	(name) => `${process.env.NAME}_${name}`
+	(name) => `${env.PROJECT_NAME}_${name}`
 )
 
 export const users = createTable(

@@ -3,15 +3,15 @@ import { z } from "zod"
 import { db } from "../db"
 import { users } from "../db/schema"
 import { zInsertUser } from "../db/zod"
-import { createTRPCRouter, publicProcedure } from "../utils/trpc"
+import { createTRPCRouter, internalProcedure } from "../utils/trpc"
 
 const usersRouter = createTRPCRouter({
-	createUser: publicProcedure
+	createUser: internalProcedure
 		.input(zInsertUser)
 		.mutation(async ({ input, ctx }) => {
 			return await db.insert(users).values(input)
 		}),
-	updateUser: publicProcedure
+	updateUser: internalProcedure
 		.input(
 			z.object({
 				id: z.string(),
@@ -24,7 +24,7 @@ const usersRouter = createTRPCRouter({
 				.set(input.user)
 				.where(eq(users.id, input.id))
 		}),
-	deleteUser: publicProcedure
+	deleteUser: internalProcedure
 		.input(z.string())
 		.mutation(async ({ input, ctx }) => {
 			return await db

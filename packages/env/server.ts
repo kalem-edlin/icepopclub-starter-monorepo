@@ -4,6 +4,7 @@ import { z } from "zod"
 export const env = createEnv({
 	server: {
 		PROJECT_NAME: z.string().min(1),
+		PROJECT_INTERNAL_API_KEY: z.string().min(1),
 		POSTGRES_URL: z.string().url(),
 		POSTGRES_PRISMA_URL: z.string().url(),
 		POSTGRES_URL_NO_SSL: z.string().url(),
@@ -12,7 +13,10 @@ export const env = createEnv({
 		POSTGRES_HOST: z.string().min(1),
 		POSTGRES_PASSWORD: z.string().min(1),
 		POSTGRES_DATABASE: z.string().min(1),
-		CLERK_PEM_PUBLIC_KEY: z.string().min(1),
+		CLERK_PEM_PUBLIC_KEY: z
+			.string()
+			.min(1)
+			.transform((value) => value.replaceAll(/\\n/g, "\n")),
 		CLERK_USER_WEBHOOK_SECRET: z.string().min(1),
 		S3_BUCKET_NAME: z.string().min(1),
 		S3_SECRET_KEY: z.string().min(1),

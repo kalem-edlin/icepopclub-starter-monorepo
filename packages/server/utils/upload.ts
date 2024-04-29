@@ -9,6 +9,7 @@
 // export { generatePermittedFileTypes } from "@uploadthing/shared"
 // export type { ExpandedRouteConfig } from "@uploadthing/shared"
 
+import { env } from "@monoexpo/env/server"
 import S3 from "aws-sdk/clients/s3"
 import { v4 as uuidv4 } from "uuid"
 import z from "zod"
@@ -22,37 +23,15 @@ export const zFileDetails = z.object({
 	index: z.number(),
 })
 
-if (!process.env.S3_ACCESS_KEY) {
-	throw new Error(
-		`S3 Access key env variable not found ${process.env.S3_ACCESS_KEY}`
-	)
-}
-
-if (!process.env.S3_SECRET_KEY) {
-	throw new Error(
-		`S3 Secret key env variable not found ${process.env.S3_SECRET_KEY}`
-	)
-}
-
-if (!process.env.S3_REGION) {
-	throw new Error(`S3 Region env variable not found ${process.env.S3_REGION}`)
-}
-
-if (!process.env.S3_BUCKET_NAME) {
-	throw new Error(
-		`S3 bucket name env variable not found ${process.env.S3_BUCKET_NAME}`
-	)
-}
-
-export const bucketName: string = process.env.S3_BUCKET_NAME
+export const bucketName: string = env.S3_BUCKET_NAME
 
 export const s3 = new S3({
 	apiVersion: "2006-03-01",
 	credentials: {
-		accessKeyId: process.env.S3_ACCESS_KEY,
-		secretAccessKey: process.env.S3_SECRET_KEY,
+		accessKeyId: env.S3_ACCESS_KEY,
+		secretAccessKey: env.S3_SECRET_KEY,
 	},
-	region: process.env.S3_REGION,
+	region: env.S3_REGION,
 	signatureVersion: "v4",
 })
 

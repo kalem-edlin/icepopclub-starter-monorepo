@@ -6,6 +6,7 @@ export const env = createEnv({
 	client: {
 		EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
 		EXPO_PUBLIC_MIXPANEL_TOKEN: z.string().min(1),
+		EXPO_PUBLIC_SERVER_ORIGIN: z.string().min(1),
 	},
 	runtimeEnv: process.env,
 	emptyStringAsUndefined: true,

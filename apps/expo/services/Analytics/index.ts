@@ -1,3 +1,4 @@
+import { env } from "@monoexpo/env/client"
 import type { Mixpanel } from "mixpanel-react-native"
 import { Platform } from "react-native"
 import c from "../../utils/conditionals"
@@ -9,11 +10,8 @@ const initMixpanel = async () => {
 	const MixpanelObject = c.Mixpanel
 
 	if (MixpanelObject) {
-		if (!process.env.MIXPANEL_TOKEN) {
-			throw new Error("This build is missing the mixpanel token env")
-		}
 		mixpanel = new MixpanelObject(
-			process.env.MIXPANEL_TOKEN,
+			env.EXPO_PUBLIC_MIXPANEL_TOKEN,
 			trackAutomaticEvents
 		)
 	}
