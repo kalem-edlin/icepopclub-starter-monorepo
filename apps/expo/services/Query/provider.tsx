@@ -9,6 +9,9 @@ import getUrl from "../../utils/url"
 export const QueryProvider = ({ children }: { children: ReactNode }) => {
 	const { getToken } = useAuth()
 
+	/**
+	 * Define tanstack retry policy
+	 */
 	const [queryClient] = useState(
 		() =>
 			new QueryClient({
@@ -18,6 +21,11 @@ export const QueryProvider = ({ children }: { children: ReactNode }) => {
 				},
 			})
 	)
+
+	/**
+	 * Initiate TRPC client by including authorization headers on each request
+	 * Point to the api/trpc route defined in app/api/trpc+[api]
+	 */
 	const [trpcClient] = useState(() =>
 		trpc.createClient({
 			links: [

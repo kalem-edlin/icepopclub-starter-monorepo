@@ -5,3 +5,5 @@ import * as schema from "./schema"
 
 // Use this object to send drizzle queries to your DB
 export const db = drizzle(sql, { schema })
+
+// PRIMARY_USER_LOGIN should be updated across app when choosing between username, email address and phonenumber

@@ -25,6 +25,9 @@ export const zFileDetails = z.object({
 
 export const bucketName: string = env.S3_BUCKET_NAME
 
+/**
+ * Initiate s3 instance given server environmental variables
+ */
 export const s3 = new S3({
 	apiVersion: "2006-03-01",
 	credentials: {
@@ -35,6 +38,13 @@ export const s3 = new S3({
 	signatureVersion: "v4",
 })
 
+/**
+ * Facilitate calls to AWS S3 to presign a file upload and return the upload URL and key to file upload route
+ * Must be called before an update to database for file records
+ * Front end must respond to result by uploading File via presigned URL if successful
+ * @param file
+ * @returns
+ */
 export const getPresignedUrl = async (file: z.infer<typeof zFileDetails>) => {
 	const fileExtension = file.type.split("/")[1]
 	if (!fileExtension) {

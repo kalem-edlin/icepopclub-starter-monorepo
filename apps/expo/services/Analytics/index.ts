@@ -5,6 +5,9 @@ import { env } from "../../utils/env"
 const trackAutomaticEvents = true
 let mixpanel: Mixpanel | undefined
 
+/**
+ * Init mixpanel if the conditional import is available (non expo go)
+ */
 const initMixpanel = async () => {
 	const MixpanelObject = c.Mixpanel
 

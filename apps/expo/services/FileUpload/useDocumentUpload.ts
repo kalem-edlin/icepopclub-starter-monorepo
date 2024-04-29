@@ -3,6 +3,14 @@ import type { DocumentPickerAsset } from "expo-document-picker"
 import { useEffect, useState } from "react"
 import { trpc } from "../Query"
 
+/**
+ * React Hook to maintain document data processing state,
+ * Maintain and handle trpc server mutation state for document presigning
+ * Facilitate S3 upload on completion
+ * @param onProcessingComplete - when document data is processed into all necessary components for presigning and upload
+ * @param onUploadComplete - when upload to S3 has completed and the assets with S3 key and name data
+ * @returns
+ */
 export default function useDocumentUpload(
 	onProcessingComplete: (error?: Error) => void,
 	onUploadComplete: (assets: InsertFile[]) => void
@@ -13,6 +21,12 @@ export default function useDocumentUpload(
 		undefined | { file: File & { uri: string }; index: number }[]
 	>()
 
+	/**
+	 * Generate file data via blob data, alerting client of data processing complete
+	 * Will Request presigned URLs via trpc - alerting client via TRPC mutation state
+	 * @param assets
+	 * @returns
+	 */
 	const processAndUpload = (assets: DocumentPickerAsset[]) => {
 		try {
 			Promise.all(
@@ -47,6 +61,10 @@ export default function useDocumentUpload(
 		}
 	}
 
+	/**
+	 * If there is a presign request error, log
+	 * @param documentsPresigningMutation.error - error data set by presign mutation on failure
+	 */
 	useEffect(() => {
 		if (documentsPresigningMutation.error) {
 			console.error(
@@ -55,6 +73,11 @@ export default function useDocumentUpload(
 		}
 	}, [documentsPresigningMutation.error])
 
+	/**
+	 * On presigning mutation completion handle upload to S3 via fetch using presigned URL and asset data state
+	 * @param documentsPresigningMutation.data - Data returned from presign mutation
+	 * @param processedDocumentAssets - hook maintained state of processed document assets
+	 */
 	useEffect(() => {
 		if (documentsPresigningMutation.data && processedDocumentAssets) {
 			const uploadDocuments = async () => {

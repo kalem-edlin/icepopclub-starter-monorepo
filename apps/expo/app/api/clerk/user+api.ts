@@ -19,8 +19,11 @@ export async function GET(req: ExpoRequest) {
 	)
 }
 
-// This endpoint is only necessary if user data will become more expansive than what the auth provider can store resulting in a need for a custom user table (good to have anyway)
-
+/**
+ * Webhook request handler for a Clerk user update
+ * @param req
+ * @returns
+ */
 export async function POST(req: Request) {
 	// Get the headers
 	const headerPayload = req.headers
@@ -71,32 +74,28 @@ export async function POST(req: Request) {
 		)
 	}
 
-	console.log(`Webhook with and ID of ${id} and type of ${eventType}`)
-	console.log("Webhook body:", body)
-
 	const createCaller = createCallerFactory(appRouter)
 
 	const caller = createCaller(() => ({
 		authorization: env.PROJECT_INTERNAL_API_KEY,
 	}))
 
-	console.log("we here by now")
-
 	switch (eventType) {
 		case "user.created":
-			caller.users.createUser(parseUser(evt.data))
-			console.log("created user")
+			const parsedUser = parseUser(evt.data)
+			console.log(JSON.stringify(parsedUser))
+			const createdUser = await caller.users.createUser(parsedUser)
+			console.log(`created user ${JSON.stringify(createdUser)}`)
 			break
 		case "user.deleted":
-			caller.users.deleteUser(evt.data.id)
-			console.log("deleted user")
+			const result = await caller.users.deleteUser(evt.data.id)
+			console.log(`deleted user ${JSON.stringify(result)}`)
 			break
 		case "user.updated":
-			caller.users.updateUser({
-				id: evt.data.id,
-				user: parseUser(evt.data),
-			})
-			console.log("updated user")
+			const parsedUpUser = parseUser(evt.data)
+			console.log(JSON.stringify(parsedUpUser))
+			const updatedUser = await caller.users.updateUser(parsedUpUser)
+			console.log(`updated user ${updatedUser}`)
 			break
 		default:
 			return new Response("ERROR: Cannot support this webhook event", {

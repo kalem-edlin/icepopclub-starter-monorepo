@@ -3,6 +3,14 @@ import { ImagePickerAsset } from "expo-image-picker"
 import { useEffect, useState } from "react"
 import { trpc } from "../Query"
 
+/**
+ * React Hook to maintain document data processing state,
+ * Maintain and handle trpc server mutation state for image presigning
+ * Facilitate S3 upload on completion
+ * @param onProcessingComplete - when image data is processed into all necessary components for presigning and upload
+ * @param onUploadComplete - when upload to S3 has completed and the assets with S3 key and name data
+ * @returns
+ */
 export default function useImageUpload(
 	onProcessingComplete: (error?: Error) => void,
 	onUploadComplete: (assets: InsertFile[]) => void
@@ -13,6 +21,12 @@ export default function useImageUpload(
 		undefined | { file: File & { uri: string }; index: number }[]
 	>()
 
+	/**
+	 * Generate file data via blob data, alerting client of data processing complete
+	 * Will Request presigned URLs via trpc - alerting client via TRPC mutation state
+	 * @param assets
+	 * @returns
+	 */
 	const processAndUpload = (assets: ImagePickerAsset[]) => {
 		try {
 			Promise.all(
@@ -49,6 +63,10 @@ export default function useImageUpload(
 		}
 	}
 
+	/**
+	 * If there is a presign request error, log
+	 * @param imagesPresigningMutation.error - error data set by presign mutation on failure
+	 */
 	useEffect(() => {
 		if (imagesPresigningMutation.error) {
 			console.error(
@@ -57,6 +75,11 @@ export default function useImageUpload(
 		}
 	}, [imagesPresigningMutation.error])
 
+	/**
+	 * On presigning mutation completion handle upload to S3 via fetch using presigned URL and asset data state
+	 * @param imagesPresigningMutation.data - Data returned from presign mutation
+	 * @param processedImageAssets - hook maintained state of processed image assets
+	 */
 	useEffect(() => {
 		if (imagesPresigningMutation.data && processedImageAssets) {
 			const uploadImages = async () => {

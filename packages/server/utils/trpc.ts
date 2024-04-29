@@ -3,6 +3,11 @@ import { TRPCError, initTRPC } from "@trpc/server"
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
+/**
+ * Extract authorization header from request and pass to trpc routes
+ * @param opts
+ * @returns
+ */
 export const createContext = async (opts: FetchCreateContextFnOptions) => {
 	return {
 		authorization: opts.req?.headers.get("Authorization")?.split(" ")[1],
@@ -13,6 +18,12 @@ export const createContext = async (opts: FetchCreateContextFnOptions) => {
 
 const t = initTRPC.context<typeof createContext>().create()
 
+/**
+ * Take authorization from context, decode JWT and authenticate the user.
+ * For routes that require an active user
+ * @param opts
+ * @returns
+ */
 const withAuthentication = t.middleware(({ ctx, next }) => {
 	console.log("CALLING ROUTE WITH AUTHENTICATION")
 	const publicKey = env.CLERK_PEM_PUBLIC_KEY
@@ -44,6 +55,11 @@ const withAuthentication = t.middleware(({ ctx, next }) => {
 	})
 })
 
+/**
+ * Use authorization expecting server environmental variable APIKEY from internal calls from serverless function call
+ * Used for routes that are updated within the server. Webhooks etc
+ * NOT FOR USER CALLED ACTIONS
+ */
 const withInternal = t.middleware(({ ctx, next }) => {
 	console.log("CALLING ROUTE WITH INTERNAL AUTHORIZATION GUARDS")
 	const apiKey = ctx.authorization

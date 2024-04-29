@@ -5,6 +5,11 @@ import { ReactNode } from "react"
 import { env } from "../../utils/env"
 
 const tokenCache: TokenCache = {
+	/**
+	 * Get JWT token given Auth provider storage key
+	 * @param key
+	 * @returns
+	 */
 	async getToken(key: string) {
 		try {
 			const token = await SecureStore.getItemAsync(key)
@@ -15,6 +20,12 @@ const tokenCache: TokenCache = {
 			return null
 		}
 	},
+	/**
+	 * Save JWT token given Auth provider storage key and JWT token value
+	 * @param key
+	 * @param value
+	 * @returns
+	 */
 	async saveToken(key: string, value: string) {
 		try {
 			console.log("setting token " + value)

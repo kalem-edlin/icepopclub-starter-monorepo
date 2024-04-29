@@ -1,7 +1,7 @@
 import type { Mixpanel } from "mixpanel-react-native"
 import { Platform } from "react-native"
 
-// Add all exportables here
+// Add all conditional exportables here
 interface ConditionalExports {
 	Mixpanel?: typeof Mixpanel
 }

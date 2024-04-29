@@ -3,51 +3,61 @@ import { z } from "zod"
 import { db } from "../db"
 import { users } from "../db/schema"
 import { zInsertUser } from "../db/zod"
-import {
-	authenticatedProcedure,
-	createTRPCRouter,
-	internalProcedure,
-} from "../utils/trpc"
+import { createTRPCRouter, internalProcedure } from "../utils/trpc"
 
 const usersRouter = createTRPCRouter({
-	getUserAndUpdateUserIfNotExists: authenticatedProcedure
-		.input(zInsertUser)
-		.mutation(async ({ input, ctx }) => {
-			const user = await db.query.users.findFirst({
-				where: eq(users.id, input.id),
-			})
-			if (!user) {
-				console.log(
-					`webhook failed to update in 20 seconds. Automatically adding user!!!`
-				)
-				return await db.insert(users).values(input)
-			}
-			return user
-		}),
+	/**
+	 * Internal procedure to create a new user record given the Primary User Login has not existed in the past
+	 * Otherwise update user
+	 * This will update the primary ID of user and cascade primary key changes if user is to reactivate account
+	 */
 	createUser: internalProcedure
 		.input(zInsertUser)
 		.mutation(async ({ input, ctx }) => {
-			return await db.insert(users).values(input)
-		}),
-	updateUser: internalProcedure
-		.input(
-			z.object({
-				id: z.string(),
-				user: zInsertUser,
+			const user = await db.query.users.findFirst({
+				// PRIMARY_USER_LOGIN
+				where: eq(users.emailAddress, input.emailAddress),
 			})
-		)
+			if (user) {
+				return await db
+					.update(users)
+					.set({
+						...input,
+						active: true,
+					})
+					.where(eq(users.id, input.id))
+			} else {
+				return await db.insert(users).values(input)
+			}
+		}),
+	/**
+	 * Internal procedure to update a user given authIds match
+	 */
+	updateUser: internalProcedure
+		.input(zInsertUser)
 		.mutation(async ({ input, ctx }) => {
+			console.log("Hitting internal route to update user!")
 			return await db
 				.update(users)
-				.set(input.user)
+				.set(input)
 				.where(eq(users.id, input.id))
 		}),
+	/**
+	 * Delete a user by setting the user record to inactive, removing private data
+	 * Retains the user record identified by the Primary User Login
+	 */
 	deleteUser: internalProcedure
 		.input(z.string())
 		.mutation(async ({ input, ctx }) => {
+			console.log("Hitting internal route to delete user!")
 			return await db
 				.update(users)
-				.set({ active: false })
+				.set({
+					active: false,
+					firstName: null,
+					lastName: null,
+					imageUrl: null,
+				})
 				.where(eq(users.id, input))
 		}),
 })
