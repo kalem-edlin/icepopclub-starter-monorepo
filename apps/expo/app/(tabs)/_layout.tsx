@@ -1,10 +1,11 @@
-import { SignedIn, SignedOut, useAuth } from "@clerk/clerk-expo"
+import { SignedIn, SignedOut, useAuth, useUser } from "@clerk/clerk-expo"
 import { MaterialIcons } from "@expo/vector-icons"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 import { Redirect, Tabs } from "expo-router"
-import React from "react"
+import React, { useEffect } from "react"
 import { TouchableOpacity } from "react-native"
 import { usePersistance } from "../../services/Persistance"
+import { trpc } from "../../services/Query"
 
 function TabBarIcon(props: {
 	name: React.ComponentProps<typeof FontAwesome>["name"]
@@ -14,8 +15,29 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-	const { isLoaded, signOut } = useAuth()
+	const { isLoaded, signOut, isSignedIn } = useAuth()
+	const { user } = useUser()
 	const setUserContext = usePersistance((state) => state.setUserContext)
+	const createUserIfWebhookFailedMutation =
+		trpc.users.getUserAndUpdateUserIfNotExists.useMutation()
+
+	useEffect(() => {
+		if (isSignedIn && user) {
+			setTimeout(() => {
+				createUserIfWebhookFailedMutation.mutate({
+					id: user.id,
+					emailAddress:
+						user.primaryEmailAddress?.emailAddress ??
+						"no_valid_email_address@gmail.com",
+					firstName: user.firstName,
+					lastName: user.lastName,
+					imageUrl: user.imageUrl,
+					username: user.username,
+					phoneNumber: user.primaryPhoneNumber?.phoneNumber,
+				})
+			}, 20000)
+		}
+	}, [isSignedIn])
 
 	return (
 		<>

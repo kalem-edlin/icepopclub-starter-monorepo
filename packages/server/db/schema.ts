@@ -24,7 +24,6 @@ export const users = createTable(
 		emailAddress: text("emailAddress").notNull(),
 		phoneNumber: text("phoneNumber"),
 		imageUrl: text("imageUrl"),
-		hasImage: boolean("hasImage"),
 		username: text("username"),
 		createdAt: timestamp("createdAt").defaultNow().notNull(),
 

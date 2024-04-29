@@ -5,7 +5,7 @@ import jwt, { JwtPayload } from "jsonwebtoken"
 
 export const createContext = async (opts: FetchCreateContextFnOptions) => {
 	return {
-		authorization: opts.req?.headers.get("Authorization"),
+		authorization: opts.req?.headers.get("Authorization")?.split(" ")[1],
 	} as {
 		authorization?: string
 	}
@@ -14,6 +14,7 @@ export const createContext = async (opts: FetchCreateContextFnOptions) => {
 const t = initTRPC.context<typeof createContext>().create()
 
 const withAuthentication = t.middleware(({ ctx, next }) => {
+	console.log("CALLING ROUTE WITH AUTHENTICATION")
 	const publicKey = env.CLERK_PEM_PUBLIC_KEY
 	console.log(publicKey)
 
@@ -44,6 +45,7 @@ const withAuthentication = t.middleware(({ ctx, next }) => {
 })
 
 const withInternal = t.middleware(({ ctx, next }) => {
+	console.log("CALLING ROUTE WITH INTERNAL AUTHORIZATION GUARDS")
 	const apiKey = ctx.authorization
 	console.log(apiKey)
 

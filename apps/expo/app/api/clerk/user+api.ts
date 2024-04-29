@@ -1,4 +1,4 @@
-import { env } from "@monoexpo/server/env"
+import { env } from "@monoexpo/env/server"
 import { appRouter } from "@monoexpo/server/routers"
 import {
 	Webhook,
@@ -22,18 +22,6 @@ export async function GET(req: ExpoRequest) {
 // This endpoint is only necessary if user data will become more expansive than what the auth provider can store resulting in a need for a custom user table (good to have anyway)
 
 export async function POST(req: Request) {
-	console.log("route hit!")
-
-	const WEBHOOK_SECRET = env.CLERK_USER_WEBHOOK_SECRET
-
-	if (!WEBHOOK_SECRET) {
-		throw new Error(
-			"Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
-		)
-	}
-
-	console.log("valid webhook secret!")
-
 	// Get the headers
 	const headerPayload = req.headers
 	const svix_id = headerPayload.get("svix-id")
@@ -52,7 +40,7 @@ export async function POST(req: Request) {
 	const body = JSON.stringify(payload)
 
 	// Create a new Svix instance with your secret.
-	const wh = new Webhook(WEBHOOK_SECRET)
+	const wh = new Webhook(env.CLERK_USER_WEBHOOK_SECRET)
 
 	let evt: WebhookEvent
 
@@ -87,7 +75,10 @@ export async function POST(req: Request) {
 	console.log("Webhook body:", body)
 
 	const createCaller = createCallerFactory(appRouter)
-	const caller = createCaller(() => ({ req: undefined }))
+
+	const caller = createCaller(() => ({
+		authorization: env.PROJECT_INTERNAL_API_KEY,
+	}))
 
 	console.log("we here by now")
 

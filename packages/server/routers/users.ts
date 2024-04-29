@@ -3,9 +3,27 @@ import { z } from "zod"
 import { db } from "../db"
 import { users } from "../db/schema"
 import { zInsertUser } from "../db/zod"
-import { createTRPCRouter, internalProcedure } from "../utils/trpc"
+import {
+	authenticatedProcedure,
+	createTRPCRouter,
+	internalProcedure,
+} from "../utils/trpc"
 
 const usersRouter = createTRPCRouter({
+	getUserAndUpdateUserIfNotExists: authenticatedProcedure
+		.input(zInsertUser)
+		.mutation(async ({ input, ctx }) => {
+			const user = await db.query.users.findFirst({
+				where: eq(users.id, input.id),
+			})
+			if (!user) {
+				console.log(
+					`webhook failed to update in 20 seconds. Automatically adding user!!!`
+				)
+				return await db.insert(users).values(input)
+			}
+			return user
+		}),
 	createUser: internalProcedure
 		.input(zInsertUser)
 		.mutation(async ({ input, ctx }) => {

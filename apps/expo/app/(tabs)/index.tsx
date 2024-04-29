@@ -1,13 +1,14 @@
 import {
 	ActivityIndicator,
+	FlatList,
 	Image,
 	Text,
 	TouchableOpacity,
 	View,
 } from "react-native"
-import { useUserService } from "../../services/Auth/hooks/user"
 
 // TODO: Is it okay to import types where the source defines its a type export instead of a type import for the sake of dependency population
+import { useUser } from "@clerk/clerk-expo"
 import { getDocumentAsync } from "expo-document-picker"
 import { launchImageLibraryAsync } from "expo-image-picker"
 import { useState } from "react"
@@ -15,7 +16,12 @@ import { useDocumentUpload, useImageUpload } from "../../services/FileUpload"
 import { trpc } from "../../services/Query"
 
 export default function ProfileScreen() {
-	const { isLoaded, isSignedIn, user } = useUserService()
+	const { isLoaded, isSignedIn, user } = useUser()
+
+	if (!user) {
+		return
+	}
+
 	const userFiles = trpc.files.getUserFiles.useQuery(user.id)
 	const postFiles = trpc.files.postFiles.useMutation()
 
@@ -73,17 +79,17 @@ export default function ProfileScreen() {
 		isSignedIn &&
 		user && (
 			<View className="w-full gap-y-3 h-full mt-8 items-center">
-				{user.has_image && (
+				{user.imageUrl && (
 					<Image
 						className="w-full h-28"
-						source={{ uri: user.image_url! }}
+						source={{ uri: user.imageUrl! }}
 					/>
 				)}
 				<Text>
-					Name: {user.first_name} {user.last_name}
+					Name: {user.firstName} {user.lastName}
 				</Text>
-				<Text>Email: {user.primary_email_address_id}</Text>
-				{/* {userFiles.data && (
+				<Text>Email: {user.primaryEmailAddress?.emailAddress}</Text>
+				{userFiles.data && (
 					<FlatList
 						data={userFiles.data}
 						renderItem={({ item }) => {
@@ -99,7 +105,7 @@ export default function ProfileScreen() {
 				{userFiles.isLoading && <ActivityIndicator />}
 				{userFiles.error && (
 					<Text>Error with {userFiles.error.message}</Text>
-				)} */}
+				)}
 				<View
 					style={{ bottom: 32 }}
 					className="absolute w-full justify-evenly flex-row">
