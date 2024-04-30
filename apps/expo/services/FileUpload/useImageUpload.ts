@@ -1,4 +1,4 @@
-import { InsertFile } from "@monoexpo/server/model"
+import { InsertFileBody } from "@monoexpo/server/model"
 import { ImagePickerAsset } from "expo-image-picker"
 import { useEffect, useState } from "react"
 import { trpc } from "../Query"
@@ -13,7 +13,7 @@ import { trpc } from "../Query"
  */
 export default function useImageUpload(
 	onProcessingComplete: (error?: Error) => void,
-	onUploadComplete: (assets: InsertFile[]) => void
+	onUploadComplete: (assets: InsertFileBody[]) => void
 ) {
 	const imagesPresigningMutation =
 		trpc.files.getImageUploadPresignedUrls.useMutation()
@@ -46,16 +46,17 @@ export default function useImageUpload(
 
 					return { file: RNFormDataCompatibleFile, index }
 				})
-			).then((pds) => {
+			).then(async (pds) => {
 				onProcessingComplete()
 				setProcessedImageAssets(pds)
-				imagesPresigningMutation.mutate(
+				const result = await imagesPresigningMutation.mutateAsync(
 					pds.map((d) => ({
 						name: d.file.name,
 						type: d.file.type,
 						index: d.index,
 					}))
 				)
+				console.log(`Finished presigning with result ${result}`)
 			})
 		} catch (e) {
 			onProcessingComplete(e as Error)
@@ -85,7 +86,7 @@ export default function useImageUpload(
 			const uploadImages = async () => {
 				const uploadedImagesPromises =
 					imagesPresigningMutation.data.map(
-						async (pd): Promise<InsertFile> => {
+						async (pd): Promise<InsertFileBody> => {
 							const asset = processedImageAssets[pd.index]
 							await fetch(pd.uploadUrl, {
 								method: "PUT",

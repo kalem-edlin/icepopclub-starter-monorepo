@@ -18,12 +18,7 @@ const usersRouter = createTRPCRouter({
 				// PRIMARY_USER_LOGIN
 				where: eq(users.emailAddress, input.emailAddress),
 			})
-
-			console.log(`found user ${user}`)
 			if (user) {
-				console.log(
-					`found user ${input.emailAddress} havingfound  ${user.emailAddress}`
-				)
 				return await db
 					.update(users)
 					.set({

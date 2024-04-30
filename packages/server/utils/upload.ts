@@ -43,7 +43,7 @@ export const s3 = new S3({
  * Must be called before an update to database for file records
  * Front end must respond to result by uploading File via presigned URL if successful
  * @param file
- * @returns
+ * @returns {S3ItemKey, S3UploadUrl, index} - index is to match file data to send
  */
 export const getPresignedUrl = async (file: z.infer<typeof zFileDetails>) => {
 	const fileExtension = file.type.split("/")[1]

@@ -36,7 +36,9 @@ export const pokes = createTable(`pokes`, {
 
 export const files = createTable(`files`, {
 	id: serial("id").primaryKey(),
-	userId: text("userId").references(() => users.id, { onUpdate: "cascade" }),
+	userId: text("userId")
+		.notNull()
+		.references(() => users.id, { onUpdate: "cascade" }),
 	name: text("name").notNull(),
 	s3Key: text("url").notNull().unique(),
 	mimeType: text("mimeType").notNull(),

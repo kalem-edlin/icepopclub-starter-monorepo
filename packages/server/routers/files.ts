@@ -11,12 +11,21 @@ import {
 	zFileDetails,
 } from "../utils/upload"
 
+/**
+ * This router provides ability to post files to DB File Table, Get all files for a given user, and presign File upload URLs with S3
+ */
 const filesRouter = createTRPCRouter({
 	postFiles: authenticatedProcedure
-		.input(z.array(zInsertFile))
+		.input(z.array(zInsertFile.omit({ userId: true })))
 		.mutation(async ({ input, ctx }) => {
-			if (!ctx.userId) return []
-			return await db.insert(files).values(input)
+			return await db.insert(files).values(
+				input.map((insertFileData) => {
+					return {
+						...insertFileData,
+						userId: ctx.userId,
+					}
+				})
+			)
 		}),
 	getUserFiles: authenticatedProcedure
 		.input(z.string())

@@ -1,10 +1,18 @@
+import { TRPCError } from "@trpc/server"
 import { and, count, eq, sql } from "drizzle-orm"
 import { z } from "zod"
 import { db } from "../db"
 import { pokes, users } from "../db/schema"
 import { authenticatedProcedure, createTRPCRouter } from "../utils/trpc"
 
+/**
+ * This router provides an example "poking" system for users to poke each other
+ */
 const pokesRouter = createTRPCRouter({
+	/**
+	 * If user has already poked target, return
+	 * Add new poke record involving current and target user
+	 */
 	sendPoke: authenticatedProcedure
 		.input(
 			z.object({
@@ -12,7 +20,13 @@ const pokesRouter = createTRPCRouter({
 			})
 		)
 		.mutation(async ({ input, ctx }) => {
-			if (!ctx.userId) return []
+			if (ctx.userId === input.pokedUserId) {
+				throw new TRPCError({
+					code: "PRECONDITION_FAILED",
+					message: "Cannot poke self",
+				})
+			}
+
 			const existing = await db
 				.select()
 				.from(pokes)
@@ -28,11 +42,17 @@ const pokesRouter = createTRPCRouter({
 					senderId: ctx.userId,
 				})
 			} else {
-				return []
+				throw new TRPCError({
+					code: "PRECONDITION_FAILED",
+					message: "User already poked",
+				})
 			}
 		}),
+
+	/**
+	 * Get all users, poked count, and whether current user has poked them or not
+	 */
 	getAllUsers: authenticatedProcedure.query(async ({ ctx }) => {
-		if (!ctx.userId) return []
 		return await db
 			.select({
 				data: users,

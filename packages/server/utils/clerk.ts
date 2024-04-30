@@ -4,7 +4,7 @@ import { InsertUser } from "../db/types"
 /**
  * Take clerk user data on webhook update and tranform into user schema record for database consistency
  * @param j
- * @returns
+ * @returns InsertUser data for DB User Schema
  */
 export const parseUser = (j: UserJSON): InsertUser => {
 	if (!j.id) {
