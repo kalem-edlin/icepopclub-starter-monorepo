@@ -25,7 +25,7 @@ const usersRouter = createTRPCRouter({
 						...input,
 						active: true,
 					})
-					.where(eq(users.id, input.id))
+					.where(eq(users.emailAddress, input.emailAddress))
 			} else {
 				return await db.insert(users).values(input)
 			}
