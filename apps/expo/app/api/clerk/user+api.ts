@@ -82,9 +82,9 @@ export async function POST(req: Request) {
 
 	switch (eventType) {
 		case "user.created":
-			const parsedUser = parseUser(evt.data)
-			console.log(JSON.stringify(parsedUser))
-			const createdUser = await caller.users.createUser(parsedUser)
+			const createdUser = await caller.users.createUser(
+				parseUser(evt.data)
+			)
 			console.log(`created user ${JSON.stringify(createdUser)}`)
 			break
 		case "user.deleted":
@@ -92,9 +92,9 @@ export async function POST(req: Request) {
 			console.log(`deleted user ${JSON.stringify(result)}`)
 			break
 		case "user.updated":
-			const parsedUpUser = parseUser(evt.data)
-			console.log(JSON.stringify(parsedUpUser))
-			const updatedUser = await caller.users.updateUser(parsedUpUser)
+			const updatedUser = await caller.users.updateUser(
+				parseUser(evt.data)
+			)
 			console.log(`updated user ${updatedUser}`)
 			break
 		default:

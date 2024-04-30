@@ -13,12 +13,17 @@ const usersRouter = createTRPCRouter({
 	 */
 	createUser: internalProcedure
 		.input(zInsertUser)
-		.mutation(async ({ input, ctx }) => {
+		.mutation(async ({ input }) => {
 			const user = await db.query.users.findFirst({
 				// PRIMARY_USER_LOGIN
 				where: eq(users.emailAddress, input.emailAddress),
 			})
+
+			console.log(`found user ${user}`)
 			if (user) {
+				console.log(
+					`found user ${input.emailAddress} havingfound  ${user.emailAddress}`
+				)
 				return await db
 					.update(users)
 					.set({
@@ -30,25 +35,27 @@ const usersRouter = createTRPCRouter({
 				return await db.insert(users).values(input)
 			}
 		}),
+
 	/**
 	 * Internal procedure to update a user given authIds match
 	 */
 	updateUser: internalProcedure
 		.input(zInsertUser)
-		.mutation(async ({ input, ctx }) => {
+		.mutation(async ({ input }) => {
 			console.log("Hitting internal route to update user!")
 			return await db
 				.update(users)
 				.set(input)
 				.where(eq(users.id, input.id))
 		}),
+
 	/**
 	 * Delete a user by setting the user record to inactive, removing private data
 	 * Retains the user record identified by the Primary User Login
 	 */
 	deleteUser: internalProcedure
 		.input(z.string())
-		.mutation(async ({ input, ctx }) => {
+		.mutation(async ({ input }) => {
 			console.log("Hitting internal route to delete user!")
 			return await db
 				.update(users)
