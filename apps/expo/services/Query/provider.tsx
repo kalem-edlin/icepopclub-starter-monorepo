@@ -1,4 +1,5 @@
 import { useAuth } from "@clerk/clerk-expo"
+import { ClerkJWTTemplateName } from "@monoexpo/server/shared"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { httpBatchLink } from "@trpc/client"
 import { ReactNode, useState } from "react"
@@ -32,7 +33,9 @@ export const QueryProvider = ({ children }: { children: ReactNode }) => {
 				httpBatchLink({
 					url: getUrl("/api/trpc"),
 					async headers() {
-						return { Authorization: `Bearer ${await getToken()}` }
+						return {
+							Authorization: `Bearer ${await getToken({ template: ClerkJWTTemplateName })}`,
+						}
 					},
 				}),
 			],

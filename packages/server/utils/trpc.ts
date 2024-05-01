@@ -2,7 +2,8 @@ import { env } from "@monoexpo/env/server"
 import { TRPCError, initTRPC } from "@trpc/server"
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch"
 import jwt, { JwtPayload } from "jsonwebtoken"
-import z from "zod"
+import { zExpectedJWT } from "./jwt"
+
 export { fetchRequestHandler } from "@trpc/server/adapters/fetch"
 
 /**
@@ -19,13 +20,6 @@ export const createContext = async (opts: FetchCreateContextFnOptions) => {
 }
 
 const t = initTRPC.context<typeof createContext>().create()
-
-// This is defined as a custom JWT schema on the clerk dashboard
-const zExpectedJWT = z.object({
-	auth_id: z.string().min(1),
-	primary: z.string().min(1),
-	external_id: z.string().min(1),
-})
 
 /**
  * Take authorization from context, decode JWT and authenticate the user.
