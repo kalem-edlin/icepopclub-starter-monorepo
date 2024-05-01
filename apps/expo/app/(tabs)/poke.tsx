@@ -18,9 +18,9 @@ export default function TabTwoScreen() {
 								key={user.data.id}
 								className="flex-row w-full justify-between">
 								<Text>
-									{user.data.first_name}{" "}
-									{user.data.last_name &&
-										` ${user.data.last_name}`}
+									{user.data.firstName}{" "}
+									{user.data.lastName &&
+										` ${user.data.lastName}`}
 								</Text>
 								<Text>pokes: {user.pokes}</Text>
 								<TouchableOpacity

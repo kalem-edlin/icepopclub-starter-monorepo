@@ -1,9 +1,10 @@
 import { env } from "@monoexpo/env/server"
-import { appRouter } from "@monoexpo/server/routers"
+import { appRouter } from "@monoexpo/server"
 import {
 	Webhook,
 	WebhookEvent,
 	createCallerFactory,
+	createClerkClient,
 	parseUser,
 } from "@monoexpo/server/utils"
 import { ExpoRequest } from "expo-router/server"
@@ -20,7 +21,7 @@ export async function GET(req: ExpoRequest) {
 }
 
 /**
- * Webhook request handler for a Clerk user update
+ * Webhook request handler for a Clerk webhook user mutation
  * @param req
  * @returns
  */
@@ -74,6 +75,7 @@ export async function POST(req: Request) {
 		)
 	}
 
+	// Initiate TRPC internal route callers
 	const createCaller = createCallerFactory(appRouter)
 
 	const caller = createCaller(() => ({
@@ -81,22 +83,44 @@ export async function POST(req: Request) {
 	}))
 
 	switch (eventType) {
+		// Call create user route and update clerk user with generated OR existing userId.
 		case "user.created":
-			const createdUser = await caller.users.createUser(
-				parseUser(evt.data)
-			)
-			console.log(`created user ${JSON.stringify(createdUser)}`)
+			const clerkParsedUser = parseUser(evt.data)
+			const createUserResponse =
+				await caller.users.createUser(clerkParsedUser)
+
+			// If clerk externalId, set via clerk client expecting update webhook
+			if (!clerkParsedUser.id) {
+				const clerkClient = createClerkClient({
+					secretKey: env.CLERK_SECRET_KEY,
+				})
+				clerkClient.users.updateUser(evt.data.id, {
+					externalId: createUserResponse.foundUserId.toString(),
+				})
+			}
 			break
+
+		// Using userId in clerk public metadata response, update user record. Error if no ID supplied (unexpected error)
+		case "user.updated":
+			const parsedUser = parseUser(evt.data)
+			if (!parsedUser.id) {
+				throw new Error(
+					`Could not update user without userId public metadata for authId ${parsedUser.authId}`
+				)
+			}
+			const updatedUser = await caller.users.updateUser({
+				id: parsedUser.id,
+				user: parsedUser,
+			})
+			break
+
+		// Call Delete user by their auth id
 		case "user.deleted":
 			const result = await caller.users.deleteUser(evt.data.id)
 			console.log(`deleted user ${JSON.stringify(result)}`)
 			break
-		case "user.updated":
-			const updatedUser = await caller.users.updateUser(
-				parseUser(evt.data)
-			)
-			console.log(`updated user ${updatedUser}`)
-			break
+
+		// Only act on user mutation webhooks, all others return errors to clerk server
 		default:
 			return new Response("ERROR: Cannot support this webhook event", {
 				status: 501,

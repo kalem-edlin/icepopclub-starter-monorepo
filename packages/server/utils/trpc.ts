@@ -2,6 +2,8 @@ import { env } from "@monoexpo/env/server"
 import { TRPCError, initTRPC } from "@trpc/server"
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch"
 import jwt, { JwtPayload } from "jsonwebtoken"
+import z from "zod"
+export { fetchRequestHandler } from "@trpc/server/adapters/fetch"
 
 /**
  * Extract authorization header from request and pass to trpc routes
@@ -18,6 +20,13 @@ export const createContext = async (opts: FetchCreateContextFnOptions) => {
 
 const t = initTRPC.context<typeof createContext>().create()
 
+// This is defined as a custom JWT schema on the clerk dashboard
+const zExpectedJWT = z.object({
+	auth_id: z.string().min(1),
+	primary: z.string().min(1),
+	external_id: z.string().min(1),
+})
+
 /**
  * Take authorization from context, decode JWT and authenticate the user.
  * For routes that require an active user
@@ -30,21 +39,28 @@ const withAuthentication = t.middleware(({ ctx, next }) => {
 	if (!token) {
 		throw new TRPCError({ code: "UNAUTHORIZED" })
 	}
-
-	const decoded = jwt.verify(token, publicKey) as JwtPayload
-	if (!decoded.sub || !(decoded["sid"] as string)) {
+	try {
+		const decoded = zExpectedJWT.parse(
+			jwt.verify(token, publicKey) as JwtPayload
+		)
+		const userId: number = +decoded.external_id
+		if (isNaN(userId)) {
+			throw new Error(
+				`external_id is not a valid number ${decoded.external_id}`
+			)
+		}
+		return next({
+			ctx: {
+				userId,
+				authId: decoded.auth_id,
+			},
+		})
+	} catch (error) {
 		throw new TRPCError({
 			code: "UNAUTHORIZED",
-			message: `Session ID ${decoded["sid"]} and User ID ${decoded.sub}`,
+			message: `Cannot authenticate JWT due to missing auth information: ${token} with error: ${error}`,
 		})
 	}
-
-	return next({
-		ctx: {
-			userId: decoded.sub,
-			sessionId: decoded["sid"],
-		},
-	})
 })
 
 /**

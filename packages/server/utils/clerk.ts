@@ -1,5 +1,7 @@
 import { UserJSON } from "@clerk/backend"
 import { InsertUser } from "../db/types"
+export { createClerkClient } from "@clerk/backend"
+export type { UserJSON, WebhookEvent } from "@clerk/backend"
 
 /**
  * Take clerk user data on webhook update and tranform into user schema record for database consistency
@@ -20,7 +22,8 @@ export const parseUser = (j: UserJSON): InsertUser => {
 	}
 
 	return {
-		id: j.id,
+		id: j.external_id ? +j.external_id : undefined,
+		authId: j.id,
 		emailAddress: emailAddress.email_address,
 		firstName: j.first_name,
 		lastName: j.last_name,

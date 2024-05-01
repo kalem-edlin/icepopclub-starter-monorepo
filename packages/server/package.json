@@ -3,9 +3,9 @@
 	"version": "0.0.0",
 	"private": true,
 	"exports": {
-		"./routers": "./routers/_app.ts",
-		"./model": "./db/types.ts",
-		"./utils": "./index.ts"
+		"./shared": "./shared.ts",
+		"./utils": "./utils/index.ts",
+		".": "./index.ts"
 	},
 	"dependencies": {
 		"@clerk/backend": "^1.0.0",

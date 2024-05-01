@@ -82,6 +82,6 @@ export default function Page() {
 			</View>
 		</View>
 	) : (
-		<Redirect href={"/(tabs)/"} />
+		<Redirect href={"/(tabs)/user"} />
 	)
 }

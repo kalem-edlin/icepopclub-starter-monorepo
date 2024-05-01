@@ -1,4 +1,4 @@
-import { appRouter } from "@monoexpo/server/routers"
+import { appRouter } from "@monoexpo/server"
 import { createContext, fetchRequestHandler } from "@monoexpo/server/utils"
 
 import { ExpoRequest } from "expo-router/server"

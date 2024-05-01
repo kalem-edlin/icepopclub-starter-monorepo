@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-expo"
-import { User } from "@monoexpo/server/model"
+import type { Model } from "@monoexpo/server/shared"
 
 /**
  * React hook for parsing clerk user data into a database conistent User object
@@ -19,7 +19,7 @@ export const useUserService = () => {
 	}
 
 	// PRIMARY_USER_LOGIN
-	const authUser: User | undefined = user
+	const authUser: Model.User | undefined = user
 		? {
 				...user,
 				createdAt: user.createdAt!,

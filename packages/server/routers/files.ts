@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server"
 import { eq } from "drizzle-orm"
 import z from "zod"
 import { db } from "../db"
@@ -5,9 +6,8 @@ import { files } from "../db/schema"
 import { zInsertFile } from "../db/zod"
 import { authenticatedProcedure, createTRPCRouter } from "../utils/trpc"
 import {
-	acceptedDocumentTypesRegex,
-	acceptedImageTypesRegex,
 	getPresignedUrl,
+	maxFilesPerUpload,
 	zFileDetails,
 } from "../utils/upload"
 
@@ -28,33 +28,39 @@ const filesRouter = createTRPCRouter({
 			)
 		}),
 	getUserFiles: authenticatedProcedure
-		.input(z.string())
+		.input(z.number())
 		.query(async ({ input, ctx }) => {
 			return await db.query.files.findMany({
 				where: eq(files.userId, input),
 			})
 		}),
-	getDocumentUploadPresignedUrls: authenticatedProcedure
+	getFileUploadPresignedUrls: authenticatedProcedure
 		.input(z.array(zFileDetails))
 		.mutation(async ({ input, ctx }) => {
+			if (input.length > maxFilesPerUpload) {
+				throw new TRPCError({
+					code: "FORBIDDEN",
+					message: "Cannot upload more than 10 files at a time",
+				})
+			}
 			const promises = input.map(async (file) => {
-				if (!acceptedDocumentTypesRegex.test(file.type)) {
-					throw new Error(`Document type not accepted ${file.type}`)
-				}
 				return await getPresignedUrl(file)
 			})
 			return await Promise.all(promises)
 		}),
-	getImageUploadPresignedUrls: authenticatedProcedure
-		.input(z.array(zFileDetails))
-		.mutation(async ({ input, ctx }) => {
-			const promises = input.map(async (file) => {
-				if (!acceptedImageTypesRegex.test(file.type)) {
-					throw new Error(`Document type not accepted ${file.type}`)
-				}
-				return await getPresignedUrl(file)
+	reportS3UploadFailure: authenticatedProcedure
+		.input(
+			z.object({
+				fileKey: z.string(),
+				fileSize: z.number(),
+				fileType: z.string(),
 			})
-			return await Promise.all(promises)
+		)
+		.mutation(({ input, ctx }) => {
+			throw new TRPCError({
+				code: "INTERNAL_SERVER_ERROR",
+				message: `File upload failed on client for user ${ctx.userId}, fileKey ${input.fileKey}, fileSize ${input.fileSize}, fileType ${input.fileType}`,
+			})
 		}),
 })
 

@@ -14,14 +14,45 @@ import S3 from "aws-sdk/clients/s3"
 import { v4 as uuidv4 } from "uuid"
 import z from "zod"
 
-export const acceptedDocumentTypesRegex: RegExp = /^(image|video|audio|pdf)/
-export const acceptedImageTypesRegex: RegExp = /^(image|video)/
+export const acceptedFileTypesRegex: RegExp =
+	/^(image\/|video\/|audio\/|application\/pdf$)/
 
 export const zFileDetails = z.object({
 	name: z.string(),
 	type: z.string(),
-	index: z.number(),
+	localUri: z.string(),
 })
+
+export type UploadLimits = {
+	maxIndividualSizeMb: number
+}
+
+export const maxFilesPerUpload = 10
+
+export const getUploadLimitsPerAcceptedMimeType = (
+	type: string
+): UploadLimits | undefined => {
+	if (/^image\//.test(type)) {
+		return {
+			maxIndividualSizeMb: 10,
+		}
+	} else if (/^video\//.test(type)) {
+		return {
+			maxIndividualSizeMb: 20,
+		}
+	} else if (/^audio\//.test(type)) {
+		return {
+			maxIndividualSizeMb: 10,
+		}
+	} else if (/^application\/pdf$/.test(type)) {
+		return {
+			maxIndividualSizeMb: 15,
+		}
+	} else {
+		console.log(`Checked Unsupported file type ${type}`)
+		return
+	}
+}
 
 export const bucketName: string = env.S3_BUCKET_NAME
 
@@ -64,6 +95,6 @@ export const getPresignedUrl = async (file: z.infer<typeof zFileDetails>) => {
 	return {
 		Key,
 		uploadUrl,
-		index: file.index,
+		localUri: file.localUri,
 	}
 }
