@@ -3,7 +3,7 @@
 	"include": [
 		"**/*.ts",
 		"**/*.tsx",
-		"../../apps/expo/utils/env.ts",
-		"../../apps/expo/utils/env.web.ts"
+		"../../apps/expo/utils/env/index.ts",
+		"../../apps/expo/utils/env/index.web.ts"
 	]
 }

@@ -5,7 +5,7 @@
 		"**/*.tsx",
 		".expo/types/**/*.ts",
 		"expo-env.d.ts",
-		"utils/env.ts",
-		"utils/env.web.ts"
+		"utils/env/index.ts",
+		"utils/env/index.web.ts"
 	]
 }
