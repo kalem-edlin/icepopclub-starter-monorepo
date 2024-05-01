@@ -1,7 +1,7 @@
 import { getDocumentAsync } from "expo-document-picker"
 import { launchImageLibraryAsync } from "expo-image-picker"
 import { router } from "expo-router"
-import React, { useEffect } from "react"
+import React from "react"
 import {
 	ActivityIndicator,
 	Alert,
@@ -24,7 +24,7 @@ export default function UploadFilesPage() {
 		},
 	})
 
-	const { isUploading, processBatch, processedFiles, uploadProcessed } =
+	const { isUploading, processBatch, processedFiles, uploadProcessedFiles } =
 		useUpload(async (assets) => {
 			await postFiles.mutateAsync(assets)
 		})
@@ -54,29 +54,25 @@ export default function UploadFilesPage() {
 		}
 	}
 
-	useEffect(() => {
-		console.log(processedFiles)
-	}, [processedFiles])
-
 	return isUploading ? (
 		<View className="h-full w-full justify-center items-center">
 			<ActivityIndicator />
 		</View>
 	) : (
-		<View className="w-full h-full">
+		<View className="w-full h-full items-center">
 			<FlatList
-				className="w-full h-full"
+				className="w-11/12 h-full "
 				data={Array.from(processedFiles)}
 				renderItem={({ item, index }) => {
 					const [_, value] = item
 					return (
-						<View className="border-2 w-full py-4 flex-row">
-							<Text className="font-bold">{index}.</Text>
+						<View className="border-b border-b-gray-400 py-4 flex-row">
+							<Text className="font-bold mr-1">{index}.</Text>
 							<Text className="flex-grow text-left">
 								{value.name.slice(0, 12)}
 							</Text>
 							{value.file && (
-								<Text className="flex-grow text-left">
+								<Text className="text-left mr-2">
 									{bytesToMegabytes(value.file.size)
 										.toString()
 										.slice(0, 4)}
@@ -101,23 +97,25 @@ export default function UploadFilesPage() {
 				}}
 			/>
 
-			<View style={{ bottom: 32 }} className="absolute border w-full">
+			<View
+				style={{ bottom: 32 }}
+				className="absolute gap-y-4 w-full px-4 items-center justify-center">
 				<View className="w-full justify-evenly flex-row">
 					<TouchableOpacity
 						onPress={handleUploadImage}
-						className="py-2 border-2 flex-grow items-center justify-center">
-						<Text>Add Image</Text>
+						className="py-3 mr-1 rounded-xl border flex-grow items-center justify-center">
+						<Text className="font-semibold">Add Image</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
 						onPress={handleUploadFile}
-						className="py-2 border-2 flex-grow items-center justify-center">
-						<Text>Add Document</Text>
+						className="py-3 ml-1 rounded-xl border flex-grow items-center justify-center">
+						<Text className="font-semibold">Add Document</Text>
 					</TouchableOpacity>
 				</View>
 				<TouchableOpacity
-					onPress={uploadProcessed}
-					className="py-4 w-full items-center">
-					<Text>Upload</Text>
+					onPress={uploadProcessedFiles}
+					className="bg-cyan-500 w-full rounded-xl py-4 items-center">
+					<Text className="text-white font-semibold">Upload</Text>
 				</TouchableOpacity>
 			</View>
 		</View>

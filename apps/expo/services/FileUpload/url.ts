@@ -1,5 +1,5 @@
-import getUrl from "../../utils/url"
+import { getHostUrl } from "../../utils/url"
 
-const url = getUrl("/api/uploadthing")
+const url = getHostUrl("/api/uploadthing")
 
 export default url

@@ -104,7 +104,7 @@ export async function POST(req: Request) {
 				)
 			}
 			console.log(
-				`User ${createUserResponse.foundUserId}:${evt.data.id} successfully create with metadata population: ${userMetaDataPopulationResult}`
+				`User ${createUserResponse.foundUserId}:${evt.data.id} successfully create with metadata population: ${JSON.stringify(userMetaDataPopulationResult)}`
 			)
 			break
 
@@ -127,10 +127,8 @@ export async function POST(req: Request) {
 
 		// Call Delete user by their auth id
 		case "user.deleted":
-			const result = await caller.users.deleteUser(evt.data.id)
-			console.log(
-				`User auth-only:${evt.data.id} successfully deleted with result: ${result}`
-			)
+			await caller.users.deleteUser(evt.data.id)
+			console.log(`User auth-only:${evt.data.id} successfully deleted`)
 			break
 
 		// Only act on user mutation webhooks, all others return errors to clerk server

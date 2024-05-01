@@ -87,7 +87,7 @@ export const useUpload = (
 					return {
 						s3Key: pf.Key,
 						mimeType: asset.file.type,
-						mbSize: asset.file.size,
+						mbSize: bytesToMegabytes(asset.file.size),
 						name: asset.file.name,
 					}
 				}
@@ -177,7 +177,7 @@ export const useUpload = (
 	/**
 	 * Filter out unprocessed files and call presign mutation
 	 */
-	const uploadProcessed = async () => {
+	const uploadProcessedFiles = async () => {
 		setIsUploading(true)
 
 		// Filter out unprocessed files and call presign TRPC mutation
@@ -195,7 +195,7 @@ export const useUpload = (
 	return {
 		processedFiles,
 		processBatch,
-		uploadProcessed,
+		uploadProcessedFiles,
 		isUploading,
 	}
 }

@@ -1,7 +1,7 @@
 import { env } from "@monoexpo/env/server"
 import {
-	integer,
 	pgTableCreator,
+	real,
 	serial,
 	text,
 	timestamp,
@@ -43,5 +43,5 @@ export const files = createTable(`files`, {
 	name: text("name").notNull(),
 	s3Key: text("url").notNull().unique(),
 	mimeType: text("mimeType").notNull(),
-	mbSize: integer("mbSize"),
+	mbSize: real("mbSize"),
 })

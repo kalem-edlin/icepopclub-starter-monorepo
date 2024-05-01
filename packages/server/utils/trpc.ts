@@ -1,9 +1,8 @@
 import { env } from "@monoexpo/env/server"
 import { TRPCError, initTRPC } from "@trpc/server"
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch"
-import jwt, { JwtPayload } from "jsonwebtoken"
-import { zExpectedJWT } from "./jwt"
-
+import { ZodError } from "zod"
+import { verifyAndParseToken } from "./jwt"
 export { fetchRequestHandler } from "@trpc/server/adapters/fetch"
 
 /**
@@ -19,7 +18,28 @@ export const createContext = async (opts: FetchCreateContextFnOptions) => {
 	}
 }
 
-const t = initTRPC.context<typeof createContext>().create()
+/**
+ * Create trpc server instance with error formatting and logging
+ */
+const t = initTRPC.context<typeof createContext>().create({
+	errorFormatter(opts) {
+		const { shape, error } = opts
+		console.log(
+			`Encountered TRPC error with code ${error.code}\nand message ${error.message}`
+		)
+		return {
+			...shape,
+			data: {
+				...shape.data,
+				zodError:
+					error.code === "BAD_REQUEST" &&
+					error.cause instanceof ZodError
+						? error.cause.flatten()
+						: null,
+			},
+		}
+	},
+})
 
 /**
  * Take authorization from context, decode JWT and authenticate the user.
@@ -28,36 +48,9 @@ const t = initTRPC.context<typeof createContext>().create()
  * @returns {UserId, SessionId} - for router information where needed
  */
 const withAuthentication = t.middleware(({ ctx, next }) => {
-	const publicKey = env.CLERK_PEM_PUBLIC_KEY
-	const token = ctx.authorization
-	if (!token) {
-		throw new TRPCError({ code: "UNAUTHORIZED" })
-	}
-	try {
-		const decoded = zExpectedJWT.parse(
-			jwt.verify(token, publicKey) as JwtPayload
-		)
-		const userId: number = +decoded.external_id
-		if (isNaN(userId)) {
-			throw new Error(
-				`external_id is not a valid number ${decoded.external_id}`
-			)
-		}
-		console.log(
-			`Successfuly decoded JWT template ${env.CLERK_JWT_TEMPLATE_NAME} for ${userId}:${decoded.auth_id} with ${decoded.primary}`
-		)
-		return next({
-			ctx: {
-				userId,
-				authId: decoded.auth_id,
-			},
-		})
-	} catch (error) {
-		throw new TRPCError({
-			code: "UNAUTHORIZED",
-			message: `Cannot authenticate JWT due to missing auth information: ${token} with error: ${error}`,
-		})
-	}
+	return next({
+		ctx: verifyAndParseToken(ctx.authorization),
+	})
 })
 
 /**

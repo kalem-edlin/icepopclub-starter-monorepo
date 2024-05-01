@@ -4,7 +4,6 @@ import { ActivityIndicator, FlatList, Image, Text, View } from "react-native"
 import { useUser } from "@clerk/clerk-expo"
 import { Link } from "expo-router"
 import { trpc } from "../../../services/Query"
-import bytesToMegabytes from "../../../utils/bToMb"
 
 export default function ProfileScreen() {
 	const { isLoaded, isSignedIn, user } = useUser()
@@ -13,7 +12,7 @@ export default function ProfileScreen() {
 		return
 	}
 
-	const userFiles = trpc.files.getUserFiles.useQuery(user.id)
+	const userFiles = trpc.files.getUserFiles.useQuery()
 
 	return (
 		isLoaded &&
@@ -32,17 +31,21 @@ export default function ProfileScreen() {
 				<Text>Email: {user.primaryEmailAddress?.emailAddress}</Text>
 				{userFiles.data && (
 					<FlatList
+						className="w-11/12 h-full "
 						data={userFiles.data}
-						renderItem={({ item }) => {
+						renderItem={({ item, index }) => {
 							return (
-								<Text>
-									{item.name} {item.mimeType}{" "}
-									{item.mbSize &&
-										bytesToMegabytes(item.mbSize)
-											.toString()
-											.slice(0, 4)}
-									mb
-								</Text>
+								<View className="border-b border-b-gray-400 py-4 flex-row">
+									<Text className="font-bold mr-1">
+										{index}.
+									</Text>
+									<Text className="flex-grow text-left">
+										{item.name.slice(0, 12)}
+									</Text>
+									<Text className="flex-shrink text-left">
+										{item.mbSize} mb
+									</Text>
+								</View>
 							)
 						}}
 					/>
@@ -53,9 +56,13 @@ export default function ProfileScreen() {
 				)}
 
 				<View
-					style={{ bottom: 32 }}
-					className="absolute w-full justify-evenly flex-row">
-					<Link href="/(tabs)/user/upload">Upload Files</Link>
+					style={{ bottom: 46 }}
+					className="absolute py-4 bg-cyan-500 rounded-xl w-11/12 justify-evenly flex-row">
+					<Link
+						className="text-white font-semibold"
+						href="/(tabs)/user/upload">
+						Upload Files
+					</Link>
 				</View>
 			</View>
 		)

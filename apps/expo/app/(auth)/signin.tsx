@@ -4,12 +4,14 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native"
 import { useSignInService } from "../../services/Auth/hooks/signIn"
 
 export default function SignInScreen() {
-	const { onSignIn } = useSignInService(() => router.replace("/(tabs)/user/"))
+	const { onSignIn } = useSignInService()
 	const [emailAddress, setEmailAddress] = React.useState("")
 	const [password, setPassword] = React.useState("")
 
 	const onSignInPress = async () => {
-		await onSignIn(emailAddress, password)
+		await onSignIn(emailAddress, password, () =>
+			router.replace("/(tabs)/user/")
+		)
 	}
 
 	return (
