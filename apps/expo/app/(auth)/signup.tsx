@@ -24,7 +24,7 @@ export default function SignUpScreen() {
 	}
 
 	const onPressVerify = async () => {
-		await onVerify(code, () => router.replace("/(tabs)/"))
+		await onVerify(code, () => router.replace("/(tabs)/user/"))
 	}
 
 	return (

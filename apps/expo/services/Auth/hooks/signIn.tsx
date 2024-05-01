@@ -6,7 +6,7 @@ import { Alert } from "react-native"
  * Maintains necessary Clerk User data
  * @returns
  */
-export const useSignInService = (callback: () => void) => {
+export const useSignInService = () => {
 	const { signIn, setActive, isLoaded } = useSignIn()
 	const { user } = useUser()
 
@@ -19,7 +19,8 @@ export const useSignInService = (callback: () => void) => {
 	 */
 	const onSignIn = async (
 		identifier: string, // PRIMARY_USER_LOGIN
-		password: string
+		password: string,
+		callback: () => void
 	) => {
 		try {
 			if (!isLoaded) return
@@ -28,6 +29,7 @@ export const useSignInService = (callback: () => void) => {
 				password,
 			})
 			await setActive({ session: completeSignIn.createdSessionId })
+			callback()
 		} catch (err: any) {
 			Alert.alert(err)
 		}

@@ -89,16 +89,23 @@ export async function POST(req: Request) {
 				await caller.users.createUser(clerkParsedUser)
 
 			// If clerk externalId, set via clerk client expecting update webhook
+			let userMetaDataPopulationResult
 			if (!clerkParsedUser.id) {
-				fetch(`${env.CLERK_API_URL}/users/${evt.data.id}`, {
-					body: `{"external_id":"${createUserResponse.foundUserId}"}`,
-					headers: {
-						Authorization: `Bearer ${env.CLERK_SECRET_KEY}`,
-						"Content-Type": "application/json",
-					},
-					method: "PATCH",
-				})
+				userMetaDataPopulationResult = await fetch(
+					`${env.CLERK_API_URL}/users/${evt.data.id}`,
+					{
+						body: `{"external_id":"${createUserResponse.foundUserId}"}`,
+						headers: {
+							Authorization: `Bearer ${env.CLERK_SECRET_KEY}`,
+							"Content-Type": "application/json",
+						},
+						method: "PATCH",
+					}
+				)
 			}
+			console.log(
+				`User ${createUserResponse.foundUserId}:${evt.data.id} successfully create with metadata population: ${userMetaDataPopulationResult}`
+			)
 			break
 
 		// Using userId in clerk public metadata response, update user record. Error if no ID supplied (unexpected error)
@@ -113,12 +120,17 @@ export async function POST(req: Request) {
 				id: parsedUser.id,
 				user: parsedUser,
 			})
+			console.log(
+				`User ${parsedUser.id}:${evt.data.id} successfully updated with result: ${updatedUser}`
+			)
 			break
 
 		// Call Delete user by their auth id
 		case "user.deleted":
 			const result = await caller.users.deleteUser(evt.data.id)
-			console.log(`deleted user ${JSON.stringify(result)}`)
+			console.log(
+				`User auth-only:${evt.data.id} successfully deleted with result: ${result}`
+			)
 			break
 
 		// Only act on user mutation webhooks, all others return errors to clerk server

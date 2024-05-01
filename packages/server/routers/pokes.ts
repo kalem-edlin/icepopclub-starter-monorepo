@@ -16,7 +16,7 @@ const pokesRouter = createTRPCRouter({
 	sendPoke: authenticatedProcedure
 		.input(
 			z.object({
-				pokedUserId: z.string(),
+				pokedUserId: z.number(),
 			})
 		)
 		.mutation(async ({ input, ctx }) => {

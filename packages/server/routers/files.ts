@@ -27,13 +27,11 @@ const filesRouter = createTRPCRouter({
 				})
 			)
 		}),
-	getUserFiles: authenticatedProcedure
-		.input(z.number())
-		.query(async ({ input, ctx }) => {
-			return await db.query.files.findMany({
-				where: eq(files.userId, input),
-			})
-		}),
+	getUserFiles: authenticatedProcedure.query(async ({ ctx }) => {
+		return await db.query.files.findMany({
+			where: eq(files.userId, ctx.userId),
+		})
+	}),
 	getFileUploadPresignedUrls: authenticatedProcedure
 		.input(z.array(zFileDetails))
 		.mutation(async ({ input, ctx }) => {

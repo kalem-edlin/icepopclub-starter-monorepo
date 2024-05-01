@@ -43,6 +43,9 @@ const withAuthentication = t.middleware(({ ctx, next }) => {
 				`external_id is not a valid number ${decoded.external_id}`
 			)
 		}
+		console.log(
+			`Successfuly decoded JWT template ${env.CLERK_JWT_TEMPLATE_NAME} for ${userId}:${decoded.auth_id} with ${decoded.primary}`
+		)
 		return next({
 			ctx: {
 				userId,

@@ -12,7 +12,6 @@ export default function ForgotPasswordPage() {
 	const [password, setPassword] = useState("")
 	const [code, setCode] = useState("")
 	const [successfulCreation, setSuccessfulCreation] = useState(false)
-	const [secondFactor, setSecondFactor] = useState(false)
 	const [error, setError] = useState("")
 
 	if (!isLoaded) {
@@ -22,7 +21,7 @@ export default function ForgotPasswordPage() {
 	// If the user is already signed in,
 	// redirect them to the home page
 	if (isSignedIn) {
-		router.replace("/(tabs)/")
+		router.replace("/(tabs)/user/")
 	}
 
 	async function onCreateResetCode() {
