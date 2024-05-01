@@ -20,6 +20,7 @@ export const env = createEnv({
 		CLERK_USER_WEBHOOK_SECRET: z.string().min(1),
 		CLERK_SECRET_KEY: z.string().min(1),
 		CLERK_JWT_TEMPLATE_NAME: z.string().min(1),
+		CLERK_API_URL: z.string().url(),
 		S3_BUCKET_NAME: z.string().min(1),
 		S3_SECRET_KEY: z.string().min(1),
 		S3_ACCESS_KEY: z.string().min(1),

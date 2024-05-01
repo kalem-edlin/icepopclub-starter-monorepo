@@ -4,7 +4,6 @@ import {
 	Webhook,
 	WebhookEvent,
 	createCallerFactory,
-	createClerkClient,
 	parseUser,
 } from "@monoexpo/server/utils"
 import { ExpoRequest } from "expo-router/server"
@@ -91,11 +90,13 @@ export async function POST(req: Request) {
 
 			// If clerk externalId, set via clerk client expecting update webhook
 			if (!clerkParsedUser.id) {
-				const clerkClient = createClerkClient({
-					secretKey: env.CLERK_SECRET_KEY,
-				})
-				clerkClient.users.updateUser(evt.data.id, {
-					externalId: createUserResponse.foundUserId.toString(),
+				fetch(`${env.CLERK_API_URL}/users/${evt.data.id}`, {
+					body: `{"external_id":"${createUserResponse.foundUserId}"}`,
+					headers: {
+						Authorization: `Bearer ${env.CLERK_SECRET_KEY}`,
+						"Content-Type": "application/json",
+					},
+					method: "PATCH",
 				})
 			}
 			break

@@ -1,6 +1,5 @@
 import { UserJSON } from "@clerk/backend"
 import { InsertUser } from "../db/types"
-export { createClerkClient } from "@clerk/backend"
 export type { UserJSON, WebhookEvent } from "@clerk/backend"
 
 /**
