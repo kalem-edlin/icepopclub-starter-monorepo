@@ -1,4 +1,5 @@
 import { useSignUp, useUser } from "@clerk/clerk-expo"
+import { Model } from "@monoexpo/server/shared"
 
 export const useSignUpService = () => {
 	const { isLoaded, signUp, setActive } = useSignUp()
@@ -8,7 +9,8 @@ export const useSignUpService = () => {
 		identifier: string,
 		password: string,
 		callback: () => void,
-		name?: { firstName: string; lastName?: string }
+		// PRIMARY_USER_LOGIN
+		extraProperties: Omit<Model.InsertUser, "emailAddress">
 	) => {
 		if (!isLoaded) return
 
@@ -16,8 +18,8 @@ export const useSignUpService = () => {
 			await signUp.create({
 				emailAddress: identifier,
 				password,
-				firstName: name?.firstName,
-				lastName: name?.lastName,
+				firstName: extraProperties.firstName ?? undefined,
+				lastName: extraProperties.lastName ?? undefined,
 			})
 
 			await signUp.prepareEmailAddressVerification({
