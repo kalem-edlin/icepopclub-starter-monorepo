@@ -4,6 +4,8 @@ import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch"
 import { ZodError } from "zod"
 import { verifyAndParseToken } from "./jwt"
 export { fetchRequestHandler } from "@trpc/server/adapters/fetch"
+// @ts-ignore
+import transformer from "superjson"
 
 /**
  * Extract authorization header from request and pass to trpc routes
@@ -22,6 +24,7 @@ export const createContext = async (opts: FetchCreateContextFnOptions) => {
  * Create trpc server instance with error formatting and logging
  */
 const t = initTRPC.context<typeof createContext>().create({
+	transformer,
 	errorFormatter(opts) {
 		const { shape, error } = opts
 		console.log(

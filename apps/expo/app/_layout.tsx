@@ -5,7 +5,6 @@ import { Stack } from "expo-router"
 import * as SplashScreen from "expo-splash-screen"
 import { NativeWindStyleSheet } from "nativewind"
 import { useEffect } from "react"
-import { Platform } from "react-native"
 import mixpanel from "../services/Analytics"
 import AuthProvider from "../services/Auth/provider"
 import { usePersistance } from "../services/Persistance"
@@ -43,9 +42,7 @@ export default function RootLayout() {
 		return null
 	}
 
-	return Platform.OS !== "ios" ? (
-		<Stack></Stack>
-	) : (
+	return (
 		<AuthProvider>
 			<QueryProvider>
 				<Stack>

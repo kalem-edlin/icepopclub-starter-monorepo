@@ -134,6 +134,12 @@ importers:
       react-native-web:
         specifier: ~0.19.6
         version: 0.19.11(react-dom@18.2.0)(react@18.2.0)
+      superjson:
+        specifier: ^2.2.1
+        version: 2.2.1
+      trpc-transformer:
+        specifier: ^3.2.2
+        version: 3.2.2(decimal.js@10.4.3)(superjson@2.2.1)
       zustand:
         specifier: ^4.5.2
         version: 4.5.2(@types/react@18.2.79)(react@18.2.0)
@@ -202,9 +208,15 @@ importers:
       postgres:
         specifier: ^3.4.4
         version: 3.4.4
+      superjson:
+        specifier: ^2.2.1
+        version: 2.2.1
       svix:
         specifier: ^1.21.0
         version: 1.21.0
+      trpc-transformer:
+        specifier: ^3.2.2
+        version: 3.2.2(decimal.js@10.4.3)(superjson@2.2.1)
       uuid:
         specifier: ^9.0.1
         version: 9.0.1
@@ -5447,7 +5459,6 @@ packages:
     engines: {node: '>=12.13'}
     dependencies:
       is-what: 4.1.16
-    dev: true
 
   /copy-to-clipboard@3.3.3:
     resolution: {integrity: sha512-2KV8NhB5JqC3ky0r9PMCAZKbUHSwtEo4CwCs0KXgruG43gX5PMqDEBbVU4OUzw2MuAWUfsuFmWvEKG5QRfSnJA==}
@@ -5678,6 +5689,10 @@ packages:
   /decamelize@1.2.0:
     resolution: {integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /decimal.js@10.4.3:
+    resolution: {integrity: sha512-VBBaLc1MgL5XpzgIP7ny5Z6Nx3UrRkIViUkPUdtl9aya5amy3De1gsUUSB1g3+3sExYNjCAsAznmukyxCb1GRA==}
     dev: false
 
   /decode-uri-component@0.2.2:
@@ -8069,7 +8084,6 @@ packages:
   /is-what@4.1.16:
     resolution: {integrity: sha512-ZhMwEosbFJkA0YhFnNDgTM4ZxDRsS6HqTo7qsZM08fehyRYIYa0yHu5R6mgo1n/8MgaPBXiPimPD77baVFYg+A==}
     engines: {node: '>=12.13'}
-    dev: true
 
   /is-wsl@1.1.0:
     resolution: {integrity: sha512-gfygJYZ2gLTDlmbWMI0CE2MwnFzSN/2SZfkMlItC4K/JBlsWVDB0bO6XhqcY13YXE7iMcAJnzTCJjPiTeJJ0Mw==}
@@ -11177,7 +11191,6 @@ packages:
     engines: {node: '>=16'}
     dependencies:
       copy-anything: 3.0.5
-    dev: true
 
   /supports-color@5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
@@ -11429,6 +11442,16 @@ packages:
       gopd: 1.0.1
       typedarray.prototype.slice: 1.0.3
       which-typed-array: 1.1.15
+    dev: false
+
+  /trpc-transformer@3.2.2(decimal.js@10.4.3)(superjson@2.2.1):
+    resolution: {integrity: sha512-Q8r6uvUv42OwTsCtG797qQIOt2v7YXf+J8Q9TpUSBWcgFxtZm8OAduPK5Byadna3pgWxfuZflbM8ZiwPIB+3YQ==}
+    peerDependencies:
+      decimal.js: ^10.4.3
+      superjson: ^2.2.1
+    dependencies:
+      decimal.js: 10.4.3
+      superjson: 2.2.1
     dev: false
 
   /ts-interface-checker@0.1.13:

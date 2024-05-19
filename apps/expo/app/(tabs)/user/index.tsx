@@ -2,7 +2,7 @@ import { ActivityIndicator, FlatList, Image, Text, View } from "react-native"
 
 // TODO: Is it okay to import types where the source defines its a type export instead of a type import for the sake of dependency population
 import { useUser } from "@clerk/clerk-expo"
-import { Link } from "expo-router"
+import { Link, useFocusEffect } from "expo-router"
 import { trpc } from "../../../services/Query"
 
 export default function ProfileScreen() {
@@ -11,6 +11,10 @@ export default function ProfileScreen() {
 	if (!user) {
 		return
 	}
+
+	useFocusEffect(() => {
+		userFiles.refetch()
+	})
 
 	const userFiles = trpc.files.getUserFiles.useQuery()
 

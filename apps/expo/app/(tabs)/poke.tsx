@@ -23,6 +23,9 @@ export default function TabTwoScreen() {
 										` ${user.data.lastName}`}
 								</Text>
 								<Text>pokes: {user.pokes}</Text>
+								<Text>
+									date: {user.data.createdAt.getTime()}
+								</Text>
 								<TouchableOpacity
 									onPress={() => {
 										pokeUser.mutate({
