@@ -1,8 +1,8 @@
-import { SignedIn, SignedOut, useAuth } from "@clerk/clerk-expo"
+import { SignedIn, SignedOut, useAuth, useUser } from "@clerk/clerk-expo"
 import { MaterialIcons } from "@expo/vector-icons"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 import { Redirect, Tabs } from "expo-router"
-import React from "react"
+import React, { useEffect } from "react"
 import { TouchableOpacity } from "react-native"
 
 function TabBarIcon(props: {
@@ -14,6 +14,11 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
 	const { isLoaded, signOut } = useAuth()
+	const { user } = useUser()
+
+	useEffect(() => {
+		console.log(user)
+	}, [user])
 
 	return (
 		<>
