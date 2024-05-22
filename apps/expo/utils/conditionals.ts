@@ -1,9 +1,8 @@
-import type { Mixpanel } from "mixpanel-react-native"
-import { Platform } from "react-native"
+// import type { Mixpanel } from "mixpanel-react-native"
 
 // Add all conditional exportables here
 interface ConditionalExports {
-	Mixpanel?: typeof Mixpanel
+	// Mixpanel?: typeof Mixpanel
 }
 
 // Add Defaults here
@@ -18,8 +17,8 @@ try {
 
 // Non Expo Go Compatible
 try {
-	c.Mixpanel =
-		Platform.OS !== "web" && require("mixpanel-react-native").Mixpanel
+	// c.Mixpanel =
+	// Platform.OS !== "web" && require("mixpanel-react-native").Mixpanel
 } catch (error) {
 	__DEV__ &&
 		console.log(`Excluding conditional imports from ${error} for Expo Go`)

@@ -1,8 +1,6 @@
 import { appRouter } from "@monoexpo/server"
 import { createContext, fetchRequestHandler } from "@monoexpo/server/utils"
 
-import { ExpoRequest } from "expo-router/server"
-
 export async function GET(req: Request) {
 	return fetchRequestHandler({
 		endpoint: "/api/trpc",
@@ -12,7 +10,7 @@ export async function GET(req: Request) {
 	})
 }
 
-export async function POST(req: ExpoRequest) {
+export async function POST(req: Request) {
 	return fetchRequestHandler({
 		endpoint: "/api/trpc",
 		req: req as unknown as Request,

@@ -3,6 +3,7 @@
 	"name": "@monoexpo/monorepo",
 	"scripts": {
 		"deploy": "vercel deploy",
+		"prebuild": "EXPO_USE_METRO_WORKSPACE_ROOT=1 cd apps/expo && npx expo prebuild --platform ios; open ios/monoexpo.xcworkspace",
 		"build": "EXPO_USE_METRO_WORKSPACE_ROOT=1  npx turbo build --filter=@monoexpo/app",
 		"dev": "EXPO_USE_METRO_WORKSPACE_ROOT=1  npx turbo dev --filter=@monoexpo/app",
 		"start": "EXPO_USE_METRO_WORKSPACE_ROOT=1 cd apps/expo && npx expo start",

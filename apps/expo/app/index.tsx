@@ -1,5 +1,5 @@
 import * as Linking from "expo-linking"
-import { Redirect, Stack } from "expo-router"
+import { Link, Stack } from "expo-router"
 import { Image, Platform, Text, TouchableOpacity, View } from "react-native"
 
 export default function Page() {
@@ -82,6 +82,10 @@ export default function Page() {
 			</View>
 		</View>
 	) : (
-		<Redirect href={"/(tabs)/user"} />
+		// <Redirect href={"/(tabs)/user"} />
+		<View>
+			<Text>Hey Guys</Text>
+			<Link href={"/(auth)/signin"}>Login</Link>
+		</View>
 	)
 }

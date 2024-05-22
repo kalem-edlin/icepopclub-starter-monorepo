@@ -1,5 +1,5 @@
+import { env } from "@monoexpo/env/client"
 import Constants from "expo-constants"
-import { env } from "./env"
 
 /**
  * Utility function to generate URL from current environment given a route

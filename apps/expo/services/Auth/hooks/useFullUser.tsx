@@ -1,5 +1,6 @@
 import { useUser } from "@clerk/clerk-expo"
-import type { Model } from "@monoexpo/server/shared"
+import { Model } from "@monoexpo/server/shared"
+import { router } from "expo-router"
 
 /**
  * React hook for parsing clerk user data into a database conistent User object
@@ -7,10 +8,14 @@ import type { Model } from "@monoexpo/server/shared"
  * TODO: Will throw errors if required user data not found. Handle this more gracefully
  * @returns
  */
-export const useUserService = () => {
+export const useFullUser = () => {
 	const { isLoaded, isSignedIn, user } = useUser()
 
 	if (user && !user.primaryEmailAddress) {
+		throw new Error("Auth User does not have primary user login (email)")
+	}
+
+	if (user && !user.firstName) {
 		throw new Error("Auth User does not have primary user login (email)")
 	}
 
@@ -22,14 +27,19 @@ export const useUserService = () => {
 	const authUser: Model.User | undefined = user
 		? {
 				...user,
+				firstName: user.firstName!,
+				lastName: user.lastName,
 				createdAt: user.createdAt!,
-				active: (user.unsafeMetadata["active"] as boolean) ?? true,
 				emailAddress: user.primaryEmailAddress!.emailAddress,
+				authId: user.id,
+				id: +user.externalId!,
+				deactivatedAt: null,
 			}
 		: undefined
 
-	if (!authUser)
-		throw new Error("Auth User data inconsistent with metadata declaration")
+	if (!authUser) {
+		router.replace("/(auth)/signin")
+	}
 
-	return { isLoaded, isSignedIn, authUser }
+	return { isLoaded, isSignedIn, user: authUser!, clerkUser: user }
 }

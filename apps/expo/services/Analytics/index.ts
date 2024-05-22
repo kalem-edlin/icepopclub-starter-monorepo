@@ -1,24 +1,24 @@
-import type { Mixpanel } from "mixpanel-react-native"
-import c from "../../utils/conditionals"
-import { env } from "../../utils/env"
+// import type { Mixpanel } from "mixpanel-react-native"
+// import c from "../../utils/conditionals"
+// import { env } from "../../utils/env"
 
-const trackAutomaticEvents = true
-let mixpanel: Mixpanel | undefined
+// const trackAutomaticEvents = true
+// let mixpanel: Mixpanel | undefined
 
-/**
- * Init mixpanel if the conditional import is available (non expo go)
- */
-const initMixpanel = async () => {
-	const MixpanelObject = c.Mixpanel
+// /**
+//  * Init mixpanel if the conditional import is available (non expo go)
+//  */
+// const initMixpanel = async () => {
+// 	const MixpanelObject = c.Mixpanel
 
-	if (MixpanelObject) {
-		mixpanel = new MixpanelObject(
-			env.EXPO_PUBLIC_MIXPANEL_TOKEN,
-			trackAutomaticEvents
-		)
-	}
-}
+// 	if (MixpanelObject) {
+// 		mixpanel = new MixpanelObject(
+// 			env.EXPO_PUBLIC_MIXPANEL_TOKEN,
+// 			trackAutomaticEvents
+// 		)
+// 	}
+// }
 
-initMixpanel()
+// initMixpanel()
 
-export default mixpanel
+// export default mixpanel ?? null

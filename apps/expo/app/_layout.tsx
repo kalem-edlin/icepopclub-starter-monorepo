@@ -1,11 +1,9 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 import { useFonts } from "expo-font"
 import { Stack } from "expo-router"
-
 import * as SplashScreen from "expo-splash-screen"
 import { NativeWindStyleSheet } from "nativewind"
 import { useEffect } from "react"
-import mixpanel from "../services/Analytics"
 import AuthProvider from "../services/Auth/provider"
 import { usePersistance } from "../services/Persistance"
 import { QueryProvider } from "../services/Query/provider"
@@ -34,7 +32,6 @@ export default function RootLayout() {
 	useEffect(() => {
 		if (loaded) {
 			SplashScreen.hideAsync()
-			mixpanel?.track("App Launched")
 		}
 	}, [loaded])
 

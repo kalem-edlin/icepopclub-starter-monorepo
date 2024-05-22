@@ -1,7 +1,7 @@
 import { Stack, router } from "expo-router"
 import * as React from "react"
 import { Text, TextInput, TouchableOpacity, View } from "react-native"
-import { useSignUpService } from "../../services/Auth/hooks/signUp"
+import { useSignUpService } from "../../services/Auth/hooks/useSignUp"
 
 export default function SignUpScreen() {
 	const { onSignUp, onVerify } = useSignUpService()

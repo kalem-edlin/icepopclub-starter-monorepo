@@ -1,12 +1,11 @@
 import { useAuth } from "@clerk/clerk-expo"
+import { env } from "@monoexpo/env/client"
+import { transformer } from "@monoexpo/server/shared"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { httpBatchLink } from "@trpc/client"
 import { ReactNode, useState } from "react"
 import { trpc } from "."
-import { env } from "../../utils/env"
 import { getHostUrl } from "../../utils/url"
-// @ts-ignore
-import transformer from "superjson"
 
 // TODO: Pass in authentication token here from userstorage
 export const QueryProvider = ({ children }: { children: ReactNode }) => {

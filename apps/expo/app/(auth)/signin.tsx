@@ -1,7 +1,7 @@
 import { Stack, router } from "expo-router"
 import React from "react"
 import { Text, TextInput, TouchableOpacity, View } from "react-native"
-import { useSignInService } from "../../services/Auth/hooks/signIn"
+import { useSignInService } from "../../services/Auth/hooks/useSignIn"
 
 export default function SignInScreen() {
 	const { onSignIn } = useSignInService()

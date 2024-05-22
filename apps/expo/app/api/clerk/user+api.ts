@@ -6,9 +6,8 @@ import {
 	createCallerFactory,
 	parseUser,
 } from "@monoexpo/server/utils"
-import { ExpoRequest } from "expo-router/server"
 
-export async function GET(req: ExpoRequest) {
+export async function GET(req: Request) {
 	return Response.json(
 		{
 			error: "POST route only",

@@ -2,7 +2,7 @@ import { Stack, router } from "expo-router"
 import React, { useState } from "react"
 import { Text, TextInput, TouchableOpacity, View } from "react-native"
 import BackChevron from "../../components/Icons/BackChevron"
-import { useForgotService } from "../../services/Auth/hooks/forgot"
+import { useForgotService } from "../../services/Auth/hooks/useForgotPassword"
 
 export default function ForgotPasswordPage() {
 	const { isLoaded, isSignedIn, createResetCode, handleReset } =
