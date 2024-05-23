@@ -2,8 +2,8 @@
 	"private": true,
 	"name": "@acme/monorepo",
 	"scripts": {
-		"dev": "dotenv -- turbo dev --parallel",
-		"dev:clear": "dotenv -- turbo dev:clear --parallel",
+		"dev": "turbo dev --parallel",
+		"dev:clear": "turbo dev:clear --parallel",
 		"deploy": "cd apps/next && vercel deploy",
 		"build": "npx turbo run build --filter=next...",
 		"clean": "rm -rf .expo .turbo node_modules",
