@@ -30,7 +30,7 @@ export default async function handler(
 		}
 
 		// Get the body
-		const payload = req.body
+		const payload = JSON.stringify(req.body)
 		console.log(payload)
 		console.log(env.CLERK_USER_WEBHOOK_SECRET)
 
