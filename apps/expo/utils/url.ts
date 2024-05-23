@@ -1,4 +1,4 @@
-import { env } from "@monoexpo/env/expo"
+import { env } from "@acme/env/expo"
 import Constants from "expo-constants"
 
 /**

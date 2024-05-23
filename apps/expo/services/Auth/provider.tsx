@@ -1,6 +1,6 @@
+import { env } from "@acme/env/expo"
 import { ClerkProvider } from "@clerk/clerk-expo"
 import { TokenCache } from "@clerk/clerk-expo/dist/cache"
-import { env } from "@monoexpo/env/expo"
 import * as SecureStore from "expo-secure-store"
 import { ReactNode } from "react"
 

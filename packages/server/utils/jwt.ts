@@ -1,4 +1,4 @@
-import { env } from "@monoexpo/env/server"
+import { env } from "@acme/env/server"
 import { TRPCError } from "@trpc/server"
 import jwt, { JwtPayload } from "jsonwebtoken"
 import z, { ZodError } from "zod"

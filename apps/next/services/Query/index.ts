@@ -1,5 +1,5 @@
-import type { AppRouter } from "@monoexpo/server/shared"
-import { transformer } from "@monoexpo/server/shared"
+import type { AppRouter } from "@acme/server/shared"
+import { transformer } from "@acme/server/shared"
 import { httpLink, loggerLink } from "@trpc/client"
 import { createTRPCNext } from "@trpc/next"
 import { getHostUrl } from "../../utils/url"

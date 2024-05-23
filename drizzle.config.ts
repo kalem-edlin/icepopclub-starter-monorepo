@@ -1,11 +1,14 @@
-import { type Config } from "drizzle-kit"
-import { env } from "./packages/env/next"
+import { defineConfig } from "drizzle-kit"
+import { env } from "./packages/env/server"
 
-export default {
+export default defineConfig({
 	schema: "./packages/server/db/schema.ts",
-	driver: "pg",
+	dialect: "postgresql",
 	dbCredentials: {
-		connectionString: env.POSTGRES_URL,
+		// @ts-ignore
+		url: env.POSTGRES_URL,
 	},
 	tablesFilter: [`${env.PROJECT_NAME}_*`],
-} satisfies Config
+	verbose: true,
+	strict: true,
+})

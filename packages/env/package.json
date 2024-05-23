@@ -1,5 +1,5 @@
 {
-	"name": "@monoexpo/env",
+	"name": "@acme/env",
 	"version": "0.0.0",
 	"private": true,
 	"license": "MIT",
@@ -13,6 +13,6 @@
 		"zod": "^3.22.4"
 	},
 	"devDependencies": {
-		"@monoexpo/typescript": "workspace:*"
+		"@acme/typescript": "workspace:*"
 	}
 }

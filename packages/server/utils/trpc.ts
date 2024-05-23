@@ -1,9 +1,10 @@
-import { env } from "@monoexpo/env/server"
+import { env } from "@acme/env/server"
 import { TRPCError, initTRPC } from "@trpc/server"
-import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch"
 import { ZodError } from "zod"
 import { verifyAndParseToken } from "./jwt"
-export { fetchRequestHandler } from "@trpc/server/adapters/fetch"
+export { createNextApiHandler } from "@trpc/server/adapters/next"
+
+import { CreateNextContextOptions } from "@trpc/server/adapters/next"
 // @ts-ignore
 import transformer from "superjson"
 
@@ -12,9 +13,9 @@ import transformer from "superjson"
  * @param opts
  * @returns {authorization} - string token for authentication
  */
-export const createContext = async (opts: FetchCreateContextFnOptions) => {
+export const createContext = async (opts: CreateNextContextOptions) => {
 	return {
-		authorization: opts.req?.headers.get("Authorization")?.split(" ")[1],
+		authorization: opts.req.headers.authorization?.split(" ")[1],
 	} as {
 		authorization?: string
 	}

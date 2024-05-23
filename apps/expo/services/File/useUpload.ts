@@ -1,7 +1,7 @@
 import {
 	getUploadLimitsPerAcceptedMimeType,
 	type Model,
-} from "@monoexpo/server/shared"
+} from "@acme/server/shared"
 import { DocumentPickerAsset } from "expo-document-picker"
 import { ImagePickerAsset } from "expo-image-picker"
 import { useState } from "react"

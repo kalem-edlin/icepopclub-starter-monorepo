@@ -1,5 +1,5 @@
+import { Model } from "@acme/server/shared"
 import { useSignUp, useUser } from "@clerk/clerk-expo"
-import { Model } from "@monoexpo/server/shared"
 
 export const useSignUpService = () => {
 	const { isLoaded, signUp, setActive } = useSignUp()

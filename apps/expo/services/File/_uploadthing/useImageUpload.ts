@@ -1,4 +1,4 @@
-// import { FileRouter } from "@monoexpo/server/uploadthing"
+// import { FileRouter } from "@acme/server/uploadthing"
 // import type { UploadthingComponentProps } from "@uploadthing/react"
 // import { generateReactHelpers } from "@uploadthing/react"
 // import { ImagePickerAsset } from "expo-image-picker"

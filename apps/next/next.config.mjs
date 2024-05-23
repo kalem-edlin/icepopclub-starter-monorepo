@@ -1,12 +1,7 @@
-/** @type {import("next").NextConfig} */
-const config = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
 	reactStrictMode: true,
-	swcMinify: true,
-	transpilePackages: [
-		"@monoexpo/server",
-		"@monoexpo/env",
-		"@monoexpo/typescript",
-	],
+	transpilePackages: ["@acme/server", "@acme/env", "@acme/typescript"],
 }
 
-export default config
+export default nextConfig

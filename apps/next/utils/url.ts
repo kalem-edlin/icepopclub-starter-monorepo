@@ -1,4 +1,4 @@
-import { env } from "@monoexpo/env/next"
+import { env } from "@acme/env/next"
 
 /**
  * Utility function to generate URL from current environment given a route

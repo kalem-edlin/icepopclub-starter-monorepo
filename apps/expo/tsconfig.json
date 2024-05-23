@@ -1,5 +1,5 @@
 {
-	"extends": "@monoexpo/typescript/expo.json",
+	"extends": "@acme/typescript/expo.json",
 	"include": [
 		"**/*.ts",
 		"**/*.tsx",
