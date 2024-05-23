@@ -1,8 +1,8 @@
+import { useForgotService } from "@monoexpo/app/services/Auth/hooks/useForgot"
 import { Stack, router } from "expo-router"
 import React, { useState } from "react"
 import { Text, TextInput, TouchableOpacity, View } from "react-native"
 import BackChevron from "../../components/Icons/BackChevron"
-import { useForgotService } from "../../services/Auth/hooks/useForgotPassword"
 
 export default function ForgotPasswordPage() {
 	const { isLoaded, isSignedIn, createResetCode, handleReset } =
@@ -25,7 +25,7 @@ export default function ForgotPasswordPage() {
 	}
 
 	async function onCreateResetCode() {
-		await createResetCode(email, (errorMessage) => {
+		await createResetCode(email, (errorMessage?: string) => {
 			if (errorMessage) {
 				setError(errorMessage)
 			} else {
@@ -36,7 +36,7 @@ export default function ForgotPasswordPage() {
 	}
 
 	async function onHandleReset() {
-		await handleReset(code, password, (errorMessage) => {
+		await handleReset(code, password, (errorMessage?: string) => {
 			setError(errorMessage ?? "")
 		})
 	}
@@ -60,7 +60,9 @@ export default function ForgotPasswordPage() {
 					textContentType="emailAddress"
 					placeholder="Email Address..."
 					value={email}
-					onChangeText={(emailAddress) => setEmail(emailAddress)}
+					onChangeText={(emailAddress) =>
+						setEmail(emailAddress.toLowerCase())
+					}
 				/>
 			</View>
 

@@ -19,7 +19,8 @@ export default function SignUpScreen() {
 			emailAddress,
 			password,
 			() => setPendingVerification(true),
-			{ firstName, lastName }
+			firstName,
+			lastName
 		)
 	}
 

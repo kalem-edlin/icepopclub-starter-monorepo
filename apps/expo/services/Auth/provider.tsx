@@ -41,7 +41,6 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 	return (
 		<ClerkProvider
 			tokenCache={tokenCache}
-			allowedRedirectOrigins={["https://localhost:8081/"]}
 			publishableKey={env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY as string}>
 			{children}
 		</ClerkProvider>

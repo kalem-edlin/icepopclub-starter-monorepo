@@ -1,16 +1,15 @@
-import { useSignUp, useUser } from "@clerk/clerk-expo"
-import { Model } from "@monoexpo/server/shared"
+import { useSignUp } from "@clerk/clerk-expo"
 
 export const useSignUpService = () => {
 	const { isLoaded, signUp, setActive } = useSignUp()
-	const { user } = useUser()
 	// start the sign up process.
 	const onSignUp = async (
 		identifier: string,
 		password: string,
-		callback: () => void,
-		// PRIMARY_USER_LOGIN
-		extraProperties: Omit<Model.InsertUser, "emailAddress">
+		callback: (errorMessage?: string) => void,
+		firstName: string,
+		lastName?: string,
+		metadata?: { [k: string]: unknown }
 	) => {
 		if (!isLoaded) return
 
@@ -18,8 +17,9 @@ export const useSignUpService = () => {
 			await signUp.create({
 				emailAddress: identifier,
 				password,
-				firstName: extraProperties.firstName ?? undefined,
-				lastName: extraProperties.lastName ?? undefined,
+				firstName,
+				lastName,
+				unsafeMetadata: metadata,
 			})
 
 			await signUp.prepareEmailAddressVerification({
@@ -28,11 +28,14 @@ export const useSignUpService = () => {
 
 			callback()
 		} catch (err: any) {
-			console.error(JSON.stringify(err, null, 2))
+			callback((err as Error).message)
 		}
 	}
 
-	const onVerify = async (code: string, callback: () => void) => {
+	const onVerify = async (
+		code: string,
+		callback: (errorMessage?: string) => void
+	) => {
 		if (!isLoaded) return
 
 		try {
@@ -44,8 +47,8 @@ export const useSignUpService = () => {
 
 			await setActive({ session: completeSignUp.createdSessionId })
 			callback()
-		} catch (err: any) {
-			console.error(JSON.stringify(err, null, 2))
+		} catch (err) {
+			callback((err as Error).message)
 		}
 	}
 

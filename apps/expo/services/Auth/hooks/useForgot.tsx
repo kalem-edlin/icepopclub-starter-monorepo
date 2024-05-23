@@ -29,7 +29,6 @@ export const useForgotService = () => {
 				callback()
 			})
 			.catch((err) => {
-				console.error("error", err.errors[0].longMessage)
 				callback(err.errors[0].longMessage)
 			})
 	}
@@ -43,7 +42,7 @@ export const useForgotService = () => {
 	async function handleReset(
 		code: string,
 		newPassword: string,
-		callback: (errorMessage?: string | null) => void
+		callback: (errorMessage?: string) => void
 	) {
 		await signIn
 			?.attemptFirstFactor({
@@ -53,15 +52,10 @@ export const useForgotService = () => {
 			})
 			.then((result) => {
 				// Check if 2FA is required
-				if (result.status === "complete") {
-					setActive({ session: result.createdSessionId })
-					callback()
-				} else {
-					callback(result.status)
-				}
+				setActive({ session: result.createdSessionId })
+				callback()
 			})
 			.catch((err) => {
-				console.error("error", err.errors[0].longMessage)
 				callback(err.errors[0].longMessage)
 			})
 	}
