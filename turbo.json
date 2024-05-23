@@ -4,32 +4,17 @@
 	"pipeline": {
 		"build": {
 			"dependsOn": ["^build"],
-			"dotEnv": [
-				".env.production.local",
-				".env.local",
-				".env.production",
-				".env"
-			],
+			"dotEnv": [".env"],
 			"cache": true,
 			"outputs": [".dist/**", "node_modules/.cache/metro/**"]
 		},
 		"dev": {
-			"dotEnv": [
-				".env.production.local",
-				".env.local",
-				".env.development",
-				".env"
-			],
+			"dotEnv": [".env"],
 			"cache": false,
 			"persistent": true
 		},
 		"dev:clear": {
-			"dotEnv": [
-				".env.production.local",
-				".env.local",
-				".env.development",
-				".env"
-			],
+			"dotEnv": [".env"],
 			"cache": false,
 			"persistent": true
 		},

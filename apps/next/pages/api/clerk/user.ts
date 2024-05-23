@@ -135,4 +135,5 @@ export default async function handler(
 
 		return res.status(200)
 	}
+	return res.status(501).json("This route does not support get requests")
 }
