@@ -2,8 +2,8 @@
 	"private": true,
 	"name": "@acme/monorepo",
 	"scripts": {
-		"dev": "turbo dev --parallel",
-		"dev:clear": "turbo dev:clear --parallel",
+		"dev": "dotenv -- turbo dev --parallel",
+		"dev:clear": "dotenv -- turbo dev:clear --parallel",
 		"deploy": "vercel deploy",
 		"build": "npx turbo run build --filter=@acme/next",
 		"prebuild-install": "pnpm --filter=!@acme/expo install --store=node_modules/.pnpm-store",
