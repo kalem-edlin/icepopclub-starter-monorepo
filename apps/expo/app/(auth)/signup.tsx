@@ -1,6 +1,6 @@
 import { Stack, router } from "expo-router"
 import * as React from "react"
-import { Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { useSignUpService } from "../../services/Auth/hooks/useSignUp"
 
 export default function SignUpScreen() {
@@ -18,13 +18,25 @@ export default function SignUpScreen() {
 		await onSignUp(
 			emailAddress,
 			password,
-			() => setPendingVerification(true),
+			(errorMessage?: string) => {
+				if (errorMessage) {
+					Alert.alert(errorMessage)
+				} else {
+					setPendingVerification(true)
+				}
+			},
 			{ firstName, lastName }
 		)
 	}
 
 	const onPressVerify = async () => {
-		await onVerify(code, () => router.replace("/(tabs)/user/"))
+		await onVerify(code, (errorMessage?: string) => {
+			if (errorMessage) {
+				Alert.alert(errorMessage)
+			} else {
+				router.replace("/(tabs)/user/")
+			}
+		})
 	}
 
 	return (

@@ -1,6 +1,6 @@
 import { Stack, router } from "expo-router"
 import React from "react"
-import { Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { useSignInService } from "../../services/Auth/hooks/useSignIn"
 
 export default function SignInScreen() {
@@ -9,9 +9,13 @@ export default function SignInScreen() {
 	const [password, setPassword] = React.useState("")
 
 	const onSignInPress = async () => {
-		await onSignIn(emailAddress, password, () =>
-			router.replace("/(tabs)/user/")
-		)
+		await onSignIn(emailAddress, password, (errorMessage?: string) => {
+			if (errorMessage) {
+				Alert.alert(errorMessage)
+			} else {
+				router.replace("/(tabs)/user/")
+			}
+		})
 	}
 
 	return (

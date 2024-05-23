@@ -4,6 +4,7 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "npx expo start",
+		"dev:clear": "npx expo start -c",
 		"build": "npx expo export -p web --output-dir ../../dist",
 		"analyze:ios": "npx expo export --source-maps --platform ios --no-bytecode; source-map-explorer 'dist/_expo/static/js/ios/*.js' 'dist/_expo/static/js/ios/*.js.map'",
 		"android": "expo run:android",

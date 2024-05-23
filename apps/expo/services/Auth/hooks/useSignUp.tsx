@@ -8,7 +8,7 @@ export const useSignUpService = () => {
 	const onSignUp = async (
 		identifier: string,
 		password: string,
-		callback: () => void,
+		callback: (errorMessage?: string) => void,
 		// PRIMARY_USER_LOGIN
 		extraProperties: Omit<Model.InsertUser, "emailAddress">
 	) => {
@@ -28,11 +28,14 @@ export const useSignUpService = () => {
 
 			callback()
 		} catch (err: any) {
-			console.error(JSON.stringify(err, null, 2))
+			callback((err as Error).message)
 		}
 	}
 
-	const onVerify = async (code: string, callback: () => void) => {
+	const onVerify = async (
+		code: string,
+		callback: (errorMessage?: string) => void
+	) => {
 		if (!isLoaded) return
 
 		try {
@@ -45,7 +48,7 @@ export const useSignUpService = () => {
 			await setActive({ session: completeSignUp.createdSessionId })
 			callback()
 		} catch (err: any) {
-			console.error(JSON.stringify(err, null, 2))
+			callback((err as Error).message)
 		}
 	}
 

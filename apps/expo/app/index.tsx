@@ -27,7 +27,7 @@ export default function Page() {
 					<TouchableOpacity
 						onPress={() =>
 							Linking.openURL(
-								"https://apps.apple.com/us/app/devotion-communities-christ/id6496435728"
+								"https://apps.apple.com/us/app/monoexpo-communities-christ/id6496435728"
 							)
 						}>
 						<Text className="text-lg font-extralight text-cyan-400">
@@ -47,7 +47,7 @@ export default function Page() {
 					<TouchableOpacity
 						onPress={() =>
 							Linking.openURL(
-								"https://apps.apple.com/us/app/devotion-communities-christ/id6496435728"
+								"https://apps.apple.com/us/app/monoexpo-communities-christ/id6496435728"
 							)
 						}
 						className="bg-cyan-400 rounded-md p-3">
@@ -69,7 +69,7 @@ export default function Page() {
 					<Text
 						onPress={() =>
 							Linking.openURL(
-								"https://kalem-edlin.github.io/devotion-privacy/"
+								"https://kalem-edlin.github.io/monoexpo-privacy/"
 							)
 						}
 						className="text-white opacity-50">

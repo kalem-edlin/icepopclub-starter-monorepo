@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/clerk-expo"
-import { env } from "@monoexpo/env/client"
+import { env } from "@monoexpo/env/expo"
 import { transformer } from "@monoexpo/server/shared"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { httpBatchLink } from "@trpc/client"

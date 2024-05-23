@@ -6,29 +6,19 @@ import {
 	createCallerFactory,
 	parseUser,
 } from "@monoexpo/server/utils"
-
-export async function GET(req: Request) {
-	return Response.json(
-		{
-			error: "POST route only",
-		},
-		{
-			status: 501,
-		}
-	)
-}
+import { NextRequest } from "next/server"
 
 /**
  * Webhook request handler for a Clerk webhook user mutation
  * @param req
  * @returns
  */
-export async function POST(req: Request) {
+export const POST = async (req: NextRequest) => {
 	// Get the headers
 	const headerPayload = req.headers
-	const svix_id = headerPayload.get("svix-id")
-	const svix_timestamp = headerPayload.get("svix-timestamp")
-	const svix_signature = headerPayload.get("svix-signature")
+	const svix_id = headerPayload.get("svix-id") as string
+	const svix_timestamp = headerPayload.get("svix-timestamp") as string
+	const svix_signature = headerPayload.get("svix-signature") as string
 
 	// If there are no headers, error out
 	if (!svix_id || !svix_timestamp || !svix_signature) {
@@ -38,7 +28,7 @@ export async function POST(req: Request) {
 	}
 
 	// Get the body
-	const payload = await req.json()
+	const payload = req.body
 	const body = JSON.stringify(payload)
 
 	// Create a new Svix instance with your secret.
@@ -61,7 +51,6 @@ export async function POST(req: Request) {
 	}
 
 	// Get the ID and type
-	const { id } = evt.data
 	const eventType = evt.type
 
 	if (!evt.data.id) {
@@ -136,6 +125,7 @@ export async function POST(req: Request) {
 				status: 501,
 			})
 	}
-
-	return new Response("", { status: 200 })
+	return new Response("", {
+		status: 200,
+	})
 }
