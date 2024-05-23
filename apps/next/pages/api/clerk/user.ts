@@ -32,7 +32,8 @@ export default async function handler(
 		}
 
 		// Get the body
-		const payload = await JSON.parse(req.body)
+		const payload = req.body
+		console.log(payload)
 		const body = JSON.stringify(payload)
 
 		// Create a new Svix instance with your secret.
