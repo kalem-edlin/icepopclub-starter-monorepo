@@ -32,8 +32,6 @@ export default async function handler(
 		// Get the body
 		const payload = req.body
 		console.log(payload)
-		const body = JSON.stringify(payload)
-
 		console.log(env.CLERK_USER_WEBHOOK_SECRET)
 
 		// Create a new Svix instance with your secret.
@@ -43,7 +41,7 @@ export default async function handler(
 
 		// Verify the payload with the headers
 		try {
-			evt = wh.verify(body, {
+			evt = wh.verify(payload, {
 				"svix-id": svix_id,
 				"svix-timestamp": svix_timestamp,
 				"svix-signature": svix_signature,
