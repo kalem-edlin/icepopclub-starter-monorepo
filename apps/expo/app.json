@@ -1,11 +1,11 @@
 {
 	"expo": {
-		"name": "monoexpo",
-		"slug": "monoexpo",
+		"name": "acme",
+		"slug": "acme",
 		"version": "1.0.0",
 		"orientation": "portrait",
 		"icon": "./assets/images/icon.png",
-		"scheme": "monoexpo",
+		"scheme": "acme",
 		"userInterfaceStyle": "automatic",
 		"splash": {
 			"image": "./assets/images/splash.png",
@@ -15,7 +15,7 @@
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
 			"supportsTablet": true,
-			"bundleIdentifier": "com.monoexpo"
+			"bundleIdentifier": "com.acme"
 		},
 		"android": {
 			"adaptiveIcon": {

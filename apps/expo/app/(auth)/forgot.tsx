@@ -1,4 +1,4 @@
-import { useForgotService } from "@monoexpo/app/services/Auth/hooks/useForgot"
+import { useForgotService } from "@acme/app/services/Auth/hooks/useForgot"
 import { Stack, router } from "expo-router"
 import React, { useState } from "react"
 import { Text, TextInput, TouchableOpacity, View } from "react-native"

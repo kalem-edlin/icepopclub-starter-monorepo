@@ -2,7 +2,7 @@
 // import { generateReactHelpers } from "@uploadthing/react"
 // import type { DocumentPickerAsset } from "expo-document-picker"
 
-// import { FileRouter } from "@monoexpo/server/uploadthing"
+// import { FileRouter } from "@acme/server/uploadthing"
 // import url from "./url"
 
 // export default function useDocumentUpload<

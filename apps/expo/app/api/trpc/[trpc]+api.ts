@@ -1,5 +1,5 @@
-import { appRouter } from "@monoexpo/server"
-import { createContext, fetchRequestHandler } from "@monoexpo/server/utils"
+import { appRouter } from "@acme/server"
+import { createContext, fetchRequestHandler } from "@acme/server/utils"
 
 export async function GET(req: Request) {
 	return fetchRequestHandler({

@@ -1,11 +1,11 @@
-import { env } from "@monoexpo/env/server"
-import { appRouter } from "@monoexpo/server"
+import { env } from "@acme/env/server"
+import { appRouter } from "@acme/server"
 import {
 	Webhook,
 	WebhookEvent,
 	createCallerFactory,
 	parseUser,
-} from "@monoexpo/server/utils"
+} from "@acme/server/utils"
 
 export async function GET(req: Request) {
 	return Response.json(

@@ -14,7 +14,7 @@
 		"target": "ESNext",
 		"baseUrl": "./",
 		"paths": {
-			"@monoexpo/app/*": ["../../apps/expo/*"]
+			"@acme/app/*": ["../../apps/expo/*"]
 		}
 	},
 	"exclude": ["node_modules", "babel.config.js", "metro.config.js"]

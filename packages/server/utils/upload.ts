@@ -9,7 +9,7 @@
 // export { generatePermittedFileTypes } from "@uploadthing/shared"
 // export type { ExpandedRouteConfig } from "@uploadthing/shared"
 
-import { env } from "@monoexpo/env/server"
+import { env } from "@acme/env/server"
 import S3 from "aws-sdk/clients/s3"
 import { v4 as uuidv4 } from "uuid"
 import z from "zod"

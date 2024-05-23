@@ -1,11 +1,11 @@
 {
 	"private": true,
-	"name": "@monoexpo/monorepo",
+	"name": "@acme/monorepo",
 	"scripts": {
 		"deploy": "vercel deploy",
-		"prebuild": "EXPO_USE_METRO_WORKSPACE_ROOT=1 cd apps/expo && npx expo prebuild --platform ios; open ios/monoexpo.xcworkspace",
-		"build": "EXPO_USE_METRO_WORKSPACE_ROOT=1  npx turbo build --filter=@monoexpo/app",
-		"dev": "EXPO_USE_METRO_WORKSPACE_ROOT=1  npx turbo dev --filter=@monoexpo/app",
+		"prebuild": "EXPO_USE_METRO_WORKSPACE_ROOT=1 cd apps/expo && npx expo prebuild --platform ios; open ios/acme.xcworkspace",
+		"build": "EXPO_USE_METRO_WORKSPACE_ROOT=1  npx turbo build --filter=@acme/app",
+		"dev": "EXPO_USE_METRO_WORKSPACE_ROOT=1  npx turbo dev --filter=@acme/app",
 		"start": "EXPO_USE_METRO_WORKSPACE_ROOT=1 cd apps/expo && npx expo start",
 		"start -c": "EXPO_USE_METRO_WORKSPACE_ROOT=1 cd apps/expo && npx expo start -c",
 		"db:push": "drizzle-kit push:pg --config=drizzle.config.ts",
@@ -16,7 +16,7 @@
 		"preinstall": "npx only-allow pnpm"
 	},
 	"devDependencies": {
-		"@monoexpo/typescript": "workspace:*",
+		"@acme/typescript": "workspace:*",
 		"dotenv-cli": "latest",
 		"drizzle-kit": "^0.20.14",
 		"prettier": "^3.1.0",

@@ -37,7 +37,7 @@ export default function Page() {
 				</View>
 				<View className="items-center justify-center w-1/3 mx-auto mt-36">
 					<Text className="text-[70px] text-center mb-6 font-semibold">
-						Monoexpo
+						acme
 					</Text>
 					<Text className="text-lg font-extralight text-center mb-10 text-cyan-400 ">
 						A boilerplate project for a Turbo monorepos that use
