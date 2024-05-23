@@ -6,7 +6,7 @@
 			"dependsOn": ["^build"],
 			"dotEnv": [".env"],
 			"cache": true,
-			"outputs": [".dist/**", "node_modules/.cache/metro/**"]
+			"outputs": [".next/**", ".expo/**"]
 		},
 		"dev": {
 			"dotEnv": [".env"],
