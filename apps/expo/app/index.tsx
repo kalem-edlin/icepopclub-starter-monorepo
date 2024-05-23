@@ -27,7 +27,7 @@ export default function Page() {
 					<TouchableOpacity
 						onPress={() =>
 							Linking.openURL(
-								"https://apps.apple.com/us/app/devotion-communities-christ/id6496435728"
+								"https://apps.apple.com/us/app/monoexpo-communities-christ/id6496435728"
 							)
 						}>
 						<Text className="text-lg font-extralight text-cyan-400">
@@ -37,7 +37,7 @@ export default function Page() {
 				</View>
 				<View className="items-center justify-center w-1/3 mx-auto mt-36">
 					<Text className="text-[70px] text-center mb-6 font-semibold">
-						acme
+						Monoexpo
 					</Text>
 					<Text className="text-lg font-extralight text-center mb-10 text-cyan-400 ">
 						A boilerplate project for a Turbo monorepos that use
@@ -47,7 +47,7 @@ export default function Page() {
 					<TouchableOpacity
 						onPress={() =>
 							Linking.openURL(
-								"https://apps.apple.com/us/app/devotion-communities-christ/id6496435728"
+								"https://apps.apple.com/us/app/monoexpo-communities-christ/id6496435728"
 							)
 						}
 						className="bg-cyan-400 rounded-md p-3">
@@ -69,7 +69,7 @@ export default function Page() {
 					<Text
 						onPress={() =>
 							Linking.openURL(
-								"https://kalem-edlin.github.io/devotion-privacy/"
+								"https://kalem-edlin.github.io/monoexpo-privacy/"
 							)
 						}
 						className="text-white opacity-50">

@@ -1,17 +1,18 @@
 {
-	"name": "@acme/env",
+	"name": "@monoexpo/env",
 	"version": "0.0.0",
 	"private": true,
 	"license": "MIT",
 	"exports": {
-		"./client": "./client.ts",
-		"./server": "./server.ts"
+		"./expo": "./expo.ts",
+		"./server": "./server.ts",
+		"./next": "./next.ts"
 	},
 	"dependencies": {
 		"@t3-oss/env-core": "0.8",
 		"zod": "^3.22.4"
 	},
 	"devDependencies": {
-		"@acme/typescript": "workspace:*"
+		"@monoexpo/typescript": "workspace:*"
 	}
 }

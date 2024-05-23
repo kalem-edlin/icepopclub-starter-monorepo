@@ -1,15 +1,16 @@
-import { useSignUp } from "@clerk/clerk-expo"
+import { useSignUp, useUser } from "@clerk/clerk-expo"
+import { Model } from "@monoexpo/server/shared"
 
 export const useSignUpService = () => {
 	const { isLoaded, signUp, setActive } = useSignUp()
+	const { user } = useUser()
 	// start the sign up process.
 	const onSignUp = async (
 		identifier: string,
 		password: string,
 		callback: (errorMessage?: string) => void,
-		firstName: string,
-		lastName?: string,
-		metadata?: { [k: string]: unknown }
+		// PRIMARY_USER_LOGIN
+		extraProperties: Omit<Model.InsertUser, "emailAddress">
 	) => {
 		if (!isLoaded) return
 
@@ -17,9 +18,8 @@ export const useSignUpService = () => {
 			await signUp.create({
 				emailAddress: identifier,
 				password,
-				firstName,
-				lastName,
-				unsafeMetadata: metadata,
+				firstName: extraProperties.firstName ?? undefined,
+				lastName: extraProperties.lastName ?? undefined,
 			})
 
 			await signUp.prepareEmailAddressVerification({
@@ -47,7 +47,7 @@ export const useSignUpService = () => {
 
 			await setActive({ session: completeSignUp.createdSessionId })
 			callback()
-		} catch (err) {
+		} catch (err: any) {
 			callback((err as Error).message)
 		}
 	}

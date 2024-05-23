@@ -1,4 +1,4 @@
-import { useSignIn } from "@clerk/clerk-expo"
+import { useSignIn, useUser } from "@clerk/clerk-expo"
 
 /**
  * React Hook using Clerk SDK to handle user Signin
@@ -7,6 +7,7 @@ import { useSignIn } from "@clerk/clerk-expo"
  */
 export const useSignInService = () => {
 	const { signIn, setActive, isLoaded } = useSignIn()
+	const { user } = useUser()
 
 	/**
 	 * Handle signin and update UI on callback given success
@@ -29,6 +30,7 @@ export const useSignInService = () => {
 			await setActive({ session: completeSignIn.createdSessionId })
 			callback()
 		} catch (err: any) {
+			console.log(err[0])
 			callback((err as Error).message)
 		}
 	}

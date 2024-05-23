@@ -1,5 +1,5 @@
 {
-	"name": "@acme/server",
+	"name": "@monoexpo/server",
 	"version": "0.0.0",
 	"private": true,
 	"exports": {
@@ -9,7 +9,7 @@
 	},
 	"dependencies": {
 		"@clerk/backend": "^1.0.0",
-		"@acme/env": "workspace:*",
+		"@monoexpo/env": "workspace:*",
 		"@trpc/server": "next",
 		"@vercel/postgres": "^0.8.0",
 		"aws-sdk": "^2.1607.0",

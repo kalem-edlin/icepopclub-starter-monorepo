@@ -10,7 +10,7 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native"
-import { useUpload } from "../../../services/FileUpload/useUpload"
+import { useUpload } from "../../../services/File/useUpload"
 import { trpc } from "../../../services/Query"
 import bytesToMegabytes from "../../../utils/bToMb"
 

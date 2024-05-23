@@ -1,4 +1,4 @@
-import { env } from "@acme/env/client"
+import { env } from "@monoexpo/env/expo"
 import Constants from "expo-constants"
 
 /**
@@ -8,17 +8,22 @@ import Constants from "expo-constants"
  */
 export function getHostUrl(route?: string) {
 	let url: URL
-	const debugUrl = Constants.expoConfig?.hostUri
+	const localhost = Constants.expoConfig?.hostUri?.split(":")[0]
+
+	if (!localhost)
+		throw new Error("failed to get localhost, configure it manually")
 	try {
 		url = new URL(
 			route ?? "",
-			debugUrl ? `http://${debugUrl}` : env.EXPO_PUBLIC_SERVER_ORIGIN
+			localhost
+				? `http://${localhost}:3000`
+				: env.EXPO_PUBLIC_SERVER_ORIGIN
 		)
 		console.log("resolved url", url)
 		return url
 	} catch (e) {
 		throw new Error(
-			`Failed to resolve URL from ${debugUrl ?? env.EXPO_PUBLIC_SERVER_ORIGIN} at route ${route}`
+			`Failed to resolve URL from ${localhost ?? env.EXPO_PUBLIC_SERVER_ORIGIN} at route ${route}`
 		)
 	}
 }

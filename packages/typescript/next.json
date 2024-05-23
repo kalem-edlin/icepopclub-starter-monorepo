@@ -18,7 +18,7 @@
 			}
 		],
 		"paths": {
-			"@acme/next/*": ["../../apps/next/*"]
+			"@monoexpo/next/*": ["../../apps/next/*"]
 		}
 	},
 	"exclude": ["node_modules"]

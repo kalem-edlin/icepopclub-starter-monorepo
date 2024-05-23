@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-expo"
-import { Model } from "@devotion/server/shared"
+import { Model } from "@monoexpo/server/shared"
 import { router } from "expo-router"
 
 /**
