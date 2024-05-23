@@ -1,5 +1,4 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome"
-import { env } from "@monoexpo/env/expo"
 import { useFonts } from "expo-font"
 import { Stack } from "expo-router"
 import * as SplashScreen from "expo-splash-screen"
@@ -39,8 +38,6 @@ export default function RootLayout() {
 	if (!loaded) {
 		return null
 	}
-
-	console.log(env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY)
 
 	return (
 		<AuthProvider>

@@ -1,4 +1,5 @@
 import { useSignIn, useUser } from "@clerk/clerk-expo"
+import { Alert } from "react-native"
 
 /**
  * React Hook using Clerk SDK to handle user Signin
@@ -19,7 +20,7 @@ export const useSignInService = () => {
 	const onSignIn = async (
 		identifier: string, // PRIMARY_USER_LOGIN
 		password: string,
-		callback: (errorMessage?: string) => void
+		callback: () => void
 	) => {
 		try {
 			if (!isLoaded) return
@@ -30,8 +31,7 @@ export const useSignInService = () => {
 			await setActive({ session: completeSignIn.createdSessionId })
 			callback()
 		} catch (err: any) {
-			console.log(err[0])
-			callback((err as Error).message)
+			Alert.alert(err)
 		}
 	}
 

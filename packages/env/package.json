@@ -4,9 +4,8 @@
 	"private": true,
 	"license": "MIT",
 	"exports": {
-		"./expo": "./expo.ts",
-		"./server": "./server.ts",
-		"./next": "./next.ts"
+		"./client": "./client.ts",
+		"./server": "./server.ts"
 	},
 	"dependencies": {
 		"@t3-oss/env-core": "0.8",

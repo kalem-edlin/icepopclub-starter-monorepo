@@ -1,6 +1,6 @@
 import { Stack, router } from "expo-router"
 import React, { useState } from "react"
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Text, TextInput, TouchableOpacity, View } from "react-native"
 import BackChevron from "../../components/Icons/BackChevron"
 import { useForgotService } from "../../services/Auth/hooks/useForgotPassword"
 
@@ -12,6 +12,7 @@ export default function ForgotPasswordPage() {
 	const [password, setPassword] = useState("")
 	const [code, setCode] = useState("")
 	const [successfulCreation, setSuccessfulCreation] = useState(false)
+	const [error, setError] = useState("")
 
 	if (!isLoaded) {
 		return null
@@ -26,20 +27,17 @@ export default function ForgotPasswordPage() {
 	async function onCreateResetCode() {
 		await createResetCode(email, (errorMessage) => {
 			if (errorMessage) {
-				Alert.alert(errorMessage)
+				setError(errorMessage)
 			} else {
 				setSuccessfulCreation(true)
+				setError("")
 			}
 		})
 	}
 
 	async function onHandleReset() {
 		await handleReset(code, password, (errorMessage) => {
-			if (errorMessage) {
-				Alert.alert(errorMessage)
-			} else {
-				router.replace("/(tabs)/user/")
-			}
+			setError(errorMessage ?? "")
 		})
 	}
 
@@ -73,6 +71,7 @@ export default function ForgotPasswordPage() {
 					Send password reset code
 				</Text>
 			</TouchableOpacity>
+			{error && <Text>{error}</Text>}
 
 			{successfulCreation && (
 				<>
@@ -108,6 +107,7 @@ export default function ForgotPasswordPage() {
 							Reset
 						</Text>
 					</TouchableOpacity>
+					{error && <Text>{error}</Text>}
 				</>
 			)}
 		</View>

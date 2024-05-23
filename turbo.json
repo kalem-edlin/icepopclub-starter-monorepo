@@ -23,16 +23,6 @@
 			"cache": false,
 			"persistent": true
 		},
-		"dev:clear": {
-			"dotEnv": [
-				".env.production.local",
-				".env.local",
-				".env.development",
-				".env"
-			],
-			"cache": false,
-			"persistent": true
-		},
 		"type-check": {}
 	}
 }
