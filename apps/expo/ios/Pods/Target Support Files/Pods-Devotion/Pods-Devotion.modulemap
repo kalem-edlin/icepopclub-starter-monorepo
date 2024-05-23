@@ -1,6 +1,0 @@
-module Pods_Devotion {
-  umbrella header "Pods-Devotion-umbrella.h"
-
-  export *
-  module * { export * }
-}

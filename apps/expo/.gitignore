@@ -4,3 +4,10 @@
 
 expo-env.d.ts
 # @end expo-cli
+
+ios
+.expo
+.expo-shared
+.turbo
+.vscode
+node_modules
