@@ -5,7 +5,7 @@
 		"dev": "dotenv -- turbo dev --parallel",
 		"dev:clear": "dotenv -- turbo dev:clear --parallel",
 		"deploy": "vercel deploy",
-		"build": "npx turbo run build --filter=next",
+		"build": "npx turbo run build --filter=next...",
 		"clean": "rm -rf .expo .turbo node_modules",
 		"expo:prebuild": "EXPO_USE_METRO_WORKSPACE_ROOT=1 cd apps/expo && npx expo prebuild --platform ios; open ios/acme.xcworkspace",
 		"expo:start": "EXPO_USE_METRO_WORKSPACE_ROOT=1 cd apps/expo && npx expo start",
