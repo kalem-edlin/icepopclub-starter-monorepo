@@ -6,7 +6,7 @@
 			"dependsOn": ["^build"],
 			"dotEnv": [".env"],
 			"cache": true,
-			"outputs": [".dist/**", "!.dist/cache/**"]
+			"outputs": [".next/**", "!.next/cache/**"]
 		},
 		"dev": {
 			"dotEnv": [".env"],
