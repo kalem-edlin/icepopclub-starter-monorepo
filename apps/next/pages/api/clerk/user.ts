@@ -26,15 +26,15 @@ export default async function handler(
 
 		// If there are no headers, error out
 		if (!svix_id || !svix_timestamp || !svix_signature) {
-			return new Response("Error occurred -- no svix headers", {
-				status: 400,
-			})
+			return res.status(400).json("Error occurred -- no svix headers")
 		}
 
 		// Get the body
 		const payload = req.body
 		console.log(payload)
 		const body = JSON.stringify(payload)
+
+		console.log(env.CLERK_USER_WEBHOOK_SECRET)
 
 		// Create a new Svix instance with your secret.
 		const wh = new Webhook(env.CLERK_USER_WEBHOOK_SECRET)
@@ -50,9 +50,7 @@ export default async function handler(
 			}) as WebhookEvent
 		} catch (err) {
 			console.error("Error verifying webhook:", err)
-			return new Response("Error occured", {
-				status: 400,
-			})
+			return res.status(400).json(`Error verifying webhook: ${err}`)
 		}
 
 		// Get the ID and type
@@ -60,12 +58,9 @@ export default async function handler(
 		const eventType = evt.type
 
 		if (!evt.data.id) {
-			return new Response(
-				`ERROR: No id supplied for user mutation: ${eventType}`,
-				{
-					status: 500,
-				}
-			)
+			return res
+				.status(500)
+				.json(`ERROR: No id supplied for user mutation: ${eventType}`)
 		}
 
 		// Initiate TRPC internal route callers
