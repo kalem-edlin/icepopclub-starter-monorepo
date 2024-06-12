@@ -1,4 +1,3 @@
-import Constants from "expo-constants"
 import { env } from "./env"
 
 /**
@@ -8,17 +7,18 @@ import { env } from "./env"
  */
 export function getHostUrl(route?: string) {
 	let url: URL
-	const debugUrl = Constants.expoConfig?.hostUri
 	try {
 		url = new URL(
 			route ?? "",
-			debugUrl ? `http://${debugUrl}` : env.EXPO_PUBLIC_SERVER_ORIGIN
+			process.env.NODE_ENV === "development"
+				? `http://localhost:8081`
+				: env.EXPO_PUBLIC_SERVER_ORIGIN
 		)
 		console.log("resolved url", url)
 		return url
 	} catch (e) {
 		throw new Error(
-			`Failed to resolve URL from ${debugUrl ?? env.EXPO_PUBLIC_SERVER_ORIGIN} at route ${route}`
+			`Failed to resolve URL from ${`http://localhost:8081` ?? env.EXPO_PUBLIC_SERVER_ORIGIN} at route ${route}`
 		)
 	}
 }

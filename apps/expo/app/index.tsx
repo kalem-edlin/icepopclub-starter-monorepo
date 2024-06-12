@@ -1,87 +1,77 @@
-import * as Linking from "expo-linking"
-import { Redirect, Stack } from "expo-router"
-import { Image, Platform, Text, TouchableOpacity, View } from "react-native"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { useLayoutEffect, useState } from "react"
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native"
+import { trpc } from "../services/Query"
 
 export default function Page() {
-	return Platform.OS === "web" ? (
-		<View className="w-full">
-			<Stack.Screen options={{ headerShown: false }} />
-			<View className="h-[100vh] w-5/6 mx-auto ">
-				<View className="mt-4  h-24 flex-row items-center">
-					<View className=" flex-grow h-3/4 flex-row justify-start ">
-						<View className="h-full aspect-square">
-							<Image
-								className="w-full h-full"
-								source={require("../assets/favicon.png")}
-							/>
-						</View>
-					</View>
+	const [interviewId, setInterviewId] = useState<undefined | number>()
+	const [error, setError] = useState<string | undefined>()
+	const [updating, setUpdating] = useState(false)
+
+	console.log(interviewId)
+
+	const createCountMutation = trpc.interview.create.useMutation({
+		onError: (e) => setError(e.message),
+		onSuccess: (newId) => {
+			setInterviewId(newId)
+			AsyncStorage.setItem("interviewId", `${newId}`)
+			utils.interview.byId.invalidate({
+				id: newId,
+			})
+		},
+	})
+
+	const updateCountMutation = trpc.interview.update.useMutation({
+		onError: (e) => setError(e.message),
+		onSuccess: (c) =>
+			utils.interview.byId.invalidate({
+				id: interviewId,
+			}),
+	})
+
+	const getCountQuery = trpc.interview.byId.useQuery({
+		id: interviewId,
+	})
+
+	const utils = trpc.useUtils()
+
+	const handleClick = async () => {
+		setUpdating(true)
+		const result = await updateCountMutation.mutateAsync({
+			id: interviewId!,
+			count: getCountQuery.data! + 1,
+		})
+		setUpdating(false)
+	}
+
+	useLayoutEffect(() => {
+		const getStoredId = async () => {
+			const id = await AsyncStorage.getItem("interviewId")
+			if (id === undefined || id === null || !+id) {
+				createCountMutation.mutate()
+				return
+			}
+			setInterviewId(+id!)
+		}
+		getStoredId()
+	}, [])
+
+	return (
+		<View className="h-screen w-full justify-center items-center">
+			{error && <Text className="text-red-500">{error}</Text>}
+			{getCountQuery.data === undefined || getCountQuery.isLoading ? (
+				<ActivityIndicator />
+			) : (
+				<>
 					<TouchableOpacity
-						onPress={() =>
-							Linking.openURL("mailto:kalemedlin@gmail.com")
-						}>
-						<Text className="text-lg mr-8 font-extralight text-cyan-400">
-							Contact Us
-						</Text>
+						disabled={updating}
+						onPress={handleClick}
+						className="py-2 w-24 rounded-md items-center bg-blue-500 text-white">
+						{updating ? <ActivityIndicator /> : "Click me"}
 					</TouchableOpacity>
-					<TouchableOpacity
-						onPress={() =>
-							Linking.openURL(
-								"https://apps.apple.com/us/app/devotion-communities-christ/id6496435728"
-							)
-						}>
-						<Text className="text-lg font-extralight text-cyan-400">
-							Download
-						</Text>
-					</TouchableOpacity>
-				</View>
-				<View className="items-center justify-center w-1/3 mx-auto mt-36">
-					<Text className="text-[70px] text-center mb-6 font-semibold">
-						Monoexpo
-					</Text>
-					<Text className="text-lg font-extralight text-center mb-10 text-cyan-400 ">
-						A boilerplate project for a Turbo monorepos that use
-						expo router, trpc, Drizzle ORM for headless DB
-						integration, and Clerk authentication
-					</Text>
-					<TouchableOpacity
-						onPress={() =>
-							Linking.openURL(
-								"https://apps.apple.com/us/app/devotion-communities-christ/id6496435728"
-							)
-						}
-						className="bg-cyan-400 rounded-md p-3">
-						<Text className="text-lg font-light text-white">
-							Get the App
-						</Text>
-					</TouchableOpacity>
-				</View>
-			</View>
-			<View className="justify-center items-center w-full h-36 bg-black opacity-90">
-				<View className="flex-row gap-x-6 ">
-					<Text
-						onPress={() =>
-							Linking.openURL("mailto:kalemedlin@gmail.com")
-						}
-						className="text-white opacity-50">
-						Email
-					</Text>
-					<Text
-						onPress={() =>
-							Linking.openURL(
-								"https://kalem-edlin.github.io/devotion-privacy/"
-							)
-						}
-						className="text-white opacity-50">
-						Privacy Policy
-					</Text>
-					<Text className="text-white opacity-50">
-						@ Ice Pop Club
-					</Text>
-				</View>
-			</View>
+					<View className="mt-3">Count: {getCountQuery.data}</View>
+				</>
+			)}
 		</View>
-	) : (
-		<Redirect href={"/(tabs)/user"} />
 	)
 }

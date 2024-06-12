@@ -12,18 +12,25 @@ import { UserContext } from "./types"
 
 export interface Persistance {
 	userContext?: UserContext
+	interviewId: number | null
 }
 
 export interface PersistanceMethods {
 	setUserContext: (userContext?: Persistance["userContext"]) => void
+	setInterviewId: (id: number) => void
 }
 
 export const usePersistance = create<Persistance & PersistanceMethods>()(
 	persist(
 		(set, get) => ({
+			interviewId: null,
 			setUserContext: (userContext?: UserContext) =>
 				set((state) => ({
 					userContext: userContext,
+				})),
+			setInterviewId: (id: number) =>
+				set((state) => ({
+					interviewId: id,
 				})),
 		}),
 		{

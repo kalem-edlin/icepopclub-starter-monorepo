@@ -1,15 +1,11 @@
-import { useAuth } from "@clerk/clerk-expo"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { httpBatchLink } from "@trpc/client"
 import { ReactNode, useState } from "react"
 import { trpc } from "."
-import { env } from "../../utils/env"
 import { getHostUrl } from "../../utils/url"
 
 // TODO: Pass in authentication token here from userstorage
 export const QueryProvider = ({ children }: { children: ReactNode }) => {
-	const { getToken } = useAuth()
-
 	/**
 	 * Define tanstack retry policy
 	 */
@@ -33,12 +29,7 @@ export const QueryProvider = ({ children }: { children: ReactNode }) => {
 				httpBatchLink({
 					url: getHostUrl("/api/trpc"),
 					async headers() {
-						console.log(
-							`headers assigned with ${env.EXPO_PUBLIC_CLERK_JWT_TEMPLATE_NAME}`
-						)
-						return {
-							Authorization: `Bearer ${await getToken({ template: env.EXPO_PUBLIC_CLERK_JWT_TEMPLATE_NAME })}`,
-						}
+						return {}
 					},
 				}),
 			],

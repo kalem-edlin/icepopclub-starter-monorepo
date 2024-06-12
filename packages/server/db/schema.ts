@@ -1,5 +1,6 @@
 import { env } from "@monoexpo/env/server"
 import {
+	integer,
 	pgTableCreator,
 	real,
 	serial,
@@ -11,6 +12,11 @@ import {
 export const createTable = pgTableCreator(
 	(name) => `${env.PROJECT_NAME}_${name}`
 )
+
+export const presses = createTable(`presses`, {
+	id: serial("id").primaryKey(),
+	count: integer("count").notNull().default(0),
+})
 
 export const users = createTable(`users`, {
 	id: serial("id").primaryKey(),
